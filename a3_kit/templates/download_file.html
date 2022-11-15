@@ -1,0 +1,841 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+
+	tr, th, td {
+
+		border : solid black 1px;
+		padding: 10px;
+		color: black;
+	}
+
+	.rm-head {
+
+		background-color: white;
+		border-left-color: white;
+		border-top-color: white;
+	}
+
+
+	
+
+
+	.header-table {
+
+		background-color: rgb(40,40,40);
+		color: white;
+		text-align: center;
+
+	}
+
+
+	
+
+	.button1{
+		color: royalblue;
+		border: none;
+		background: none;
+		padding-right: 0px;
+
+	}
+
+	.button1:hover{
+
+		color: indigo;
+	}
+	.num {
+
+		text-align: right;
+
+	}
+
+
+
+
+
+	.submit-btn {
+
+		background-color: white;
+	}
+
+
+
+	.header-table-1 {
+
+		background-color: rgb(40,40,40);
+		color: white;
+		text-align: left;
+
+	}
+
+
+
+
+	.radio{
+
+        background-color: white ;
+        border-bottom-color:white;
+        border-left-color:white;
+        border-top-color:white;
+        padding: 10px;
+    }
+    .radio1{
+
+        background-color: white;
+        border-color: white;
+    }
+
+
+/*blinking*/
+
+/*.blink {
+  animation: blink 2s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}*/
+.directions_link {background-color: #cccccc;
+
+                cursor: pointer;
+    } /* Green */
+
+
+.freeze { pointer-events: none; }
+
+.hidden { display: none; }
+
+.overlay {
+  position: fixed;
+  z-index: 100;
+  padding: 60px;
+  background: #8ab6d6;
+  border: solid 1px #ccc;
+  width: 600px;
+  top: 100px;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+}
+
+.loading:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 900ms infinite;      
+  animation: ellipsis steps(4,end) 900ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 20px;    
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 20px;    
+  }
+}
+
+
+
+
+</style>
+
+
+
+
+
+<!-- <div class="content" style="margin: 0px; padding:0px;" id="freeze-nav-1">
+    <div class="container">
+        <div class="col-md-10 text-center" style="padding-right: 120px;">
+            <h6><a class="digitization-unfocus" href="{% url 'upload_statments' %}">&emsp;Upload Documents&emsp;</a>
+                <a class="digitization-focus" href="{% url 'download_statments' %}">&emsp;Download Documents&emsp;</a>
+            </h6>
+        </div>
+        <br/>
+    </div>
+</div>
+ -->
+
+<!-- 
+
+
+
+<table style="margin: 50px;">
+        <thead>
+         
+           <th width="30em"></th>
+            <th  width="150em"class="header-table" colspan="2">File</th>
+            <th  width="120em"class="header-table" colspan="3"> Belonging to.. </th>
+           
+
+
+        </thead>
+        <thead>
+         
+            <th width="10em"></th>
+            <th width="30em" class="header-table">Upload</th>
+            <th width="80em"class="header-table">Download</th>
+           
+            <th  width="30em"class="header-table">Leads</th> 
+            <th  width="150em"class="header-table">Deals</th>
+            <th  width="120em"class="header-table"> Customers </th>
+           
+
+
+        </thead>
+
+        <tr >
+            <td width="30em" class="header-table"> BANK</td>
+            <td style="text-align: right;">{{count_bank.0.0}}</td>
+            <td style="text-align: right;">{{count_bank1.0.0}}</td>
+            <td style="text-align: right;">{{count_bank.0.1}}</td>
+            <td style="text-align: right;">{{count_bank1.0.1}}</td>
+        </tr>
+        <tr >
+            <td width="30em" class="header-table"> ITR</td>
+            <td style="text-align: right;">{{count_itr.0.0}}</td>
+            <td style="text-align: right;">{{count_itr1.0.0}}</td>
+            <td style="text-align: right;">{{count_itr.0.1}}</td>
+            <td style="text-align: right;"> {{count_itr1.0.1}}</td>
+        </tr>
+        <tr >
+            <td width="30em" class="header-table"> total</td>
+            <td style="text-align: right;">{{count_total}}</td>
+            <td style="text-align: right;">{{count_total1}}</td>
+            <td style="text-align: right;">{{max1}}</td>
+            <td style="text-align: right;">{{max2}}</td>
+        </tr>
+        
+    </table>
+
+
+<br/>
+<br/>
+ -->
+
+
+<div class="search_form" id="search-form" style="margin: 50px;">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <form id="searchForm" method="POST">
+              {% csrf_token %}
+              <input type="text" name="search" id="search" class="form-control" placeholder="Enter lead id or name" autocomplete="off">
+              <button type="submit" class="btn"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search</button>
+              <ul id="searchResult">
+              </ul>
+              {% for message in messages %}
+                  <p id="searchMessage" style="margin-left: 40%; padding-top: 50px; display: block;"><strong>{{ message }}</strong></p>
+              {% endfor %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <button id="customer_id1" style="margin-left:600px"onclick="func()">Cutomer_id Selection</button> -->
+
+{% if result %}
+
+<div style="display: inline-flex;">
+  
+  <div>
+  <table id="uploadTable1" style="margin-top:40px;margin-left: 45px;">
+  
+      <thead>
+    
+      <th class="header-table">Lead Id</th>
+      <th class="header-table">Deal Id</th>
+      <th class="header-table">Customer Id</th>
+      <th class="header-table">Name</th>
+      <th class="header-table">Bank</th>
+      <th class="header-table">Account Number</th>
+      </thead>
+      <tbody id="displayResult">
+        {% for item in result %}
+        <tr>
+      
+        <td id=leadID>{{item.lead_id}}</td>
+        <td>{{item.deal_id}}</td>
+        <td>{{item.customer_id}}</td>
+        <td id=bank_count>{{item.name}}</td>
+        <td>{{item.bank}}</td>
+        <td id=itr_count>{{item.acoount_number}}</td>
+      </tr>
+        {% endfor %}
+  
+      </tbody>
+      
+  </table>
+</div>
+
+<div class="overlay hidden">
+  <h1 style="font-size: 14px;" class="loading">Downloading in progress</h1>
+  
+</div>
+
+<div>
+ 
+<table id="actionTable1" style="margin-top:40px;margin-left: 45px;">
+
+    <thead>
+    <th class="radio"></th>
+    <th class="header-table">Action</th>
+    <th class="header-table">Count</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="radio"></td>
+            <td><button onclick="download_by_lead()" class="download_button" id="directions_link" name="">Download</button></td>
+            <td id="download_count">{{count.0.count}}</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+</div>
+
+
+<br>
+<div id="customer_update_table">
+<table style="margin-top:40px;margin-left: 45px;">
+        <thead>
+            <th class="header-table">Document type</th>
+            <th class="header-table">Sub-type</th>
+            <th class="header-table">Identifier</th>
+            <th class="header-table">Name</th>
+            <th class="header-table">Customer-id / Name</th>
+            <th class="header-table" > Allocated Customer_id</th>
+
+        </thead>
+        <tbody id="afterdownload">
+        </tbody>
+
+</table>
+</div>
+<br>
+
+
+
+  {% else %}
+  <div style="display: inline-flex;">
+    <div>
+    <table id="uploadTable" style="margin-top:40px;margin-left: 45px;">
+    
+        <thead>
+        <th class="radio"></th>
+        <th class="header-table">Lead Id</th>
+        <th class="header-table">Deal Id</th>
+        <th class="header-table">Customer Id</th>
+        <th class="header-table">Name</th>
+        <th class="header-table">Bank</th>
+        <th class="header-table">Account Number</th>
+        </thead>
+        <tbody id="displayResult">
+    
+        </tbody>
+        
+    </table>
+    </div>
+    
+    
+    <div class="overlay hidden">
+      <h1 style="font-size: 14px;" class="loading">Downloading in progress</h1>
+      
+    </div>
+    
+    <div>
+     
+    <table id="actionTable" style="margin-top:40px;margin-left: 45px;">
+    
+        <thead>
+        <th class="radio"></th>
+        <th class="header-table">Action</th>
+        <th class="header-table">Count</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="radio"></td>
+                <td><button onclick="download_by_lead()" class="download_button" id="directions_link" name="">Download</button></td>
+                <td id="download_count">0</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    </div>
+    
+    
+    <br>
+    
+   
+    <div id="customer_update_table">
+    <table style="margin-top:30px;margin-left: 45px;">
+            <thead>
+                <th class="header-table">Document type</th>
+                <th class="header-table">Sub-type</th>
+                <th class="header-table">Identifier</th>
+                <th class="header-table">Name</th>
+                <th class="header-table">Customer-id / Name</th>
+                <th class="header-table" > Allocated Customer_id</th>
+            </thead>
+            <tbody id="afterdownload">
+            </tbody>
+    
+    </table>
+    </div>
+
+    
+
+    {% endif %}
+
+ {% if data %}
+  <table id="cutomer_selection" style="margin-left: 45px; margin-top:30px; margin-bottom:30px;">
+      <thead>
+  
+          <th class="header-table">customer_id</th>
+          <th class="header-table">Lead_id</th>
+          <th class="header-table">Deal_id</th>
+          <th class="header-table">name</th>
+       
+          <!-- <th class="header-table">bank</th>
+          <th class="header-table">account_number</th> -->
+          
+          <!-- <th class="header-table">customer dob</th>
+          <th class="header-table">Aadhar</th>
+          <th class="header-table">district</th>
+          <th class="header-table">state</th>
+          <th class="header-table">pin code </th> -->
+    
+          
+      </thead>
+      <tbody>
+          {% for item in data %}
+          <tr>
+            <td style="text-align: center; vertical-align: middle">
+                <input type="radio"  name="loan" class="loan_selector" style="margin-right: 5px;" value='{"cid":"{{item.cid}}" }' onChange="session({{item.cid}},{{item.did}})"/>{{item.cid}}
+              </td>
+            <td>{{item.lid}}</td>
+            <td>{{item.did}}</td>
+            <td>{{item.name}}</td>
+           
+           
+            <!-- <td>{{item.bank}}</td>
+            <td>{{item.account_number}}</td> -->
+            <!-- <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td> -->
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  {% endif %}
+
+   
+    
+  <!-- <div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>Powered by <a href="#">Knowlvers</a></p>
+            </div>
+        </div>
+    </div>
+</div> -->
+    
+
+
+
+
+<script src="{% static 'assets/js/jquery-3.5.1.min.js' %}"></script>
+<script type="text/javascript">
+  function func(){
+
+    location.href = "#cutomer_selection";
+  }
+
+    $(document).ready(function(){
+      $("#uploadTable").hide();
+      $("#customer_id1").hide();
+      
+      $("#actionTable").hide();
+      $("#customer_update_table").hide();
+      lead_id = $("#leadID").text()
+      
+      count = $("#download_count").text()
+      console.log(lead_id);
+      console.log(count);
+      var data = new FormData();
+      data.append("id", lead_id);
+      if (parseInt(count) > 0) {
+
+        
+        console.log('count greater than 0');
+
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+                headers:{
+                    "X-CSRFToken": csrftoken
+                },
+                url: '/upload_file/update_cust_id_if_c_gr_0/',
+                type: "POST",
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success:function(response){
+                if (response.result=="") {
+
+                    // alert('No files present. Please try after sometime!');
+                } else {
+                    // alert(response.result);
+                    $("#customer_id1").show();
+                    $("#customer_update_table").show();
+                   
+                    document.getElementById("afterdownload").innerHTML = " ";
+
+                    var tab = '';
+                    for(var i=0;i<response.afterdownload.length;i++){
+                        var data = response.afterdownload[i]
+                 
+                      
+                        tab += "<tr id="+ '"'+data.identifier+"/"+data.sub_type+ '"' +">";
+                        tab += "<td >" + data.doc_type + "</td>";
+                        tab += "<td >" + data.sub_type + "</td>";
+                        tab += "<td >" + data.identifier + "</td>";
+                        tab += "<td >" + data.name + "</td>";
+                        
+                      
+                        tab += "<td class=\"cust_detail\" id="+ '"'+data.identifier +"/"+data.doc_type+"/"+data.sub_type+ '"' +"> </td>";
+                        tab += "<td >" + data.customer_id + "</td>";
+                        tab+="</tr>";
+                    }
+
+                    
+                    $('#afterdownload').append(tab);
+                    var obj = response.cust_details;
+                    var option = '';
+                    option += "<select class=\"select_cust\"onchange=\"selected_customer("+obj[0].lead_id+", this.value, this.parentElement.id)\">";
+                    option += '<option>' +  'select customer_id' + '</option>'
+                    for (var j = 0; j < obj.length; j++) {
+                        option += '<option value=' + obj[j].customer_id + '>' + obj[j].customer_id + ', ' + obj[j].name  + '</option>';
+                    }
+                    option += "</select>"
+                    $(".cust_detail").append(option);
+                    
+                }
+              }
+      });
+    
+   
+      } 
+    });
+
+    $("#search").keyup(function()
+    {
+        if($('#searchMessage').show())
+        {
+            $("#searchMessage").css("display", "none");
+        }
+
+        var search = $("#search").val();
+        if($.trim(search.length) < 3)
+        {
+            $('.search_form form ul').hide();
+        }
+        else
+        {
+// <!--        debugger;-->
+            $.ajax({
+
+                url: "/upload_file/search/download/" + search + "/",
+                type: 'GET',
+                success:function(response){
+                    for (i = 0, len = response.result.length, text = ""; i < len; i++)
+                    {
+                        if("lead_id" in response.result[i])
+                        {
+                                var name = response.result[i]["name"]
+                                text += "<li>" + "<a onclick='selectedrow(" + response.result[i]["lead_id"] + ")'"+"id=" + response.result[i]["lead_id"] +"  value="+ response.result[i]["name"] +">" +"Lead_id:"+ response.result[i]["lead_id"]+  "     ,Name:"+ name +"</a>"+"</li>";
+                        }
+                        else
+                        {
+                            text += "<li>" + response.result[i]["sresult"] + "</li>";
+                        }
+                    }
+                    if($('.search_form form ul').is(":hidden"))
+                    {
+                        $('.search_form form ul').slideToggle();
+                    }
+                    $("#searchResult").html(text);
+                }
+            });
+        }
+    });
+    function selectedrow(lead_id){
+        var data = new FormData();
+        $("#searchResult").html(" ");
+        $("#displayResult tr").remove();
+        data.append("id", lead_id);
+// <!--        debugger;-->
+        console.log(data)
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        // debugger;
+     
+        $.ajax({
+
+                 headers:{
+                    "X-CSRFToken": csrftoken
+                },
+                url: '/upload_file/get_about_leadID/',
+                type: "POST",
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success:function(response){
+                  console.log(response);
+                  window.location.replace("");
+                    $("#uploadTable").show();
+                    var tab = '';
+                    for(var i=0;i<response.result.length;i++){
+                        tab += "<tr>";
+                        tab += "<td class='radio'>" + "</td>";
+                        tab += "<td id=leadID>" + response.result[i].lead_id + "</td>";
+                        tab += "<td >" + response.result[i].deal_id + "</td>";
+                        tab += "<td >" + response.result[i].customer_id + "</td>";
+                        tab += "<td id=bank_count>" + response.result[i].name + "</td>";
+                        tab += "<td >" + response.result[i].bank + "</td>";
+                        tab += "<td id=itr_count>" + response.result[i].account_number + "</td>";
+                        tab+="</tr>";
+                    }
+
+                    $('#displayResult').append(tab);
+                    $("#actionTable").show();
+                    document.getElementById('download_count').innerHTML = response.count[0].count;
+
+                    count = $("#download_count").text()
+      
+                    if (parseInt(count) > 0) {
+                      $("#customer_id1").show();
+                        $("#customer_update_table").show();
+                        document.getElementById("afterdownload").innerHTML = " ";
+
+                        var tab = '';
+                        for(var i=0;i<response.afterdownload.length;i++){
+                            var data = response.afterdownload[i]
+                     
+                          
+                            tab += "<tr id="+ '"'+data.identifier+"/"+data.sub_type+ '"' +">";
+                            tab += "<td >" + data.doc_type + "</td>";
+                            tab += "<td >" + data.sub_type + "</td>";
+                            tab += "<td >" + data.identifier + "</td>";
+                            tab += "<td >" + data.name + "</td>";
+                          
+                            tab += "<td class=\"cust_detail\" id="+ '"'+data.identifier +"/"+data.doc_type+"/"+data.sub_type+ '"' +"> </td>";
+                            tab+="</tr>";
+                        }
+
+
+                        $('#afterdownload').append(tab);
+                        var obj = response.cust_details;
+                        var option = '';
+                        option += "<select class=\"select_cust\"onchange=\"selected_customer("+obj[0].lead_id+", this.value, this.parentElement.id)\">";
+                        option += '<option>' +  'select customer_id' + '</option>'
+                        for (var j = 0; j < obj.length; j++) {
+                            option += '<option value=' + obj[j].customer_id + '>' + obj[j].customer_id + ', ' + obj[j].name  + '</option>';
+                        }
+                        option += "</select>"
+                        $(".cust_detail").append(option);
+                    }
+
+                    else {
+                      $("#customer_id1").hide();
+                        $("#customer_update_table").hide();
+                    }
+                },
+                error: function(error){
+                   alert(error);
+                }
+      })
+    }
+
+    function download_by_lead() {
+      var data = new FormData();
+      var lead_id = document.getElementById('leadID').innerText;
+      data.append("id", lead_id);
+// <!--      debugger;-->
+      document.getElementById("directions_link").disabled = true;
+      document.getElementById("directions_link").innerHTML = "Please wait!";
+      document.getElementById("directions_link").style.cursor = 'default';
+      // const content = document.getElementById('uploadTable');
+      //const overlay = document.querySelector('.overlay');
+      //const search_form = document.getElementById('search-form');
+      //const freeze_nav = document.getElementById('freeze-nav');
+      //const freeze_nav_1 = document.getElementById('freeze-nav-1');
+
+      // content.classList.add('freeze')
+      // search_form.classList.add('freeze')
+      // freeze_nav.classList.add('freeze')
+      // freeze_nav_1.classList.add('freeze')
+      // overlay.classList.remove('hidden')
+
+      var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+      $.ajax({
+                headers:{
+                    "X-CSRFToken": csrftoken
+                },
+                url: '/upload_file/download_files_by_lead/',
+                type: "POST",
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success:function(response){
+                if (response.result=="") {
+
+                    alert('No files present. Please try after sometime!');
+                    document.getElementByClass("cust_detail").innerHTML = " ";
+                } else {
+
+
+                    alert(response.result);
+                    $("#customer_id1").show();
+                    $("#customer_update_table").show();
+                    document.getElementById("afterdownload").innerHTML = " ";
+                }
+
+                // content.classList.remove('freeze')
+                // search_form.classList.remove('freeze')
+                // freeze_nav.classList.remove('freeze')
+                // freeze_nav_1.classList.remove('freeze')
+                // overlay.classList.add('hidden')
+
+                document.getElementById("directions_link").disabled = false;
+                document.getElementById("directions_link").innerHTML = "Download";
+                document.getElementById("directions_link").style.cursor = 'pointer';
+                document.getElementById('download_count').innerHTML = response.count[0].count;
+                var tab = '';
+                for(var i=0;i<response.afterdownload.length;i++){
+                        var data = response.afterdownload[i]
+                 
+                      
+                        tab += "<tr id="+ '"'+data.identifier+"/"+data.sub_type+ '"' +">";
+                        tab += "<td >" + data.doc_type + "</td>";
+                        tab += "<td >" + data.sub_type + "</td>";
+                        tab += "<td >" + data.identifier + "</td>";
+                        tab += "<td >" + data.name + "</td>";
+                      
+                        tab += "<td class=\"cust_detail\" id="+ '"'+data.identifier +"/"+data.doc_type+"/"+data.sub_type+ '"' +"> </td>";
+                        tab+="</tr>";
+                    }
+                    $('#afterdownload').append(tab);
+                    var obj = response.cust_details;
+                    var option = '';
+                    option += "<select class=\"select_cust\"onchange=\"selected_customer("+obj[0].lead_id+", this.value, this.parentElement.id)\">";
+                    option += '<option>' +  'select customer_id' + '</option>'
+                    for (var j = 0; j < obj.length; j++) {
+                        option += '<option value=' + obj[j].customer_id + '>' + obj[j].customer_id + ', ' + obj[j].name  + '</option>';
+                    }
+                    option += "</select>"
+                    $(".cust_detail").append(option);
+                },
+
+                error: function(error){
+                   alert(error);
+                }
+      })
+    }
+
+    function selected_customer(lid,cid,type) {
+        
+       
+        var data_type = type.split('/');
+        console.log(type);
+        var sub_type = ''
+        var acc_num = data_type[0]
+        var doc_type = data_type[1];
+        if (doc_type == "BANK"){
+            sub_type = "BANK"
+        }else{
+            sub_type = data_type[2];
+        }
+        console.log(sub_type);
+        console.log(data_type);
+        var cid = cid
+        var data = new FormData();
+        data.append("lid", lid);
+        data.append("cid",cid);
+        data.append("identifier", acc_num);
+        data.append("sub_type", sub_type);
+        console.log(data);
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+                 headers:{
+                    "X-CSRFToken": csrftoken
+                },
+                url: '/upload_file/update_after_download/',
+                type: "POST",
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success:function(response){
+                    alert(response.result);
+                    var row_id = response.identifier+"/"+response.sub_type
+                    var updated_id = (document.getElementById(row_id).children[5]).innerHTML = response.cid;
+                    //window.location.replace("");
+                },
+                
+                error: function(error){
+                   alert(error);
+                }
+                
+      })
+
+      
+    };
+    function session(customer_id,lead_id) {
+      var data = new FormData();
+      console.log(lead_id);
+      console.log(customer_id);
+      $.ajax({
+        url: "/search/customer_id1234/customer_session/" +customer_id+ "/" + lead_id + "/",
+        
+        type: "GET",
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        
+    })
+    
+    
+    
+    
+    }
+
+
+        </script>
+
+{% endblock content %}
+
+
+
+
+

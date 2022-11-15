@@ -1,0 +1,247 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Loan Details</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <form id="loan_details" method="POST">
+                {% csrf_token %}
+                <div class="col-md-12">
+                    <div class="text-right">
+                        <input type="button" class="btn btn-secondary add-new" value="Add New"/>
+                    </div>
+                    <div class="table_wrap loan">
+                        <table id="user_details">
+                            <thead>
+                                <tr>
+                                    <th width="70">Select</th>
+                                    <th width="120">Deal ID</th>
+                                    <th width="120">Customer ID</th>
+                                    <th width="120">Name</th>
+                                    <th width="120">DOB</th>
+                                    <th width="120">Aadhar</th>
+                                    <th width="120">District</th>
+                                    <th width="120">State</th>
+                                    <th width="120">Pin Code</th>
+                                    <th width="120">Bank Name</th>
+                                    <th width="120">Account #</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in data %}
+                                    <tr id={{i.los_id}}>
+                                        <td><input type="radio" checked="" name="loan" class="loan_selector" value='{"doc_list":"{{i.documents_list}}", "deal_id":"{{i.deal_id}}", "customer_id":"{{i.customer_id}}" }'/></td>
+                                        <td>{{i.deal_id}}</td>
+                                        <td>{{i.customer_id}}</td>
+                                        <td>{{i.customer_name}}</td>
+                                        <td>{{i.customer_dob}}</td>
+                                        <td>{{i.customer_aadhaar}}</td>
+                                        <td>{{i.customer_district}}</td>
+                                        <td>{{i.customer_state}}</td>
+                                        <td>{{i.customer_pin}}</td>
+                                        <td>{{i.customer_bank}}</td>
+                                        <td>{{i.customer_account}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="table-info">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="single-info">
+                                            <span>PAN</span>
+                                            <img id="chk_1" src="{% static 'assets/images/check.png' %}">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="single-info">
+                                            <span>ITR-V</span>
+                                            <img id="chk_3" src="{% static 'assets/images/check.png' %}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="single-info">
+                                            <span>Adhaar</span>
+                                            <img id="chk_2" src="{% static 'assets/images/check.png' %}">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="single-info">
+                                            <span>Form-16</span>
+                                            <img id="chk_4" src="{% static 'assets/images/check.png' %}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="single-info">
+                                            <span>Bank Statement</span>
+                                            <img id="chk_6" src="{% static 'assets/images/check.png' %}">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="single-info">
+                                            <span>Form 26AS</span>
+                                            <img id="chk_5" src="{% static 'assets/images/check.png' %}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="single-info">
+                                            <span>Income</span>
+                                            <img id="chk_7" src="{% static 'assets/images/check.png' %}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="text-right">
+                                <a class="btn btn-secondary" href="{% url 'search' %}"><<</a>
+                                <button class="btn btn-secondary" type="button" onclick='submit_details()'>>></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<form id="session_form" method="POST" style="display: none;">
+{% csrf_token %}
+    <input type='text' name='deal_id'></input>
+    <input type='text' name='customer_id'></input>
+</form>
+
+
+<script>
+    var csrf_token = '{{csrf_token}}';
+    function getFormData($form){
+        var unindexed_array = $form.serializeArray();
+        var indexed_array = {};
+    
+        $.map(unindexed_array, function(n, i){
+            indexed_array[n['name']] = n['value'];
+        });
+    
+        return indexed_array;
+    }
+
+    function submit_details(){
+        var user_details_table = document.getElementById('user_details');
+
+        var cl = user_details_table.rows[0].cells.length;
+        var rw = user_details_table.rows.length;
+        var isChecked = false;
+        var formData = new FormData();
+
+        console.log($("#loan_details input[name = customer_id]").val());
+        
+        var $form = $("#loan_details");
+        var data = getFormData($form);
+        console.log(data)
+
+        if(deal_id==""){
+            $.ajax({
+                url: '/add_user_details/',
+                data: data,
+                type: 'POST',
+                success: function(response){
+                    //location.reload();
+                    //{% url 'upload' 'pan' %};
+                    document.location = "{% url 'upload' 'pan' %}";
+                },
+            });
+        }
+        else{
+            //console.log(document.querySelector('[name=csrfmiddlewaretoken]').value)
+            /*$('input[name="deal_id"]').val(deal_id);
+            $('input[name="customer_id"]').val(customer_id);
+            var $session_form = $("#session_form");
+            var session_data = getFormData($session_form);
+            console.log("session data: ", session_data);
+            $.ajax({
+                url: '/set_session/',
+                data: session_data,
+                type: 'POST',
+                success: function(response){
+                    //location.reload();
+                    //{% url 'upload' 'pan' %};
+                    document.location = "{% url 'upload' 'pan' %}";
+                },
+            });*/
+            document.location = "{% url 'upload' 'pan' %}";
+        }
+    }
+
+    window.onload =function(){
+        console.log('loaded');
+        $("[id^=chk_]").css("display","none");
+        $(".loan_selector").each(function(){
+            if($(this).is(":checked")){
+                checkingDocs(this);
+            }
+        })
+        $(document).on("change",".loan_selector",function(){
+            checkingDocs(this);
+        });
+
+    }
+
+    var deal_id = "";
+    var customer_id = "";
+
+    function checkingDocs(el){
+        if(el.value==""){
+            deal_id = "";
+            customer_id = "";
+            return;
+        }
+        var row_info = JSON.parse(el.value);
+        var docs = row_info["doc_list"].split(",");
+        deal_id = row_info["deal_id"];
+        customer_id = row_info["customer_id"];
+        console.log(docs)
+        console.log(deal_id)
+        console.log(customer_id)
+
+        $("[id^=chk_]").css("display","none");
+        for(i in docs){
+            $("#chk_"+docs[i]).css("display","block");
+        }
+        $('input[name="deal_id"]').val(deal_id);
+        $('input[name="customer_id"]').val(customer_id);
+        var $session_form = $("#session_form");
+        var session_data = getFormData($session_form);
+        console.log("session data: ", session_data);
+        $.ajax({
+            url: '/set_session/',
+            data: session_data,
+            type: 'POST',
+            success: function(response){
+            },
+        });
+    }
+
+</script>
+
+
+{% endblock content %}

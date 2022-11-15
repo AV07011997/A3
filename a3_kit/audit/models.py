@@ -1,0 +1,92 @@
+from django.db import models
+from django.contrib.auth.models import User
+
+
+class Table1(models.Model):
+    assessment_year = models.CharField(max_length=255, blank=True)
+    gross_income = models.CharField(max_length=255, blank=True)
+    average_monthly_gross_income = models.CharField(max_length=255, blank=True)
+    taxable_income = models.CharField(max_length=255, blank=True)
+    hra = models.CharField(max_length=255, blank=True)
+    rent_income = models.CharField(max_length=255, blank=True)
+    tax_default_found = models.CharField(max_length=255, blank=True)
+    ccc80 = models.CharField(max_length=255, blank=True)
+    c80 = models.CharField(max_length=255, blank=True)
+    d80 = models.CharField(max_length=255, blank=True)
+    other_income_under_sec_192_2b = models.CharField(max_length=255, blank=True)
+    other_deductions = models.CharField(max_length=255, blank=True)
+    total_deductions = models.CharField(max_length=255, blank=True)
+    deal_id = models.CharField(max_length=255, blank=True)
+    customer_id = models.CharField(max_length=255, blank=True)
+    created_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table1_created_by")
+    creation_time = models.DateTimeField(auto_now_add=True)
+    last_modified_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table1_last_modified_by")
+    last_modification_time = models.DateTimeField(auto_now=True)
+
+
+class Table2(models.Model):
+    address_of_latest_employer_for_reference = models.CharField(max_length=255, blank=True)
+    deal_id = models.CharField(max_length=255, blank=True)
+    customer_id = models.CharField(max_length=255, blank=True)
+    created_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table2_created_by")
+    creation_time = models.DateTimeField(auto_now_add=True)
+    last_modified_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table2_last_modified_by")
+    last_modification_time = models.DateTimeField(auto_now=True)
+
+
+class Table3(models.Model):
+    assessment_year = models.CharField(max_length=255, blank=True)
+    measures = models.CharField(max_length=255, blank=True)
+    january = models.CharField(max_length=255, blank=True)
+    february = models.CharField(max_length=255, blank=True)
+    march = models.CharField(max_length=255, blank=True)
+    april = models.CharField(max_length=255, blank=True)
+    may = models.CharField(max_length=255, blank=True)
+    june = models.CharField(max_length=255, blank=True)
+    july = models.CharField(max_length=255, blank=True)
+    august = models.CharField(max_length=255, blank=True)
+    september = models.CharField(max_length=255, blank=True)
+    october = models.CharField(max_length=255, blank=True)
+    november = models.CharField(max_length=255, blank=True)
+    december = models.CharField(max_length=255, blank=True)
+    source = models.CharField(max_length=255, blank=True)
+    deal_id = models.CharField(max_length=255, blank=True)
+    customer_id = models.CharField(max_length=255, blank=True)
+    created_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table3_created_by")
+    creation_time = models.DateTimeField(auto_now_add=True)
+    last_modified_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table3_last_modified_by")
+    last_modification_time = models.DateTimeField(auto_now=True)
+
+
+class Table4(models.Model):
+    section = models.CharField(max_length=255, blank=True)
+    k194 = models.CharField(max_length=255, blank=True)
+    betting = models.CharField(max_length=255, blank=True)
+    collection_at_source = models.CharField(max_length=255, blank=True)
+    income_from_abroad = models.CharField(max_length=255, blank=True)
+    income_from_commission = models.CharField(max_length=255, blank=True)
+    income_from_contracting = models.CharField(max_length=255, blank=True)
+    income_from_tech_prof_services = models.CharField(max_length=255, blank=True)
+    orignal_investment_principal_withdrawal = models.CharField(max_length=255, blank=True)
+    rent = models.CharField(max_length=255, blank=True)
+    salary = models.CharField(max_length=255, blank=True)
+    sale_of_property = models.CharField(max_length=255, blank=True)
+    deal_id = models.CharField(max_length=255, blank=True)
+    customer_id = models.CharField(max_length=255, blank=True)
+    created_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table4_created_by")
+    creation_time = models.DateTimeField(auto_now_add=True)
+    last_modified_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table4_last_modified_by")
+    last_modification_time = models.DateTimeField(auto_now=True)
+
+
+class Table5(models.Model):
+    assessment_year = models.CharField(max_length=255, blank=True)
+    name_of_deductor = models.CharField(max_length=255, blank=True)
+    number_of_transactions = models.CharField(max_length=255, blank=True)
+    total_amount = models.CharField(max_length=255, blank=True)
+    deal_id = models.CharField(max_length=255, blank=True)
+    customer_id = models.CharField(max_length=255, blank=True)
+    created_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table5_created_by")
+    creation_time = models.DateTimeField(auto_now_add=True)
+    last_modified_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL, related_name="table5_last_modified_by")
+    last_modification_time = models.DateTimeField(auto_now=True)

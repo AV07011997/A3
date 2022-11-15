@@ -1,0 +1,456 @@
+{% extends "header_footer.html" %} {% block content %}
+
+{% load static %}
+
+<style>
+  table {
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  tr,
+  th,
+  td {
+    border: solid black 1px;
+    height: 25px;
+    padding: 5px;
+    color: black;
+  }
+
+  .header-table {
+    background-color: rgb(40, 40, 40);
+    color: white;
+    text-align: center;
+  }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+<!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css"
+  rel="stylesheet"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<!-- <form class="col-md-4" style="margin:50px;" method="POST"> -->
+{% csrf_token %}
+<div style="display: inline-flex; margin-top: 50px; margin-left: 50px">
+  <label style="margin-right: 100px; width: 200px"
+    >Lead id<select
+      class="form-control select2"
+      id="lead12"
+      name="lead_id"
+      onchange="func(this.value)"
+    >
+      <option id="lead_select12">
+        {% if request.session.lead_session %}{{ request.session.lead_session }}
+        {% else %}}Select{% endif %}
+      </option>
+      {% for item in lead_id %} {% if request.session.lead_session != item %}
+
+      <option>{{item}}</option>
+      {% endif %} {%endfor%}
+    </select></label
+  >
+
+  <label style="margin-right: 100px; width: 200px"
+    >Customer_id<select
+      id="displayResult"
+      class="form-control select2"
+      name="cust_id"
+    >
+      <option id="cust_id_session">
+        {% if request.session.customer_id %} {{ request.session.customer_id }}
+        {%endif %}
+      </option>
+    </select></label
+  >
+
+  <label style="margin-right: 100px; width: 200px"
+    >Customer name<select
+      id="displayResult2"
+      class="form-control select2"
+      name="account_name"
+    ></select
+  ></label>
+
+  <label style="margin-right: 100px; width: 200px"
+    >Account number<select
+      id="displayResult1"
+      class="form-control select2"
+      name="account_number"
+    ></select
+  ></label>
+</div>
+
+<div
+  style="
+    display: inline-flex;
+    margin-left: 50px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  "
+>
+  <div style="display: inline-block; margin-right: 0px">
+    <label style="margin-right: 100px; width: 200px">Bank</label><br />
+    <select
+      id="displayResult3"
+      class="form-control select2"
+      name="Bank"
+      style="width: 200px"
+    ></select>
+  </div>
+
+  <div style="display: inline-block; margin-right: 100px">
+    <label style="margin-right: 30px; margin-bottom: 10px">From</label><br />
+    <input id="from1" type="date" name="from" />
+  </div>
+
+  <div style="display: inline-block">
+    <label style="margin-right: 30px; margin-bottom: 10px">To</label><br />
+    <input id="to" type="date" name="to" />
+  </div>
+
+  <div style="padding-left: 50px">
+    <label style="margin-right: 30px; margin-bottom: 10px">Type</label><br />
+    <select
+      id="displayResult4"
+      class="form-control select2"
+      name="Type"
+      style="width: 200px"
+      multiple
+    ></select>
+  </div>
+</div>
+<div style="margin-right: 100px; display: inline-flex">
+  <table style="margin-left: 50px">
+    <thead>
+      <th class="header-table">Ranging</th>
+      <th class="header-table">From</th>
+      <th class="header-table">To</th>
+      <th class="header-table">Select</th>
+    </thead>
+    <tr>
+      <td class="header-table">Balance</td>
+      <td><input type="number" name="balance_from" id="balance_from" /></td>
+      <td><input type="number" name="balance_to" id="balance_to" /></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="header-table">Credit</td>
+      <td><input type="number" name="credit_from" id="credit_from" /></td>
+      <td><input type="number" name="credit_to" id="credit_to" /></td>
+      <td>
+        <select name="select" id="select2">
+          <option value="select2">select</option>
+          <option value="and">And</option>
+          <option value="or">Or</option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td class="header-table">Debit</td>
+      <td><input type="number" name="debit_from" id="debit_from" /></td>
+      <td><input type="number" name="debit_to" id="debit_to" /></td>
+      <td>
+        <select name="select" id="select3">
+          <option value="select3">select</option>
+          <option value="and">And</option>
+          <option value="or">Or</option>
+        </select>
+      </td>
+    </tr>
+  </table>
+
+  <div>
+    <button
+      style="
+        margin-left: 200px;
+        padding: 5px 5px;
+        font-size: 20px;
+        margin-top: 120px;
+        border-radius: 10%;
+      "
+      onclick="func1()"
+    >
+      <b>submit</b>
+    </button>
+  </div>
+</div>
+<!-- </form> -->
+
+<br />
+<b style="margin-left: 500px" id="message"
+  >no data is available for selected date</b
+>
+<br />
+<br />
+<table id="uploadTable1" style="margin-left: 50px">
+  <thead>
+    <th class="header-table">Date</th>
+    <th class="header-table">Description</th>
+    <th class="header-table">Cheque number</th>
+    <th class="header-table">Dr</th>
+    <th class="header-table">Cr</th>
+    <th class="header-table">Balance</th>
+  </thead>
+
+  <tbody id="statement"></tbody>
+</table>
+
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>Powered by <a href="#">Dhurin</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#uploadTable1").hide();
+    $("#message").hide();
+    console.log("XYZ");
+    var lead = document.getElementById("lead_select12").innerText;
+    console.log(lead);
+    func(lead);
+  });
+  function func1() {
+    $(".disc").remove();
+    $("#message").hide();
+
+    var selected = $("#displayResult option:selected");
+    var selected1 = $("#displayResult1 option:selected");
+    var lead_id = $("#lead12 option:selected");
+    var balance_from = document.getElementById("balance_from").value;
+    console.log(balance_from);
+    var balance_to = document.getElementById("balance_to").value;
+    console.log(balance_to);
+    var select1 = $("#select1 option:selected");
+    console.log(select1);
+    var credit_from = document.getElementById("credit_from").value;
+    console.log(credit_from);
+    var credit_to = document.getElementById("credit_to").value;
+    console.log(credit_to);
+    var select2 = $("#select2 option:selected");
+    console.log(select2);
+    var debit_from = document.getElementById("debit_from").value;
+    console.log(debit_from);
+    var debit_to = document.getElementById("debit_to").value;
+    console.log(debit_to);
+    var select3 = $("#select3 option:selected");
+    console.log(select3);
+    var select4 = $("#displayResult4 option:selected");
+    console.log(select4);
+    var from1 = document.getElementById("from1").value;
+    console.log(from1);
+    var to = document.getElementById("to").value;
+    console.log(to);
+    console.log(selected1);
+    selected = selected[0].innerText;
+    selected1 = selected1[0].innerText;
+
+    lead_id = lead_id[0].innerText;
+
+    select2 = select2[0].innerText;
+
+    select3 = select3[0].innerText;
+
+    select5 = [];
+    for (let i = 0; i < select4.length; i++) {
+      select5[i] = select4[i].innerText;
+    }
+
+    var data = new FormData();
+    data.append("cust_id", selected);
+    data.append("account_number", selected1);
+    data.append("balance_from", balance_from);
+    data.append("balance_to", balance_to);
+
+    data.append("credit_from", credit_from);
+    data.append("credit_to", credit_to);
+    data.append("select2", select2);
+    data.append("debit_from", debit_from);
+    data.append("debit_to", debit_to);
+    data.append("select3", select3);
+
+    data.append("select4", select5);
+
+    data.append("lead_id", lead_id);
+
+    data.append("from1", from1);
+    data.append("to", to);
+
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    // debugger;
+
+    $.ajax({
+      headers: {
+        "X-CSRFToken": csrftoken,
+      },
+      url: "lead/statement1",
+      type: "POST",
+      data: data,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        $("#uploadTable1").show();
+        console.log(response.message);
+        var tab = "";
+        for (var i = 0; i < response.result.length; i++) {
+          tab += "<tr class='disc'>";
+
+          tab += "<td >" + response.result[i].txn_date + "</td>";
+          tab += "<td >" + response.result[i].description + "</td>";
+          tab += "<td >" + response.result[i].cheque_number + "</td>";
+          tab += "<td >" + response.result[i].debit + "</td>";
+          tab += "<td >" + response.result[i].credit + "</td>";
+          tab += "<td >" + response.result[i].balance + "</td>";
+          tab += "</tr>";
+        }
+
+        $("#statement").append(tab);
+        if (response.message.length > 1) {
+          $("#message").show();
+          $("#uploadTable1").hide();
+        }
+      },
+      error: function (error) {
+        alert(error);
+      },
+    });
+  }
+
+  $(".select2").select2();
+
+  function func(lead_id) {
+    console.log(lead_id);
+    var data = new FormData();
+    $(".leadID").remove();
+    $(".disc").remove();
+    $(".leadID1").remove();
+    $(".leadID2").remove();
+    $(".leadID3").remove();
+    $(".leadID4").remove();
+
+    data.append("id", lead_id);
+
+    // <!--        debugger;-->
+
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    // debugger;
+
+    $.ajax({
+      headers: {
+        "X-CSRFToken": csrftoken,
+      },
+      url: "lead/",
+      type: "POST",
+      data: data,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        var tab = "";
+
+        var tab1 = "";
+        tab1 += "<option class=leadID>";
+
+        tab1 += "Select";
+
+        tab1 += "</option>";
+        for (var i = 0; i < response.customer_id.length; i++) {
+          tab += "<option class=leadID>";
+
+          tab += response.customer_id[i];
+
+          tab += "</option>";
+        }
+
+        $("#displayResult").append(tab);
+
+        var tab1 = "";
+        tab1 += "<option class=leadID1>";
+
+        tab1 += "Select";
+
+        tab1 += "</option>";
+        for (var i = 0; i < response.result.length; i++) {
+          tab1 += "<option class=leadID1>";
+
+          tab1 += response.result[i].account_number;
+
+          tab1 += "</option>";
+        }
+
+        $("#displayResult1").append(tab1);
+
+        var tab2 = "";
+        if (response.account_name.length > 1) {
+          tab2 += "<option class=leadID2>";
+
+          tab2 += "Select";
+
+          tab2 += "</option>";
+        }
+        for (var i = 0; i < response.account_name.length; i++) {
+          tab2 += "<option class=leadID2>";
+
+          tab2 += response.account_name[i];
+
+          tab2 += "</option>";
+        }
+
+        $("#displayResult2").append(tab2);
+
+        var tab3 = "";
+        if (response.bank_name.length > 1) {
+          tab3 += "<option class=leadID3>";
+
+          tab3 += "Select";
+
+          tab3 += "</option>";
+        }
+        for (var i = 0; i < response.bank_name.length; i++) {
+          tab3 += "<option class=leadID3>";
+
+          tab3 += response.bank_name[i];
+
+          tab3 += "</option>";
+        }
+
+        $("#displayResult3").append(tab3);
+
+        var tab4 = "";
+        if (response.transaction_type.length > 1) {
+          tab4 += "<option class=leadID4>";
+
+          tab4 += "Select";
+
+          tab4 += "</option>";
+        }
+        for (var i = 0; i < response.transaction_type.length; i++) {
+          tab4 += "<option class=leadID4>";
+
+          tab4 += response.transaction_type[i];
+
+          tab4 += "</option>";
+        }
+
+        $("#displayResult4").append(tab4);
+      },
+      error: function (error) {
+        alert(error);
+      },
+    });
+  }
+</script>
+{% endblock %}
+
+

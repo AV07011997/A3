@@ -1,0 +1,85 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+{% csrf_token %}
+
+
+    <div class="content" style="margin-top: 0px;">
+        <div class="container">
+		<div class="col-md-10 text-center" style="padding-right: 120px;">
+			<h6><a class="digitization-unfocus" href="{% url 'upload' 'pan' %}">&emsp;PAN&emsp;</a><a class="digitization-unfocus" href="{% url 'upload' 'aadhaar' %}">&emsp;Aadhar&emsp;</a><a class="digitization-unfocus" href="{% url 'upload_form' %}">&emsp;ITR&emsp;</a><a class="digitization-unfocus" href="{% url 'upload_bank_statement' %}">&emsp;Bank Statements&emsp;</a><a class="digitization-focus" href="{% url 'upload_salary' %}">&emsp;Income&emsp;</a><a class="digitization-unfocus" href="{% url 'bureau' %}">&emsp;Bureau&emsp;</a></h6>
+		</div>
+		<br/>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Enter Income Details {% if request.session.deal_id %}(Deal ID: {{request.session.deal_id}}, {{request.session.customer_name.capitalize}}){% endif %}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2" style="padding-right: 0px;">
+                    <div class="table_wrap loan head-table salary">
+                        <h5>&nbsp;</h5>
+                        <table style="border: none;">
+                            <thead style="border: none;">
+                                <tr style="border: none;">
+                                    <th height="38" style="border: none;">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody style="border: none;">
+                                <tr style="border: none;">
+                                    <th height="56" style="border: none !important;">Net Income</th>
+                                </tr>
+                                <tr>
+                                    <th height="56" style="border: none !important;">Gross Income</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-10" style="padding-left: 0px; margin-left: -40px;">
+                    <div class="table_wrap loan salary">
+                        <h5>Applicant’s Income</h5>
+                        <table id="salary">
+                            <thead>
+                                <tr>
+                                    <th width="140">{{previous_months_list.6}}</th>
+                                    <th width="135">{{previous_months_list.5}}</th>
+                                    <th width="135">{{previous_months_list.4}}</th>
+                                    <th width="135">{{previous_months_list.3}}</th>
+                                    <th width="135">{{previous_months_list.2}}</th>
+                                    <th width="135">{{previous_months_list.1}}</th>
+                                    <th width="135">{{previous_months_list.0}}</th>
+                                    <th width="135">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <a class="btn btn-secondary" href="{% url 'upload_bank_statement' %}"><<</a>
+                <a class="btn btn-secondary" href="{% url 'bureau' %}">>></a>
+                <!-- <button class="btn btn-secondary" type="submit" href="{#% url 'bureau' %#}">Next</button> -->
+            </div>
+            <div class="modal fade" id="triggerPopup" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h5 id="popupMessage"></h5>
+                        </div>
+                        <div class="modal-footer justify-content-end">
+                            <a type="button" id="messageAcknowledge" class="btn btn-secondary" data-dismiss="modal">Ok</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

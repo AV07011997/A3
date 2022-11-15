@@ -1,0 +1,42 @@
+{% extends "summary.html" %} {% block content %} {% load static %}
+
+<head>
+  <title>KPI | BANK</title>
+</head>
+
+<div class="content" style="margin-top: 0px">
+  <div class="container" style="margin-top: 0px">
+    <div class="text-right" style="padding-right: 183px">
+      <h6>
+        <a class="digitization-unfocus" href="{% url 'bureauAnalyze' %}"
+          >&emsp;Bureau&emsp;</a
+        ><a class="digitization-focus" href="{% url 'bankAnalyze' %}"
+          >&emsp;Bank&emsp;</a
+        >
+      </h6>
+    </div>
+    <br />
+  </div>
+</div>
+<div class="content" style="margin-top: 0px">
+  <div class="container" style="margin-top: -80px">
+    <div class="text-right" style="padding-right: 50px">
+      <h6>
+        <a class="digitization-focus" href="{% url 'bank_customer_kpi' %}"
+          >&emsp;Summary&emsp;</a
+        ><a
+          class="digitization-focus"
+          href="{% url 'bank_customer_month_kpi' %}"
+          >&emsp;Month-wise&emsp;</a
+        ><a class="digitization-focus" href="{% url 'bank_entity_kpi' %}"
+          >&emsp;Counterparties&emsp;</a
+        ><a class="digitization-focus" href="{% url 'statement' %}"
+          >&emsp;Statement&emsp;</a
+        >
+      </h6>
+    </div>
+    <br />
+  </div>
+</div>
+
+{% endblock content %}

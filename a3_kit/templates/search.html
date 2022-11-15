@@ -1,0 +1,509 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+
+
+<script src="//code.jquery.com/jquery.min.js"></script>
+
+<script src="{% static 'assets/js/jquery.rowspanizer.js' %}"></script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+
+          integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+
+          crossorigin="anonymous">
+
+  </script>
+
+  <script src="{% static 'assets/js/jquery.table.marge.js' %}"></script>
+
+<style>
+  tr, th, td {
+
+    border: 1px solid black;
+    text-align: center;
+    padding: 5px;
+    color: black;
+  }
+
+.table thead tr th {
+  box-shadow: 0px 0px 0px 1px black inset;
+  margin:0px;
+  border-collapse: collapse;
+}
+
+  .search_form {
+
+    margin-top: 10px;
+  }
+
+  .header-table {
+
+    background-color: rgb(40,40,40); 
+    color: white;
+    text-align: center;
+
+  }
+  .header-table-1 {
+    background-color: white;
+    color: red;
+    text-align: left;
+
+  }
+  .num {
+
+      text-align: right;
+      padding: 5px;
+      margin: 0px;
+
+  }
+
+  .sticky {
+
+  position: sticky;
+  top: 0px;
+}
+
+
+  * {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 80%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+  margin-left: 61px;
+  margin-top:30px;
+}
+
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+/*#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+*/
+
+
+
+</style>
+
+    <!-- <div class="search_form">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <form id="searchForm" method="POST">
+              {% csrf_token %}
+              <input type="text" name="search" id="myInput" class="form-control" placeholder="Enter lead id or name" onkeyup="myFunction()">
+              <button type="submit" class="btn"><i class="fa fa-search" aria-hidden="true"></i>&nbsp;Search</button>
+              <ul id="searchResult">
+              </ul>
+              {% for message in messages %}
+                  <p id="searchMessage" style="margin-left: 40%; padding-top: 50px; display: block;"><strong>{{ message }}</strong></p>
+              {% endfor %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for lead id and name" title="Type in a lead id" style="margin-left=61px">
+<button type="button" class="btn btn-secondary" onclick="location.reload();">Refresh</button>
+
+<table id="myTable" style="margin: 61px; width:90%"  class="table">
+  <thead class="sticky">
+    <tr>
+      
+      
+      <th class="header-table" colspan="5">LMS Updates</th>
+      
+      <th class="header-table" colspan="3">Bank statements Updates</th>
+<!--      <th class="header-table" colspan="3">ITR forms</th>-->
+      <th class="header-table" colspan="2">Bureau Updates</th>
+      
+    </tr>
+    <tr>
+      <th class="header-table">Lead id selection</th>
+      
+      <th class="header-table">Deal id</th>
+      <th class="header-table">Customer id</th>
+      <th class="header-table">Customer name</th>
+      <th class="header-table">Last modification date</th>
+      <th class="header-table">Uploaded</th>
+      <th class="header-table">Downloaded</th>
+      <th class="header-table">Ready to download</th>
+<!--      <th class="header-table">Uploaded</th>-->
+<!--      <th class="header-table">Downloaded</th>-->
+<!--      <th class="header-table">Ready to download</th>-->
+      <th class="header-table">Synced </th>
+      <th class="header-table">Sync-Date</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for item in customer_detail%}
+  <tr>
+    <td style="text-align: center; vertical-align: middle">
+      <input type="radio" name="loan" class="loan_selector" style="margin-right: 5px;" value='{"lead_id":"{{item.lead_id}}", "customer_id":"{{item.customer_id}}" }' onChange="session({{item.lead_id}})"/>{{item.lead_id}}
+    </td>
+    
+
+    <td style="text-align: center; vertical-align: middle">
+      732{{item.deal_id}}
+    </td>
+
+    <td>
+      {{item.customer_id}}
+    </td>
+
+    <td>
+      {{item.name}}
+    </td>
+
+    <td>
+      {{item.creation_time}}
+    </td>
+
+    <td>
+      {{item.bank_uploaded}}
+    </td>
+
+    <td>
+      {{item.bank_download}}
+    </td>
+
+    <td>
+      {{item.bank_download_ready}}
+    </td>
+
+<!--    <td>-->
+<!--      {{item.itr_uploaded}}-->
+<!--    </td>-->
+
+<!--    <td>-->
+<!--      {{item.itr_download}}-->
+<!--    </td>-->
+
+<!--    <td>-->
+<!--      {{item.itr_download_ready}}-->
+<!--    </td>-->
+
+    <td style= "color: red">
+      {% if item.bureau_updated == 'Yes' %}
+<!--        <input type="checkbox"checked="checked">-->
+      <img src="/static/assets/images/greencheked.png" style="height: 20px;">
+      {% else %}
+        <img src="/static/assets/images/redcrosschecked.png" style="height: 20px;">
+      {% endif %}
+    </td>
+    <td>
+      {{item.creation_time}}
+    </td>
+
+
+    
+  </tr>
+  {%endfor%}
+</tbody>
+</table>
+
+<!-- 
+
+<table>
+        <thead rowspan="2">
+         
+           <th width="30em"></th>
+           <th class="header-table" colspan="5"></th>
+           
+            <th  class="header-table" colspan="3">Bank Statement</th>
+            <th  class="header-table" colspan="3"> Itr Document</th>
+           
+
+
+        </thead>
+        <thead>
+         
+            <th width="10em"></th>
+            <th  class="header-table">Lead id</th>
+            <th class="header-table">Deal id</th>
+           
+            <th class="header-table">Customer id</th> 
+            <th  class="header-table">Customer name</th>
+            <th class="header-table"> Last modification </th>
+
+            <th  class="header-table"> upload </th>
+            <th  class="header-table"> download </th>
+            <th class="header-table"> ready to download </th>
+            <th  class="header-table"> upload </th>
+            <th  class="header-table"> download </th>
+            <th class="header-table"> ready to download </th>
+            <th class="header-table"> bureau data updated </th>
+
+           
+
+
+        </thead>
+        {% for item in  bank_lead %}
+         <tr>
+             <td></td>
+             <td>{{item.lead_id}}</td>
+             <td></td>
+             <td></td>
+             <td></td>
+             <td></td>
+             
+             <td>{{item.count}}</td>
+            
+            <td></td>
+          
+            
+            <td></td>
+           
+            {% for item1 in itr_lead %}
+            {%if item.lead_id == item1.lead_id%}
+            <td>{{item1.count}}</td>
+            {% endif %}
+            {% endfor %}
+            {<td></td>
+
+            <td></td>
+            <td></td>
+         </tr>
+            
+            {% for item2 in cutomer_detail1 %}
+            {% if item2.lead_id == item.lead_id %}
+            <tr>
+
+                <td></td>
+                <td>{{item.lead_id}}</td>
+                <td>{{item2.deal_id}}</td>
+                <td>{{item2.customer_id}}</td>
+                <td>{{item2.name}}</td>
+                   
+               
+              
+              
+           
+           
+            
+            <td></td>
+            <td>{{item.count}}</td>
+            {% for item4 in bank_download %}
+            {%if item.lead_id == item4.lead_id%}
+            <td>{{item4.download}}</td>
+            {% endif %}
+            {% endfor %}
+            
+            <td></td>
+           
+            {% for item1 in itr_lead %}
+            {%if item.lead_id == item1.lead_id%}
+            <td>{{item1.count}}</td>
+            {% endif %}
+            {% endfor %}
+            {% for item1 in itr_download %}
+            {%if item.lead_id == item1.lead_id%}
+            <td>{{item1.download}}</td>
+            {% endif %}
+            {% endfor %}
+
+            <td></td>
+            <td></td>
+        </tr>  
+        
+            {% endif %}
+            
+            
+            {% endfor %}
+
+        
+            
+        
+            
+       
+        {% endfor %}
+        
+   
+        
+    </table>
+ -->
+
+<!-- script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<table id="test-table" class="bordered responsive-table">
+  <thead>
+    <tr>
+      <th>Build Name</th>
+      <th>Base Table</th>
+      <th>Query List</th>
+      <th>Query List</th>
+    </tr>
+  </thead>
+</table> -->
+
+<!-- 
+<div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p>Powered by <a href="#"><img src="{% static 'assets/images/a3.png' %}" style="height: 15px; width:  15px;" /></a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+ -->
+<script>
+
+
+
+  // var data = "'"+document.getElementById('result').textContent.replaceAll("'",'"')+"'" ;
+
+  
+
+  // data = data.replaceAll("'",'"');
+  // data = data.replaceAll('"',"'");
+  // data = "'" + data + "'" 
+  // console.log(data)
+
+
+  // concole.log(data)
+  // var data = '{"result":{"12334":[{"123456":["piyush goyal","goyal", "chandra"]}],"666":[{"6666":["xxx","yyy", "zzz"]},{"345566":["xxx","yyy"]},{"3333":["xxx","yyy"]}], "666343":[{"33334":[]},{"44333":["xxx","yyy"]},{"66423426":[]}]}}';
+
+
+//   var data = '{"result": {"765551": [{"654747": ["Amar Patel", "asha patel", "Amar Patel", "Amar Patel"]}], "765552": [{"654749": ["rakesh sinha", "manish sinha", "kalyan sinha", "rakesh sinha"]}],"765553": [{"654753": ["pradeep"]}]}}'
+
+
+// function generateTable(data) { //data is the parsed JSON Object from an ajax request
+//   data = JSON.parse(data);
+//   $("#test-table tbody").empty(); //Empty the table first
+//   Object.entries(data.result).forEach(([key, elem]) => {
+//     var baseHtml = "";
+//     var childrenHtml = "";
+//     var maxRowSpan = 0;
+//     elem.forEach((inner_elem, index) => {
+//       var [innerElemKey, arr] = Object.entries(inner_elem)[0];
+//       var elemRowSpan = Math.max(arr.length, 1);
+//       maxRowSpan += elemRowSpan;
+
+//       if (index !== 0) {
+//         childrenHtml += "<tr>";
+//       } 
+//       childrenHtml += ('<td rowspan="' + elemRowSpan + '">' + innerElemKey + '</td>');
+//       console.log('heheh')
+//       arr.forEach((child, indx) => {
+//         if (indx !== 0) {
+//           childrenHtml += "</tr>";
+//         }
+//         childrenHtml += ('<td rowspan="1">' + child + '</td>' + '</tr>');
+//       });
+//     });
+//     baseHtml += ('<tr><td rowspan="' + Math.max(maxRowSpan, 1) + '">' + key + '</td>');
+//     $("#test-table").append(baseHtml + childrenHtml);
+//   });
+// }
+
+
+
+// $(function() {
+//   generateTable(data);
+//   console.log('hahah')
+// });
+
+// $("table").rowspanizer();
+
+// $("table").rowspanizer({
+
+//     vertical_align: 'middle'
+
+//   });
+
+// $('table').rowspanizer({
+
+//     columns: [0,1,2,3]
+
+//   });
+
+$('#myTable').margetable({
+
+    type: 2,
+
+    colindex: [0,1,4,5,6,7] // column 1, 2
+
+  });
+
+
+
+function myFunction() {
+  debugger;
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  console.log(filter)
+  filter1=filter-filter
+  
+  
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  if( filter1 ==0){
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+if(isNaN(filter1)){
+  debugger;
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+}
+
+
+
+
+
+function session(lead_id) {
+  var data = new FormData();
+  console.log(lead_id);
+  $.ajax({
+    url: "searchsession/" + lead_id + "/",
+    
+    type: "GET",
+    data: data,
+    cache: false,
+    contentType: false,
+    processData: false,
+    
+})
+
+}
+
+</script>
+
+
+{% endblock content %}

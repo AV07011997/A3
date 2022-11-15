@@ -1,0 +1,2518 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+<head>
+	<title>KPI | BUREAU | MONTH-WISE</title>
+</head>
+
+
+
+<style>
+
+	tr, th{
+
+		border: 1px solid black;
+		padding: 5px;
+		color: black;
+		font-size: 10px;
+	}
+
+	table {
+
+		border-collapse: collapse;
+
+	}
+
+	td {
+
+		border: 1px solid black;
+		padding: 5px;
+		color: black;
+		font-size: 10px;
+		margin: 0px;
+		/*padding: 0px;*/
+
+	}
+
+
+
+.scroll {
+
+	/*padding-top: 2px;*/
+	/*padding-bottom: 0px;*/
+
+	padding: 0px;
+	
+}
+
+
+   .header-table {
+
+    background-color: rgb(40,40,40); 
+    color: white;
+    text-align: center;
+
+	}
+
+.num-spl {
+
+	text-align: center;
+}
+
+.num {
+
+	text-align: right;
+}
+
+
+.alternate-color {
+
+	  background-color: rgb(233, 236, 239);
+}
+
+footer {
+
+	margin-left: 10px;
+	color: black;
+	margin-top: 10px;
+
+}
+
+p>span {
+
+	color: red;
+	/*font-style: bold;*/
+	font-weight: bold;
+}
+
+dfn, p, h6 {
+
+	font-size: 10px;
+}
+
+tbody:nth-child(odd) {background-color: rgb(233, 236, 239);}
+
+.sticky {
+
+  position: sticky;
+  top: 0px;
+  left:0px;
+}
+
+
+
+</style>
+
+<div class="content" style="margin-left: 10px;padding: 0px; margin-top: 20px;padding-top: 0px;">
+        <div class="container" style="margin-left: 10px;padding: 0px; margin-top: 0px;padding-top: 0px;">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h4>Bureau month-wise {% if request.session.deal_id %}(Deal ID: {{request.session.deal_id}}, Customer ID: {{request.session.customer_id.capitalize}}, Customer Name: {{request.session.name}}){% endif %}</h4>
+                </div>
+            </div> 
+        </div>
+               
+    </div>
+
+
+{% if years|length != 0 %}
+
+<div style="display:flex; width: 100vw;
+    overflow: scroll;"  >
+<table style="table-layout: fixed;
+    margin-left: 10px;
+    position: sticky;
+    top: 50px;
+    left: 5px;
+    z-index: 99;
+    background: white;
+" width="120em;">
+	<thead>
+		<tr>
+			<th width="30em;">Year</th>
+			<th width="90em;">KPI</th>
+		</tr>
+	</thead>
+
+	{% for item in years %}
+	<tbody class="sub-header">
+		
+		<tr><th rowspan="8">{{item}}</th></tr>
+		<tr>
+			<th>EMI scheduled</th>
+		</tr>
+		<tr>
+			<th>Active TLs</th>
+		</tr>
+		<tr>
+			<th>Products</th>
+		</tr>
+		<tr>
+			<th>EMI by product</th>
+		</tr>
+		<tr>
+			<th>DPD</th>
+		</tr>
+		<tr>
+			<th style="border-bottom-color: white;">Status</th>
+		</tr>
+		<tr><th style="padding: 0.438em;"></th></tr>
+		
+	</tbody>
+	{% endfor %}
+</table>
+
+{% if years|length == 4%}
+
+<table style="table-layout: fixed;" width="2000em;">
+	<thead>
+		<th width="195em" class="header-table">JAN</th>
+		<th width="195em" class="header-table">FEB</th>
+		<th width="195em" class="header-table">MAR</th>
+		<th width="195em" class="header-table">APR</th>
+		<th width="195em" class="header-table">MAY</th>
+		<th width="195em" class="header-table">JUN</th>
+		<th width="195em" class="header-table">JUL</th>
+		<th width="195em" class="header-table">AUG</th>
+		<th width="195em" class="header-table">SEP</th>
+		<th width="195em" class="header-table">OCT</th>
+		<th width="195em" class="header-table">NOV</th>
+		<th width="195em" class="header-table">DEC</th>
+	</thead>
+
+	<tbody>
+		<tr>
+			<td class="num-spl">
+			{% for item in fy1_2_1 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+			
+
+			<td class="num-spl">
+			{% for item in fy1_2_2 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+
+			<td class="num-spl">
+			{% for item in fy1_2_3 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_4 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_5 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_6 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_7 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_8 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_9 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_10 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_11%}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_12 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="num-spl">
+			{% for item in fy1_2_1 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_2 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_3 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_4 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_5 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_6 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_7 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_8 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_9 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_10 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_11 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_12 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+		</tr>
+
+
+
+		<tr>
+			
+
+
+	
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_1%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_2%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_3%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_4%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_5%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_6%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_7%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_8%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_9%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_10%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_11%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_12%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+		</tr>
+
+
+
+		
+		<tr class="alternate-color">
+			<td class="num-spl">
+			{% for item in fy2_2_1 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+			
+
+			<td class="num-spl">
+			{% for item in fy2_2_2 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+
+			<td class="num-spl">
+			{% for item in fy2_2_3 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_4 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_5 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_6 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_7 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_8 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_9 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_10 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_11%}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_12 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+		</tr>
+
+		<tr class="alternate-color">
+			<td class="num-spl">
+			{% for item in fy2_2_1 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_2 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_3 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_4 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_5 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_6 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_7 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_8 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_9 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_10 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_11 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_12 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+		</tr>
+		
+		<tr class="alternate-color">
+			
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_1%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_2%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_3%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_4%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_5%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_6%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_7%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_8%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_9%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_10%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_11%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_12%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+		</tr>
+
+
+
+		<tr>
+			<td class="num-spl">
+			{% for item in fy3_2_1 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+			
+
+			<td class="num-spl">
+			{% for item in fy3_2_2 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+
+			<td class="num-spl">
+			{% for item in fy3_2_3 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_4 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_5 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_6 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_7 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_8 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_9 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_10 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_11%}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_12 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="num-spl">
+			{% for item in fy3_2_1 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_2 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_3 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_4 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_5 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_6 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_7 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_8 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_9 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_10 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_11 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_12 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+
+		</tr>
+		<tr>
+			
+
+
+	
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_1%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_2%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_3%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_4%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_5%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_6%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_7%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_8%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_9%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_10%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_11%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_12%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+		</tr>
+
+
+
+
+
+		<tr class="alternate-color">
+			
+			<td class="num-spl">
+			{% for item in fy4_2_1 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+			
+
+			<td class="num-spl">
+			{% for item in fy4_2_2 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+
+			<td class="num-spl">
+			{% for item in fy4_2_3 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_4 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_5 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_6 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_7 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_8 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_9 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_10 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_11%}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_12 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+		</tr>
+
+		<tr class="alternate-color">
+
+			<td class="num-spl">
+			{% for item in fy4_2_1 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_2 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_3 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_4 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_5 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_6 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_7 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_8 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_9 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_10 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_11 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy4_2_12 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+
+		</tr>
+		
+		<tr class="alternate-color">
+			
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_1%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_2%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_3%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_4%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_5%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_6%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_7%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_8%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_9%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_10%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_11%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy4_1_12%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+		</tr>
+
+
+	</tbody>	
+
+</table>
+
+
+
+
+{% else %}
+
+
+<table style="table-layout: fixed;" width="2000em;">
+	<thead>
+		<th width="195em" class="header-table">JAN</th>
+		<th width="195em" class="header-table">FEB</th>
+		<th width="195em" class="header-table">MAR</th>
+		<th width="195em" class="header-table">APR</th>
+		<th width="195em" class="header-table">MAY</th>
+		<th width="195em" class="header-table">JUN</th>
+		<th width="195em" class="header-table">JUL</th>
+		<th width="195em" class="header-table">AUG</th>
+		<th width="195em" class="header-table">SEP</th>
+		<th width="195em" class="header-table">OCT</th>
+		<th width="195em" class="header-table">NOV</th>
+		<th width="195em" class="header-table">DEC</th>
+	</thead>
+
+
+	<tbody>
+				<tr>
+			<td class="num-spl">
+			{% for item in fy1_2_1 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+			
+
+			<td class="num-spl">
+			{% for item in fy1_2_2 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+
+			<td class="num-spl">
+			{% for item in fy1_2_3 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_4 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_5 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_6 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_7 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_8 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_9 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_10 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_11%}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_12 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="num-spl">
+			{% for item in fy1_2_1 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_2 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_3 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_4 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_5 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_6 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_7 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_8 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_9 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_10 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_11 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy1_2_12 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+		</tr>
+		<tr>
+			
+
+
+	
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_1%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_2%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_3%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_4%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_5%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_6%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_7%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_8%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_9%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_10%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_11%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy1_1_12%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+		</tr>
+
+
+
+		
+		<tr class="alternate-color">
+			<td class="num-spl">
+			{% for item in fy2_2_1 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+			
+
+			<td class="num-spl">
+			{% for item in fy2_2_2 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+
+			<td class="num-spl">
+			{% for item in fy2_2_3 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_4 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_5 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_6 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_7 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_8 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_9 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_10 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_11%}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_12 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+		</tr>
+
+		<tr class="alternate-color">
+			<td class="num-spl">
+			{% for item in fy2_2_1 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_2 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_3 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_4 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_5 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_6 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_7 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_8 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_9 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_10 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_11 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy2_2_12 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+		</tr>
+		
+		<tr class="alternate-color">
+			
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_1%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_2%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_3%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_4%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_5%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_6%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_7%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_8%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_9%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_10%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_11%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy2_1_12%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+		</tr>
+
+
+
+		<tr>
+			<td class="num-spl">
+			{% for item in fy3_2_1 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+			
+
+			<td class="num-spl">
+			{% for item in fy3_2_2 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+
+			<td class="num-spl">
+			{% for item in fy3_2_3 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_4 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_5 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_6 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_7 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_8 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_9 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_10 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_11%}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_12 %}
+				<div>{{item.sum_emi}}</div>
+			{% endfor %}
+			</td>
+		</tr>
+
+		<tr>
+			<td class="num-spl">
+			{% for item in fy3_2_1 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_2 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_3 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_4 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_5 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_6 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_7 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_8 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_9 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_10 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_11 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+			<td class="num-spl">
+			{% for item in fy3_2_12 %}
+				<div>{{item.cnt_active_accounts}}</div>
+			{% endfor %}
+			</td>
+
+
+		</tr>
+		<tr>
+			
+
+
+	
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_1%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_2%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_3%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_4%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_5%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_6%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_7%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_8%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_9%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_10%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_11%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+			<td class="scroll">
+				<div style="display: flex;overflow:auto;scrollbar-width: thin; padding: 0px; margin: 0px;">
+				{% for item in fy3_1_12%}
+				<div style="display: block; margin: 0px; padding: 0px; border: 1px solid black; border-collapse: collapse; border-top-color: white; border-left-color: white;">
+				<div style="padding: 5px 20px; padding-bottom: 0.4em;border-top: 1px solid black; border-top-color: white; width:6.35em;" title={{item.acc_type_to_use}}>{{item.acc_type_new1}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black;padding-right: 2px; width:6.35em;" class="num">{{item.valid_emi}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.DPD}}</div>
+				<div style="padding: 5px 20px;border-top: 1px solid black; border-collapse: collapse; width:6.35em;">{{item.asset_classification}}</div>
+				</div>
+				{% endfor %}
+				</div>
+			</td>
+
+
+		</tr>
+
+
+
+	</tbody>	
+
+</table>
+
+
+
+
+{%endif%}
+</div>
+{% endif %}
+<footer>
+
+	<p>
+		<b>Note : </b>
+		<em>Overdraft and credit card are excluded from the summary.</em>
+	</p>
+	
+	<p>Product name also appears when one hovers on the products in the grid cell.</p>
+	
+	<p style="background-color: rgb(233, 236, 239);">
+		<dfn>NR : </dfn>NOT REPORTED
+	</p>
+	
+	<h6>PRODUCT CODES</h6>
+	
+	<p style="background-color: rgb(233, 236, 239);">
+		<dfn>TWL : </dfn>TWO-WHEELER LOAN<span> | </span>
+		<dfn>PPL : </dfn>PROPERTY LOAN<span> | </span>
+		<dfn>BLPSA : </dfn>BUSINESS LOAN PRIORITY SECTOR AGRICULTURE<span> | </span>
+		<dfn>OVD : </dfn>OVERDRAFT<span> | </span>
+		<dfn>KCC : </dfn>KISAN CREDIT CARD<span> | </span>
+		<dfn>UCL : </dfn>USED CARD LOAN<span> | </span>
+		<dfn>BLPSSB : </dfn>BUSINESS LOAN PRIORITY SECTOR SMALL BUSINESS
+	</p>
+
+	<h6>STATUS CODES</h6>
+
+	<p style="background-color: rgb(233, 236, 239);">
+		<dfn>STD : </dfn>STANDARD<span> | </span>
+		<dfn>SUB : </dfn>SUB-STANDARD<span> | </span>
+		<dfn>DBT : </dfn>DOUBTFUL<span> | </span>
+		<dfn>LOS: </dfn>LOSS<span> | </span>
+		<dfn>SMA : </dfn>SPECIAL MENTION ACCOUNT
+	</p>
+
+</footer>
+
+
+
+
+<script>
+
+	window.onload = function() {
+  
+
+	
+	var sub_header = document.getElementsByClassName('sub-header');
+	for(var i =0; i++ ; i < sub_header.length) {
+
+		if (i%2 != 0) {
+
+			sub_header[i].style.backgroundColor = rgb(233, 236, 239);
+
+		};
+	};
+};
+
+</script>
+
+{%endblock content%}

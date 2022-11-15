@@ -1,0 +1,606 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    body {font-family: Arial, Helvetica, sans-serif;}
+
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      }
+      
+      /* Modal Content */
+      .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s
+      }
+      
+      /* Add Animation */
+      @-webkit-keyframes animatetop {
+        from {top:-300px; opacity:0} 
+        to {top:0; opacity:1}
+      }
+      
+      @keyframes animatetop {
+        from {top:-300px; opacity:0}
+        to {top:0; opacity:1}
+      }
+      
+      /* The Close Button */
+      .close {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+      
+      .close:hover,
+      .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      
+      .modal-header {
+        padding: 2px 16px;
+        
+        color: white;
+      }
+      
+      .modal-body {padding: 2px 16px;}
+      
+      .modal-footer {
+        padding: 2px 16px;
+        background-color: grey;
+        color: white;
+      }
+
+    tr, th, td {
+
+		border : solid black 1px;
+		padding: 10px;
+		color: black;
+	}
+	
+	input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .innertxtandbox{
+        border-right: 9px solid grey;
+        flex-basis: 25%;
+    }
+
+    .innerbox{
+       
+        width: 300px ;
+        border: 15px ;
+        padding:20px;
+        margin: 20px;
+
+    }
+    .innertxt{
+        text-align:center;
+    }
+    .values{
+        font-weight:700;
+        color: red;
+    }
+    table, th, td {
+        border:1px solid black;
+      }
+</style>
+<body onload="setvalue()">
+    <div class="content" style="margin-top: 0px;">
+        <div class="container">
+
+		<br/>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Bureau Executive Summary {% if request.session.deal_id %}(DEAL ID: 732{{request.session.deal_id}}, Customer ID: {{request.session.customer_id.capitalize}}, Customer Name: {{request.session.name}}){% endif %}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+
+    <div class="outerbox" style="display:flex;" width="100%">
+        <div class="innertxtandbox">
+           
+            <div class="innertxt" >
+             <h6>Personal and Loan Details</h6>
+
+             </div>
+
+            <div class="innerbox" >
+                1.<span class="values" >{{bureau_details.Name}} </span>is <span class="values" > 45 </span> years old and lives in<span class="values" > {{bureau_details.Location}}.  </span>
+                <br/>
+                <br/>
+                2.<span class="values" > {{bureau_details.Name}} </span>has applied for <span class="values" >{{bureau_details.Purpose}}</span> and <span class="values" >{{bureau_details.Loan_amount}}</span>
+                <br/>
+                <br/>
+                3. <span class="values" >{{bureau_details.Name}} </span> is Individual/Joint applicant of the loan.
+                 <br/>
+                <br/>
+                5.Applicant earns ₹<span class="values" id="salary" >{{bureau_details.Salary}} (Stated)</span>
+
+
+
+                
+
+            </div>
+
+            
+
+
+        </div>
+
+        <div class="innertxtandbox">
+
+            <div class="innertxt">
+            <h6>Bureau Details</h6>
+
+
+             </div>
+
+            <div class="innerbox">
+                1. Credit Bureau Score :<span class="values" >{{bureau_details.creditscore}}</span>
+                <br/>
+                <br/>
+
+                2. Total number of active loans : <span  class="values" >{{bureau_details.activeloans}}</span>
+                <br/>
+                <br/>
+
+                3. Total live POS : <span class="values" >{{bureau_details.totalpos}}</span>
+                <br/>
+                <br/>
+
+                4. Most Recent DPD : <span class="values" >{{bureau_details.maxdpd}} days. </span>
+                <br/>
+                <br/>
+                5. Max dpd  : <span class="values" >{{bureau_details.maxdpd}} days.</span>
+                <br/>
+                <br/>
+
+                6. Time since recently closed loan :<span class="values" >{{bureau_details.recentlyclosedloandate}} months.</span>
+                <br/>
+                <br/>
+
+            </div>
+
+            
+
+
+        </div>
+
+        <div class="innertxtandbox">
+            <div class="innertxt">
+            <h6>Banking</h6>
+
+             </div>
+
+            <div class="innerbox">
+            1. Latest Month Closing Balance :<span class="values" >₹{{bureau_details.closingbalance}}</span>
+            <br/>
+            <br/>
+
+            2. Average Monthly Balance :<span class="values" >₹{{bureau_details.last3month}}</span>
+            <br/>
+            <br/>
+
+            3. Debit to Credit Ratio : <span class="values" >{{bureau_details.dtocratio}} %</span>
+            <br/>
+            <br/>
+
+            4. Fixed Inflows = <span class="values" >₹{{bureau_details.averagemonthlycredit}} </span>
+            <br/>
+            <br/>
+
+            5.Fixed Outflows =<span class="values" >₹94358 </span>
+            <br/>
+            <br/>
+
+            6. Debt to Income Ratio = <span class="values" >45.8% </span>
+            <br/>
+            <br/>
+
+            7. Cheque Bounce (Last 6M) :<span class="values" >7 </span>
+            <br/>
+            <br/>
+
+            8. Cash Credit Ratio::<span class="values" >{{bureau_details.cashcreditratio}} %</span>
+            <br/> 
+            <br/>
+
+
+            </div>
+
+            
+
+
+        </div>
+
+        <div class="innertxtandbox">
+            <div class="innertxt">
+            <h6>Lending Scores</h6>
+
+             </div>
+
+            <div class="innerbox" style="width: 210px;">
+
+                1. Bureau Risk Score :<span class="values" >{{bureau_details.creditscore}}</span>
+                <br/>
+                <br/>
+
+                2. Banking Based Score
+                <br/>
+                <br/>
+
+                3. Application Score 
+                <br/>
+                <br/>
+
+                4. Alternate Partner Score
+                <br/> 
+                <br/>
+ 
+
+
+
+            </div>
+
+            
+
+
+        </div>
+
+
+
+
+    </div>
+    
+    <div class="calculator" style="padding: 4%;" >
+        <div style="border: 3px solid red; border-radius: 80pt;">
+
+       
+
+        <div id="heading" style="padding-left: 35%;padding-top: 3%;padding-bottom: 3%;">
+
+        <h1>Loan Calculator</h1>
+
+        </div>
+
+        <div id="outline" style="display: flex;">
+
+
+        <div id="first-column" style="padding-left: 7%;">
+
+
+            
+
+            <p>Loan requested      : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight:700; " >{{bureau_details.Loan_amount}}<span>
+            </p>
+            <p>Loan considered (₹)     :
+                <input id="amount" type="number" 
+                oninput="Calculate()" value="{{bureau_details.Loan_amount}}" required>
+            </p>
+            <p>Tenure (months)  (₹)     :&nbsp;&nbsp;&nbsp;&nbsp;
+                <input id="months" type="number" 
+                oninput="Calculate()" required>
+            </p>
+            <p>Rate of interest (₹)     :&nbsp;
+                <input id="roi1" type="number" 
+                oninput="Calculate()" required>
+            </p>
+
+
+        </div>
+
+
+        <div id="second-column" style="padding-left: 7%;">
+
+            <table >
+                
+                <tr>
+                  <td>Existing EMIs (₹)</td>
+                  <td style="font-weight:700; "><span id="existingemi">{{bureau_details.totalemi}}</span></td>
+                 
+                </tr>
+                <tr>
+                  <td>FOIR, basis stated Income</td>
+                  <td style="font-weight:700; ">{{bureau_details.foirstated}}%</td>
+                 
+                </tr>
+                <tr>
+                   
+                    <td>FOIR, basis Inflows</td>
+                    <td style="font-weight:700; ">{{bureau_details.averagemonthlycreditratio}}%</td>
+                  </tr>
+              </table>
+
+              <br>
+
+
+            <p>New EMI (₹)     :<span id="total" style="font-weight:700; color:blue;"></span>
+            </p>
+            <p>Total EMI(₹)     :<span id="totalemi" style="font-weight:700; color:blue;"></span>
+                
+            </p>
+            <p>New FOIR(basis stated Income)      :<span id="newfoirstated" style="font-weight:700; color:blue;"></span>%
+               
+            </p>
+            <p>New FOIR( Basis Inflows )     :<span id="newfoirinflow" style="font-weight:700; color:blue;"></span>%
+               
+            </p>
+
+
+        </div>
+
+        <div id="third-column" style="padding-left: 7%;padding-right: 4%">
+
+
+
+
+
+            <h6>Notes</h6>
+           
+
+            <textarea id="notes"  rows="5" cols="50" style="margin-top: -9px;">
+               
+                </textarea>
+                
+                
+                <br><br>
+
+
+                <label id ="recommendation" for="selection">Recommendation:</label>
+
+                <select name="selection" id="selection" style="width:150px; ">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Refer">Refer</option>
+                  
+                </select>
+
+                <br><br>
+                {% csrf_token %}
+
+                
+                <button id="myBtn" >Save</button>
+                <!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content" style="align-self:center;"> 
+      <div class="modal-header" style="align-self:center;">
+        <span class="close">&times;</span>
+        <h2>The data has been saved.</h2>
+      </div>
+      <div class="modal-body" style="align-self: center;">
+        <p><h5>For <strong>{{bureau_details.Name}}</strong>, You have responded to <strong>{{bureau_details.recommendationgiven}}</strong> the case.<h5></p>
+        <p><h5>Amount: {{bureau_details.Loan_amount}} Tenure: <strong>{{bureau_details.tenuregiven}}</strong> ROI: <strong>{{bureau_details.roigiven}}</strong></h5></p>
+      </div>
+      <div class="modal-footer">
+        <h3>To make changes, please submit the form again!</h3>
+      </div>
+    </div>
+  
+  </div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button onclick="window.print()">Print </button>
+                <br><br>
+
+
+        </div>
+
+
+
+    
+  
+        <!-- Calling Calculate function defined in app.js -->
+
+
+        
+  
+       
+
+
+    </div>
+    
+
+
+    </div>
+
+
+</div>
+</body>
+
+<script >
+
+    var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+        savedata();
+      }
+      
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+      
+      // When the user clicks anywhere outside of the modal, close it
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    function setvalue(){
+
+        document.getElementById("amount").value = "{{bureau_details.Loan_amount}}";
+        document.getElementById("months").value = "{{bureau_details.tenuregiven}}";
+        document.getElementById("roi1").value = "{{bureau_details.roigiven}}";
+        document.getElementById("selection").value = "{{bureau_details.recommendationgiven}}";
+        {% comment %} document.getElementById("notes").value ="{{bureau_details.notegiven}}"; {% endcomment %}
+        Calculate();
+    }
+
+    function Calculate() {
+  
+        // Extracting value in the amount 
+        // section in the variable
+        const amount = document.querySelector("#amount").value;
+        
+      
+        // Extracting value in the interest
+        // rate section in the variable
+        const roi1 = document.querySelector("#roi1").value;
+      
+        // Extracting value in the months 
+        // section in the variable
+        const months = document.querySelector("#months").value;
+
+
+        
+        parseInt(amount);
+        parseInt(roi1);
+        parseInt(months);
+        const roi=((roi1/100)/12);
+      
+        
+          
+        // Calculating total payment
+         total = (amount*roi*((Math.pow(1+roi,months))/((Math.pow(1+roi,months))-1))).toFixed(2);
+      
+        document.querySelector("#total").innerHTML = (Math.ceil(total)).toLocaleString('en-IN');
+        calcfoir(total);
+
+        function calcfoir(total){
+
+             
+
+            var existingemisum=document.getElementById("existingemi").innerText;
+          
+
+            document.querySelector("#totalemi").innerHTML =  (parseInt(existingemisum)+parseInt(total)).toLocaleString('en-IN');
+            var totalnewemi=(parseInt(existingemisum)+parseInt(total));
+
+
+            newfoirstated(totalnewemi);
+            function newfoirstated(totalnewemi){
+                console.log({{bureau_details.activeloans}});
+                var salary=document.getElementById("salary").innerText;
+                document.querySelector("#newfoirstated").innerHTML =  ((parseInt(totalnewemi)/parseInt(salary))*100).toFixed(0);
+                newfoirinflow(totalnewemi);
+                function newfoirinflow(totalnewemi){
+                    var inflow= {{bureau_details.averagemonthlycredit}};
+                    document.querySelector("#newfoirinflow").innerHTML =  ((parseInt(totalnewemi)/parseInt(inflow))*100).toFixed(0);
+
+
+                }
+
+            }
+
+
+            
+
+
+        }
+    }  
+
+    {% comment %} $(document).on("click", "#save_btn", function()
+
+            {
+
+                var formData = new FormData();
+                var token = $('[name=csrfmiddlewaretoken]').val();
+                formData.append("csrfmiddlewaretoken", token);
+                formData.append("data", JSON.stringify("Hello")); 
+
+
+
+
+                $.ajax({
+                    headers:{
+                        "X-CSRFToken": csrftoken
+                    },
+                    url: '/executive_summary/savedata/',
+                    data: formData,
+                    type: 'POST',
+                    contentType: false, 
+                    processData: false, 
+                    success: function(res){
+                        console.log(JSON.parse(res));
+                            response = JSON.parse(res);
+
+                    }
+                }
+                )
+
+
+
+
+            
+        }); {% endcomment %}
+
+        function savedata(){
+            var formData = new FormData();
+            formData.append("loanconsidered",document.querySelector("#amount").value);
+            formData.append("tenure",document.querySelector("#months").value);
+            formData.append("rateofintrest",document.querySelector("#roi1").value);
+            formData.append("notes",document.querySelector("#notes").value);
+            
+            var e = document.getElementById("selection");
+            formData.append("recommendation",e.value);
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                headers:{
+                    "X-CSRFToken": csrftoken
+                },
+                url:'/executive/savedata/',
+                data: formData,
+                type: 'POST',
+                contentType: false,
+                processData: false,
+
+            });
+        }
+
+</script>
+
+
+
+
+
+
+    {% endblock content %}
+

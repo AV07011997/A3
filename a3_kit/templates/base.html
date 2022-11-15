@@ -1,0 +1,531 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap-4.5.2.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/font.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/font-awesome-4.7.0.min.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'assets/css/jquery.fancybox.min.css' %}">
+
+        
+
+        {% if upload_page or upload_form_page or upload_bank_statement_page %}
+            <!-- for upload -->
+            <link rel="stylesheet" href="{% static 'assets/css/line-icons.css' %}">
+        {% endif %}
+        
+        <!-- for upload form & bank pages -->
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/jquery.datetimepicker.min.css' %}">
+
+        {% if doclist_page %}
+            <!-- for doc list page -->
+            <link rel="stylesheet" href="{% static 'assets/css/jquery.dataTables.min.css' %}">
+        {% endif %}
+
+        {% if loan_kpi or analyze_page or entity_kpi %}
+
+            <link rel="image" type="image" href="{% static 'assets/images/construction.png' %}">
+        {% endif %}
+
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/logo.png' %}">
+
+        <!-- Page title -->
+        {% if login_page %}
+            <title>Sign In</title>
+        {% elif search_page %}
+            <title>Search | Home</title>
+        {% elif doclist_page %}
+            <title>Document List</title>
+        {% elif loan_page %}
+            <title>Loans</title>
+        {% elif upload_page %}
+            <title>KYC | PAN/Aadhar</title>
+        {% elif upload_form_page %}
+            <title>KYC | ITR</title>
+        {% elif upload_bank_statement_page %}
+            <title>KYC | Bank Statements</title>
+        {% elif upload_salary_page %}
+            <title>KYC | Income</title>
+        {% elif audit_report_page %}
+            <title>Audits</title>
+        {% elif bureau_page %}
+            <title>Bureau</title>
+        {% elif analyze_page %}
+            <title>KPI</title>
+
+        {% elif upload_file_page %}
+            <title>Upload</title>
+        {% elif download_file_page %}
+            <title>Dounload</title>
+        {% endif %}
+
+    </head>
+
+        {% block maincontent %}
+        {% endblock maincontent %}
+    
+    <!-- jQuery -->
+    <script src="{% static 'assets/js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.validate.js' %}"></script>
+
+    {% if doclist_page %}
+        <!-- doclist page -->
+        <script type="text/javascript" src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+    {% endif %}
+
+
+    {% if upload_form_page or upload_bank_statement_page %}
+        <!-- upload form and bank -->
+        <script src="{% static 'assets/js/popper-1.14.3.min.js' %}"></script>
+<!--        <script src="{% static 'assets/js/jquery.datetimepicker.full.min.js' %}"></script>-->
+    {% endif %}
+
+    <script src="{% static 'assets/js/bootstrap-4.1.3.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.fancybox.min.js' %}"></script>
+
+    {% if bureau_page %}
+        <script src="{% static 'assets/js/popper-1.14.3.min.js' %}"></script>
+    {% endif %}
+
+    
+    {% if not login_page %}
+        <!-- except login all -->
+        <script src="{% static 'assets/js/script.js' %}"></script>
+    {% endif %}
+
+    {% if login_page %}
+        <!-- Login Page Js -->
+        <script type="text/javascript">
+            function passToggle() {
+                var x = document.getElementById("passWord");
+                var y = document.getElementById("passToggle");
+                if (x.type === "password") {
+                x.type = "text";
+                y.innerHTML = '<i class="fa fa-eye-slash" aria-hidden="true"></i>';
+                } else {
+                x.type = "password";
+                y.innerHTML = '<i class="fa fa-eye" aria-hidden="true"></i>';
+                }
+            }
+        </script>
+    {% endif %}
+
+    {% if search_page %}
+        <!-- Search Page Js -->
+        <script type="text/javascript">
+            $(document).ready(function()
+            {
+                $("#search").keyup(function()
+                {
+                    if($('#searchMessage').show())
+                    {
+                        $("#searchMessage").css("display", "none");
+                    }
+
+                    var search = $("#search").val();
+                    if($.trim(search.length) < 3)
+                    {   
+                        $('.search_form form ul').hide();
+                    }
+                    else
+                    {
+                        $.ajax({
+                            url: "/search_result/" + search + "/",
+                            type: 'GET',
+                            success:function(response){
+                                // console.log(response);
+                                for (i = 0, len = response.result.length, text = ""; i < len; i++)
+                                {
+                                    if("los_id" in response.result[i])
+                                    {
+                                        // text += "<li>" + "<a href='/loan/" + response.result[i]["los_id"] + "/" + response.result[i]["customer_id"] + "'>" + response.result[i]["sresult"] + "</a></li>";
+                                        text += "<li>" + "<a href='/loan/" + response.result[i]["deal_id"] + "'>" + response.result[i]["sresult"] + "</a></li>";
+                                        // console.log(text);
+                                    }
+                                    else
+                                    {
+                                        text += "<li>" + response.result[i]["sresult"] + "</li>";
+                                    }
+                                }
+                                if($('.search_form form ul').is(":hidden"))
+                                {
+                                    $('.search_form form ul').slideToggle();
+                                }
+                                $("#searchResult").html(text);
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+
+
+    {% if doclist_page %}
+        <!-- doclist Page Js -->
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.table_wrap table thead tr:eq(0) th.search-on').each(function(i) {
+                    $(this).attr('data-id', i);
+                    var title = $(this).text();
+                    $(this).html('<div class="th-text">' + title + '</div><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a><div class="search-box"><input type="text" placeholder="Search ' + title + '" /></div>');
+        
+                    $('a', this).on('click', function(e) {
+                        e.preventDefault();
+                        $(this).closest('th').toggleClass('search');
+                    })
+        
+                    $('input', this).on('keyup change', function() {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+                /*$('.table_wrap table thead tr:eq(1) th').each( function (i) {
+                    $(this).hide();
+                    $(this).attr('data-id', i);
+                    var title = $(this).text();
+                    $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+            
+                    $( 'input', this ).on( 'keyup change', function () {
+                        if ( table.column(i).search() !== this.value ) {
+                            table
+                                .column(i)
+                                .search( this.value )
+                                .draw();
+                        }
+                    });
+                });*/
+        
+                var table = $('.table_wrap table').DataTable({
+                    orderCellsTop: true,
+                    fixedHeader: true,
+                    "order": [],
+                    columnDefs: [
+                        { orderable: false, targets: -1 }
+                    ]
+                });
+            });
+
+            function deleteDocListData(dataId)
+            {
+                var token = $('[name=csrfmiddlewaretoken]').val();
+                var formData = new FormData();
+                formData.append("csrfmiddlewaretoken", token);
+                $.ajax({
+                    url: "/delete_doclist_data/"+dataId+"/",
+                    data: formData,
+                    type: 'POST',
+                    contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+                    processData: false, // NEEDED, DON'T OMIT THIS
+                    success: function(response){
+                        if (response.status=="success")
+                        {
+                            $("#doclist_data_"+dataId).remove();
+                            document.getElementById('popupMessage').innerHTML = '<br>Deleted Successfully!<br>';
+                            $('#triggerPopup').modal('show');
+                        }
+                        else {
+                            document.getElementById('popupMessage').innerHTML = '<br>Faild to Delete!<br>';
+                            $('#triggerPopup').modal('show');
+                        }
+                    },
+                });
+            };
+        </script>
+    {% endif %}
+
+    {% if upload_bank_statement_page %}
+    <script src="{% static 'assets/js/pdfjs-2.6.347.min.js' %}"></script>
+    
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js";
+        function pdfInspector(event, uploadfilepsdid) {
+            // alert("PDF uploaded!");
+            var file = event.target.files[0];
+            var fileReader = new FileReader();
+            fileReader.onload = function() {
+                var typedarray = new Uint8Array(this.result);
+                var loadingpdf = pdfjsLib.getDocument(typedarray).promise.then(pdf =>{
+                    // READING FILE AS PDF
+                }).catch(err => {
+                    if (err.name == "PasswordException"){
+                        // alert("PDF is Encrypted!");
+                        document.getElementById('popupMessage').innerHTML = '<br>File is Password Protected!  Please enter the Password:<br>';
+                        // document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                        $("#givenpassword").removeAttr('style');
+                        $("#submitgivenpassword").removeAttr('style');
+                        $("#messageAcknowledge").attr("style", "display: none;");
+                        $('#triggerPopup').modal('show');
+                        passwd = $("#givenpassword").val();
+                        
+                        $("#submitgivenpassword").click(function (){
+                            var passwd = $("#givenpassword").val();
+                            // alert(passwd);
+                            $(uploadfilepsdid).val(passwd);
+                        });
+                    } else if (err.name == "InvalidPDFException") {
+                        // alert("Invalid PDF!");
+                        // document.getElementById('uploadfile1').value = '';
+                        document.getElementById('popupMessage').innerHTML = '<br>This is not a valid PDF file!<br>';
+                        document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                        $("#givenpassword").attr("style", "display: none;");
+                        $("#submitgivenpassword").attr("style", "display: none;");
+                        $("#messageAcknowledge").removeAttr('style');
+                        $('#triggerPopup').modal('show');
+                    }else {
+                        console.log(err)
+                        alert(err.name);
+                    }
+                });
+            };
+            fileReader.readAsArrayBuffer(file);
+        };
+    </script>
+    {% endif %}
+
+    {% if upload_form_page %}
+    <script src="{% static 'assets/js/pdfjs-2.6.347.min.js' %}"></script>
+    
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js";
+        function pdfInspector(event) {
+            // alert("PDF uploaded!");
+            var file = event.target.files[0];
+            var fileReader = new FileReader();
+            fileReader.onload = function() {
+                var typedarray = new Uint8Array(this.result);
+                var loadingpdf = pdfjsLib.getDocument(typedarray).promise.then(pdf =>{
+                    // READING FILE AS PDF
+                }).catch(err => {
+                    if (err.name == "PasswordException"){
+                        // alert("PDF is Encrypted!");
+                        document.getElementById('popupMessage').innerHTML = '<br>PDF is Password Protected! Can not Process It!<br>';
+                        document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                        $('#triggerPopup').modal('show');
+                    } else if (err.name == "InvalidPDFException") {
+                        // alert("Invalid PDF!");
+                        document.getElementById('popupMessage').innerHTML = '<br>This is not a valid PDF file!<br>';
+                        document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                        $('#triggerPopup').modal('show');
+                    }else {
+                        console.log(err)
+                        alert(err.name);
+                    }
+                });
+            };
+            fileReader.readAsArrayBuffer(file);
+        };
+    </script>
+    {% endif %}
+
+    {% if upload_page %}
+    <script src="{% static 'assets/js/pdfjs-2.6.347.min.js' %}"></script>
+    
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js";
+        function pdfInspector(event) {
+            // alert("PDF uploaded!");
+            var file = event.target.files[0];
+            var fileReader = new FileReader();
+            fileReader.onload = function() {
+                var typedarray = new Uint8Array(this.result);
+                var loadingpdf = pdfjsLib.getDocument(typedarray).promise.then(pdf =>{
+                    // READING FILE AS PDF
+                }).catch(err => {
+                    if (err.name == "PasswordException"){
+                        // alert("PDF is Encrypted!");
+                        document.getElementById('popupMessage1').innerHTML = '<br>PDF is Password Protected! Can not Process It!<br>';
+                        document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                        $("#selectdealid").attr("style", "display: none;");
+                        $("#messageAcknowledge").removeAttr('style');
+                        $('#triggerPopup').modal('show');
+                    } else if (err.name == "InvalidPDFException") {
+                        // alert("Invalid PDF!");
+                    }else {
+                        console.log(err)
+                        alert(err.name);
+                    }
+                });
+            };
+            fileReader.readAsArrayBuffer(file);
+        };
+
+        {% if status %}
+            var status="{{status.type}}";
+            var message="{{status.message}}";
+            if (status=="deal")
+            {
+                document.getElementById('popupMessage1').innerHTML = '<br>' + message + '<br>';
+                document.getElementById('selectdealid').innerHTML = 'OK';
+                $('#triggerPopup').modal('show');
+            }
+        {% endif %}
+    </script>
+    {% endif %}
+
+    {% if audit_report_page and status %}
+        <script>
+            var status_type = "{{status.type}}";
+            var status_message = "{{status.message}}";
+            console.log(status_type);
+            console.log(status_message);
+            
+            if (status_type == "other")
+            {
+                document.getElementById('popupMessage').innerHTML = '<br>' + status_message + '<br>';
+                    $("#popupconfirm").attr("style", "display: none;");
+                    $('#triggerPopup').modal('show');
+            };
+        </script>
+    {% endif %}
+
+    {% if upload_salary_page %}
+        <script>
+            $(document).ready(function()
+            {
+				var net_sals = [ '{{net_salary_data.month7}}', '{{net_salary_data.month6}}', '{{net_salary_data.month5}}', '{{net_salary_data.month4}}', '{{net_salary_data.month3}}', '{{net_salary_data.month2}}', '{{net_salary_data.month1}}'];
+
+				var gross_sals = [ '{{gross_salary_data.month7}}', '{{gross_salary_data.month6}}', '{{gross_salary_data.month5}}', '{{gross_salary_data.month4}}', '{{gross_salary_data.month3}}', '{{gross_salary_data.month2}}', '{{gross_salary_data.month1}}'];
+
+				intlFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+				tableBody = $("#salary tbody");
+
+				// Net Salary
+				markup =  "<tr>";
+				for(var i = 0; i < net_sals.length; i++) {
+					markup += '<td class="editable" id="net' + (net_sals.length -i -1) + '">' + (isNaN(net_sals[i]) ? "-" : intlFormat.format(net_sals[i])) + '</td>';
+				}
+				markup += '<td><a class="btn btn-light" id="nsave">Save</a></td>';
+				markup += "</tr>"; 
+
+				// Gross Salary
+				markup += "<tr>"; 
+				for(var i = 0; i < gross_sals.length; i++) {
+					markup += '<td class="editable" id="gross' + (gross_sals.length -i -1) + '">' + (isNaN(gross_sals[i]) ? "-" : intlFormat.format(gross_sals[i])) + '</td>';
+				}
+				markup += '<td><a class="btn btn-light" id="gsave">Save</a></td>';
+				markup +=  "</tr>";
+
+				tableBody.append(markup);
+
+                $(document).on("click", "#nsave", function()
+                {
+					$.fn.sendSalToServer('net');
+                });
+
+                $(document).on("click", "#gsave", function()
+                {
+					$.fn.sendSalToServer('gross');
+                });
+
+                $(document).on("click", ".editable", function()
+                {
+                    var value = $(this).text();
+					var input = "<input type='number' style='width:100px;' class='input-data' value='"+value.substring(1,).replaceAll(',','')+"'>";
+                    //var input = "₹ <input type='text' class='input-data' value='"+value+"' size='10'>";
+                    $(this).html(input);
+                    $(this).removeClass("editable");
+                    $(".input-data").focus();
+                });
+
+                $(document).on("blur", ".input-data", function()
+                {
+                    var value = $(this).val();
+                    var td = $(this).parent("td");
+                    $(this).remove();
+                    //td.html("₹ " + value);
+					td.html(intlFormat.format(value));
+                    td.addClass("editable");
+                });
+
+                $(document).on("blur", ".input-data", function(e)
+                {
+                    var key = e.which;
+                    if (key==13 || key==3)
+                    {
+                        var value = $(this).val();
+                        var td = $(this).parent("td");
+                        $(this).remove();
+                        //td.html("₹ " + value);
+						td.html(intlFormat.format(value));
+                        td.addClass("editable");
+                    }
+                });
+
+            $.fn.sendSalToServer = function(stype)
+                {
+                    var formData = new FormData();
+                    formData.append('stype', stype);
+					for(var i = 0; i < 7; i++) {
+						console.log(document.getElementById(stype+i).innerText);
+						formData.append('month' + (i + 1), document.getElementById(stype+i).innerText.substring(1,).replaceAll(',',''));
+					}
+
+                    var token = $('[name=csrfmiddlewaretoken]').val();
+                    formData.append("csrfmiddlewaretoken", token);
+
+                    $.ajax({
+                        url: "/upload_salary/",
+                        data: formData,
+                        type: 'POST',
+                        contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+                        processData: false, // NEEDED, DON'T OMIT THIS
+                        success: function(response){
+                            if (response.status["type"]=="success")
+                            {
+                                document.getElementById('popupMessage').innerHTML = '<br>' + response.status["message"] + '<br>';
+                                document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                                $('#triggerPopup').modal('show');
+                            } else if (response.status["type"]=="other")
+                            {
+                                document.getElementById('popupMessage').innerHTML = response.status["message"];
+                                document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                                $('#triggerPopup').modal('show');
+                            }
+                        },
+                    });
+                };
+
+            });
+
+            
+            {% if status %}
+                var status="{{status.type}}";
+                var message="{{status.message}}";
+                if (status=="deal")
+                {
+                    document.getElementById('popupMessage').innerHTML = '<br>' + message + '<br>';
+                    document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                    $('#triggerPopup').modal('show');
+                }
+            {% endif %}
+        </script>
+    {% endif %}
+
+    {% if bureau_page and status %}
+        <script>
+            var status="{{status.type}}";
+            var message="{{status.message}}";
+            if (status=="deal")
+            {
+                document.getElementById('popupMessage').innerHTML = '<br>' + message + '<br>';
+                document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                $('#triggerPopup').modal('show');
+            }
+        </script>
+    {% endif %}
+
+
+</html>

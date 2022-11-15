@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% block maincontent %} {% load static %}
+
+<body class="login">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-2"></div>
+      <div class="col-lg-8">
+        <div class="login_wrap">
+          <div class="row">
+            <div class="col-md-6 text-center">
+              <img src="{% static 'assets/images/logo.png' %}" width="270" />
+            </div>
+            <div class="col-md-6 login_form">
+              <h3><span>Sign In</span></h3>
+              <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                  </div>
+                  <div class="col-10">
+                    <input
+                      type="text"
+                      class="form-control"
+                      name="username"
+                      placeholder="Username"
+                      required
+                    />
+                  </div>
+                  <div class="col-1"></div>
+                </div>
+                <div class="row">
+                  <div class="col-1">
+                    <i class="fa fa-lock" aria-hidden="true"></i>
+                  </div>
+                  <div class="col-9">
+                    <input
+                      type="password"
+                      id="passWord"
+                      class="form-control"
+                      name="password"
+                      placeholder="Password"
+                      required
+                    />
+                  </div>
+                  <div class="col-1">
+                    <a
+                      id="passToggle"
+                      onclick="passToggle();"
+                      href="javascript: void(0);"
+                      ><i class="fa fa-eye" aria-hidden="true"></i
+                    ></a>
+                  </div>
+                </div>
+                {% for message in messages %}
+                <p
+                  style="
+                    color: red;
+                    padding-top: 10px;
+                    margin-bottom: 0rem;
+                    margin-block-end: 0em;
+                  "
+                >
+                  <strong>{{ message }}</strong>
+                </p>
+                {% endfor %}
+                <input type="submit" value="Sign In" class="btn btn-primary" />
+              </form>
+              <p>
+                <strong><a class="forget" href="#">Forgot Password?</a></strong>
+              </p>
+              <hr />
+              <p>Powered by <a href="#">Dhurin</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2"></div>
+    </div>
+  </div>
+</body>
+
+{% endblock maincontent %}

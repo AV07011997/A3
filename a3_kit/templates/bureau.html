@@ -1,0 +1,1220 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+	tr, th, td {
+	   	color: black;
+	}
+	input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+</style>
+    <div class="content" style="margin-top: 0px;">
+        <div class="container">
+<!--		<div class="col-md-10 text-center" style="padding-right: 120px;">-->
+<!--			<h6><a class="digitization-unfocus" href="{% url 'upload' 'pan' %}">&emsp;PAN&emsp;</a><a class="digitization-unfocus" href="{% url 'upload' 'aadhaar' %}">&emsp;Aadhar&emsp;</a><a class="digitization-unfocus" href="{% url 'upload_form' %}">&emsp;ITR&emsp;</a><a class="digitization-unfocus" href="{% url 'upload_bank_statement' %}">&emsp;Bank Statements&emsp;</a><a class="digitization-unfocus" href="{% url 'upload_salary' %}">&emsp;Income&emsp;</a><a class="digitization-focus" href="{% url 'bureau' %}">&emsp;Bureau&emsp;</a></h6>-->
+<!--		</div>-->
+		<br/>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Bureau Information {% if request.session.deal_id %}(DEAL ID: 732{{request.session.deal_id}}, Customer ID: {{request.session.customer_id.capitalize}}, Customer Name: {{request.session.name}}){% endif %}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container" style="margin-left:0em;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table_wrap bureau">
+                        <div class="text-right">
+							<a id="reset_view"class="btn btn-secondary" href="#" style="margin-right: 45px; margin-bottom: 20px;">Reset View</a>
+                            <a id="save_btn" class="btn btn-secondary" href="#" style="margin-right: 45px; margin-bottom: 20px;">Save</a>
+                        </div>
+                        <table class="fixedheader">
+                            <thead>
+                                <tr>
+                                    <th class=" header-table" id="Loan_Selection" width="60">Loan Selection <label style="color:red">?</label></th>
+<!--                                    <th class="columnheader" id="Customer_Id" width="80">Customer Id <img src="{% static 'assets/images/triangle.png' %}"/></th>-->
+                                    <th id="Date_reported" width="95">Date Reported</th>
+                                    <th class="columnheader header-table" id="Loan_type" width="150">Loan Type <i class="fa fa-filter"></i></th>
+                                    <th class="columnheader header-table" id="Loan_status" width="100">Loan Status <i class="fa fa-filter"></i></th>
+                                    <th id="Disbursal_date" width="100">Disbursal Date </th>
+                                    <th  id="Disbursed_amount" width="115">Disbursed Amount </th>
+<!--                                    <th class="columnheader header-table" id="Tenure" width="80">Tenure (M) <i class="fa fa-filter"></i><img src="{% static 'assets/images/pencil.png' %}"/></th>-->
+                                    <th  id="Tenure" width="80">Tenure (M) </th>
+                                    <th id="ROI" width="80">ROI (%) </th>
+                                    <th id="EMI" width="100">EMI </th>
+                                    <th id="Current_Balance" width="100">Current Balance </th>
+                                    <th class="columnheader header-table" id="DPD" width="100">Last DPD </th>
+                                    <th  id="Overdue amount" width="65">Overdue Amount </th>
+                                    <th class="columnheader header-table" id="Source" width="100">Source <i class="fa fa-filter"></i></th>
+                                    <th width="120" class="header-table">Value type</th>
+                                    <th id="" width="50px" style="border: none; background-color: white"></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <table id="bureau_data_table">
+                            {% csrf_token %}
+							<!-- This thread is only for not breaking td width but just to align with the above thread -->
+                            <thead style="visibility: collapse;">
+                                <tr>
+                                    <th width="60"></th>
+<!--                                    <th width="80"></th>-->
+                                    <th width="95"></th>
+                                    <th width="150">Loan type</th>
+                                    <th width="100">Loan status</th>
+                                    <th width="100"></th>
+                                    <th width="115"></th>
+                                    <th width="80"></th>
+                                    <th width="80"></th>
+                                    <th width="100">EMI</th>
+                                    <th width="100">Current Balance</th>
+                                    <th width="100">Last DPD</th>
+                                    <th width="65">Overdue Amount</th>
+                                    <th width="100">Source</th>
+                                    <th width="120"></th>
+                                    <th width="50px" style="border: none; background-color: white"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="table_tbody_id">
+                            </tbody>
+                        </table>
+						<br/>
+                    </div>
+                    <div class="text-right">
+                        <a class="btn btn-secondary" href="{% url 'audit_report' %}">Go to Audit</a>
+                        <a class="btn btn-secondary" href="{% url 'upload_salary' %}">Previous</a>
+                        <!-- <a class="btn btn-secondary" href="{% url 'audit_report' %}">Next</a> -->
+                        <!-- <a class="btn btn-secondary" href="{% url 'search' %}">Home</a> -->
+                        <a id="next_btn" class="btn btn-secondary">Next</a>
+                    </div>
+<!--                    <div>-->
+<!--                        <a class="btn btn-secondary" onclick="filterdData()">Submit</a>-->
+<!--                    </div>-->
+
+                </div>
+            </div>
+            <div class="modal fade" id="triggerPopup" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h5 id="popupMessage1"></h5>
+                        </div>
+                        <div class="modal-footer justify-content-end">
+                            <!-- <a type="button" id="messageAcknowledge" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Ok</a> -->
+                            <a type="button" id="messageAcknowledge" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Ok</a>
+                            
+                            <a type="button" id="save_changes" class="btn btn-secondary" data-dismiss="modal" style="display: none;">Yes</a>
+                            <a type="button" id="discard_changes" class="btn btn-secondary" data-dismiss="modal" style="display: none;">No</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="bureau" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 class="trail_info"></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-popup">
+		<h5><select  id="filter_options" multiple><option>Select an option</option></select></h5>
+		<a type="button" class="btn-filter" data-dismiss="modal">Apply</a>
+    </div>
+
+    <script>
+		
+		var table_data = [];
+		var filter_table_data = [];
+		var option_values = {};
+		var header_filter_data = [];
+		var selected_filter = {};
+
+        window.onload = function(){
+            //location.reload();
+			var updated_fields_values = {};
+
+			var intlFormatCurrency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+			var intlFormatROI = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+
+            $.ajax({
+                url: '/bureau/get_bureau_data/',
+                type: 'GET',
+                success: function(response) {
+					table_data = response;
+					if(table_data && table_data.length > 0) {
+						for (const [key, value] of Object.entries(table_data[0])) {
+							option_values[key] = [];
+						}
+						for (var i=0; i<table_data.length; i++){
+							var row = table_data[i];
+							for (const [key, value] of Object.entries(option_values)) {
+								if (!option_values[key].includes(row[key])) {
+									option_values[key].push(row[key]);
+								}
+							}
+						}
+					}
+
+					$.merge(filter_table_data, table_data);
+                    
+					$.fn.populateTable();
+                },
+            });
+
+            $(document).on('click', '.columnheader', function(e) {
+				var idval = $(this).attr("id");
+				var values = option_values[idval];
+				$('#filter_options').empty().append('<option style="font-size: 15px; padding: 5px;" value="' + idval + '">-- All --</option>');
+				if(values && values.length > 0) {
+					for (var i=0; i<values.length; i++){
+						$('#filter_options').append('<option style="font-size: 15px; padding: 5px;" value="' + values[i] + '"><p style="font-size: 20px">' + values[i] + '</p></option>');
+					}
+                    
+				}
+
+				$(".filter-popup").css({left: e.pageX});
+				$(".filter-popup").css({top: e.pageY});
+				$('.filter-popup').show();
+            });
+			
+
+            $(document).on('click', '.filterheader', function(e) {
+                
+                
+				var idval = $(this).attr("id");
+				var values = option_values[idval];
+<!--				$('#filter_options').empty().append('<input type= "checkbox" value="' + idval + '">&#45;&#45; All &#45;&#45;</option>');-->
+                $('#filter_options').empty().append('<option selected="selected" value="'+ idval +'">-- All --</option>');
+				if(values && values.length > 0) {
+					for (var i=0; i<values.length; i++){
+						$('#filter_options').append('<option value="' + values[i] + '">' + values[i] + '</option>');
+					}
+				}
+
+				$(".filter-popup").css({left: e.pageX});
+				$(".filter-popup").css({top: e.pageY});
+				$('.filter-popup').show();
+            });
+
+
+            $(document).on('click', '.btn-filter', function(e) {
+				// Thread th
+				var filter_column = $("#filter_options option:first").val();
+				// Select Opttion
+				var filter_vals = $('#filter_options').val();
+				if(filter_column=="Loan_type"){
+                    
+                    selected_filter["Loan_type"] = filter_vals;
+                   
+				}
+				else if(filter_column=="Loan_status"){
+                    selected_filter["Loan_status"] = filter_vals;
+				}
+				else if(filter_column=="Source"){
+                    selected_filter["Source"] = filter_vals;
+				}
+
+				if ((filter_vals[0]=="Loan_Selection")||(filter_vals[0]=="Date_reported")||(filter_vals[0]=="Loan_type")||(filter_vals[0]=="Loan_status")||(filter_vals[0]=="Disbursal_date")||(filter_vals[0]=="Disbursed_amount")||(filter_vals[0]=="Tenure")||(filter_vals[0]=="ROI")||(filter_vals[0]=="EMI")||(filter_vals[0]=="Current_Balance")||(filter_vals[0]=="DPD")||(filter_vals[0]=="Overdue_amount")||(filter_vals[0]=="Source")){
+				    location.reload();
+				}
+                //console.log(filter_vals[0]);
+				var filter_val_arr = [];
+				filter_vals.forEach(function(item, index) {
+					filter_val_arr.push(item);
+				 });
+
+				// If really something to select
+				if(filter_val_arr && filter_val_arr.length > 0) {
+				    var column_name = ($("#"+filter_column).hasClass('columnheader'))
+                    //console.log(filter_column);
+					if($("#"+filter_column).hasClass('columnheader')) {
+                        //console.log("check")
+						$("#"+filter_column).html($("#"+filter_column).html() + '<i class="fa fa-filter"></i>');
+						$("#"+filter_column).removeClass('columnheader');
+						$("#"+filter_column).addClass('filterheader');
+                        //console.log(filter_column)
+					}
+                    //-----------------------
+
+					if(!filter_val_arr.includes(filter_column)) {
+                       header_filter_data = filter_table_data
+                        header_filter_data = $.grep(header_filter_data, function(value) {
+                        return $.inArray((value[filter_column] != null? value[filter_column].toString() : value[filter_column]), filter_val_arr) !== -1;
+                        });
+					}
+                        if(!filter_val_arr.includes(filter_column)){
+                            
+                            //debugger;
+                            header_filter_data = filter_table_data
+                            //console.log(header_filter_data);
+                            console.log[selected_filter];
+                           
+
+                            var header_filter_data = $.grep(filter_table_data ,function(value) {
+                                console.log(filter_column);
+                                if(filter_column=="Loan_type"){
+                                    return value.Loan_type == selected_filter["Loan_type"]
+                                }
+                                if(filter_column=="Loan_status"){
+                                     
+                                    return value.Loan_status == selected_filter["Loan_status"]
+                                }
+                                 if(filter_column=="Source"){
+                                    return value.Source == selected_filter["Source"]
+                                }
+
+
+
+
+
+                                    //return (value.Loan_type == selected_filter["Loan_type"]) && (value.Loan_status == selected_filter["Loan_status"]) && (value.Source == selected_filter["Source"]);
+                                        //return (value.Loan_status == selected_filter["Loan_status"]);
+                                });
+                            
+                        }
+                    console.log(header_filter_data);
+
+					{% comment %} $.fn.populateTable(); {% endcomment %}
+                    $.fn.populateTableWithHeaderFilterData(header_filter_data);
+				}
+
+				$('.filter-popup').hide();
+
+            });
+
+
+            $(document).on('click change', '.loan_selection_input', function() {
+                console.log("loan selection clicked");
+                console.log($(this).prop("checked"));
+                var td = $(this).parent("td");
+                var tr = $(td).parent("tr");
+                trid = tr.attr("id");
+                if(updated_fields_values[trid] == undefined){
+                    updated_fields_values[trid] = {};
+                }
+                if ($(this).prop("checked") == false){
+                    updated_fields_values[trid]["Loan_Selection"] = 'No';
+                }
+                else if ($(this).prop("checked") == true){
+                    updated_fields_values[trid]["Loan_Selection"] = 'Yes';
+                }
+            });
+
+
+            $(document).on('click', '.info a', function() {
+                text = $(this).attr('value');
+
+                //$('#bureau').find('.modal-body trail_info').text('it is test.');
+                $('.trail_info').text(text.toUpperCase());
+                $('#bureau').modal('show');
+            });
+
+            
+            $(document).on("keyup", ".input-data", function()
+            {
+                var td = $(this).parent("td");
+                td.css('color', 'blue');
+                var tr = $(td).parent("tr");
+                calculateEMI(tr.attr("id"),$(this));
+            });
+
+            $(document).on("keyup", ".input-data-currency", function()
+            {
+                var td = $(this).parent("td");
+                td.css('color', 'blue');
+                var tr = $(td).parent("tr");
+                calculateEMI(tr.attr("id"),$(this));
+                
+            });
+
+            function emi(p, r, t){
+                r = r/1200;
+                e = p*r*(Math.pow((1 + r),t)/(Math.pow((1 + r),t) - 1));
+                return Math.ceil(e,2);
+            }
+
+
+            function calculateEMI(trid,elem){
+                // console.log("Hello",trid)
+
+               
+
+
+
+
+                // console.log(JSON.parse(elem))
+                var classarr = ["Disbursed_amount","Tenure","ROI"];
+                var presentClass = elem.parent("td").attr("class").split(" ")[0];
+                var updated_vals = {};
+                var vals = {};
+                for(cli in classarr){
+                    if(classarr[cli] == "Tenure"){
+                        var tenure = $("#editTenure_"+trid).val();
+                        vals[classarr[cli]] = tenure
+                        updated_vals[classarr[cli]] = tenure
+                        continue;
+                    }
+                    if(classarr[cli] == "ROI"){
+                        var roi = $("#editRoi_"+trid).val();
+                        vals[classarr[cli]] = roi
+                        updated_vals[classarr[cli]] = roi
+                        continue;
+                    }
+                    vals[classarr[cli]] = $("#"+trid+" ."+classarr[cli]).html();
+                }
+
+                updated_vals["EMI"] = emi(vals["Disbursed_amount"].substring(1,).replaceAll(',',''),vals["ROI"],vals["Tenure"]);
+
+                if(updated_fields_values[trid] == undefined){
+                    updated_fields_values[trid] = {};
+                }
+                for(field in updated_vals){
+                    updated_fields_values[trid][field] = updated_vals[field];
+                }
+
+                console.log("updated vals: "+JSON.stringify(updated_fields_values));
+
+                $("#"+trid+" .EMI").html(intlFormatCurrency.format(updated_vals["EMI"]));
+
+
+
+                // var e1 = document.getElementById('row_id_'+trid);
+                // var strUser1 = e1.value;
+                // console.log(strUser1,"Top")
+
+            //     var selectedIndex1 = $('#row_id_'+trid).prop("selectedIndex");
+            //    console.log(selectedIndex1)
+            //     // document.getElementById('row_id_'+trid).value="edited";
+            //     // console.log('row_id_'+trid)
+                // $('#row_id_'+trid).val("edited").attr("selected","selected");
+                // $('#row_id_'+trid).select2();
+                // $('#row_id_'+trid).val('edited').trigger("change");
+
+                // var selectedIndex = $('#row_id_'+trid).prop("selectedIndex");
+                // console.log(selectedIndex)
+                // $('#row_id_'+trid).attr("selectedIndex",2);
+
+                // $('#row_id_'+trid)[0].selectedIndex = 2 ;
+                // document.getElementById('row_id_'+trid).value="edited"
+
+                // var e = document.getElementById('row_id_'+trid);
+                // var strUser = e.value;
+                // console.log(strUser,"Bottom")
+                $("#row_id_"+trid+" > [value=edited]").attr("selected", "true");
+              
+                
+
+            }
+
+
+
+
+            $(document).on("click", ".currency", function()
+            {
+                console.log("clicked id: "+ $(this).attr('id'));
+                //edited_field_id = $(this).attr('id');
+                var value = $(this).text();
+                value_before_click = value;
+                var input = "<input type='number' style='width:70px;' class='input-data-currency' value='"+value.substring(1,).replaceAll(',','')+"'>";
+                $(this).html(input);
+                $(this).removeClass("currency");
+                $(".input-data-currency").focus();
+            });
+
+            $(document).on("blur", ".input-data-currency", function()
+            {
+                //console.log("id: "+ $(this).attr('id'));
+                var value = $(this).val();
+                value_after_click = value;
+                var td = $(this).parent("td");
+                var tr = $(td).parent("tr");
+                $(this).remove();
+                td.html(intlFormatCurrency.format(value));
+                td.addClass("currency");
+            });
+
+
+
+            $(document).on("click", "#save_btn", function()
+            {
+                if (JSON.stringify(updated_fields_values) == "{}"){
+                    document.getElementById('popupMessage1').innerHTML = '<br>' + "You have no changes to save." + '<br>';
+                    document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                    $("#messageAcknowledge").removeAttr('style');
+                    $('#triggerPopup').modal('show');
+                }
+                else{
+                    console.log("updated fields values: "+JSON.stringify(updated_fields_values));
+                    var formData = new FormData();
+                    var token = $('[name=csrfmiddlewaretoken]').val();
+                    formData.append("csrfmiddlewaretoken", token);
+                    {% comment %} formData.append("data", JSON.stringify(updated_fields_values)); {% endcomment %}
+
+                    
+                    
+                    var series = {
+                        data: []    
+                    };
+                    
+                    
+                    
+                    for (var i=0; i<filter_table_data.length; i++) {
+                        var x=$("#row_id_"+(i+1)+" :selected").val();
+                        series.data.push({index: i, selectedoption: x});
+                    }
+                    let employee = Object.assign(updated_fields_values, series);
+
+                    formData.append("data", JSON.stringify(employee)); 
+                    
+                 
+                   
+
+                    
+                    document.getElementById('popupMessage1').innerHTML = '<br>Processing...<br>';
+                    $("#popupconfirm").attr("style", "display: none;");
+                    $("#messageAcknowledge").attr("style", "display: none;");
+                    $("#selectdealid").attr("style", "display: none;");
+                    $("#save_changes").attr("style", "display: none;");
+                    $("#discard_changes").attr("style", "display: none;");
+                    $('#triggerPopup').modal('show');
+                    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+                    $.ajax({
+                        headers:{
+                            "X-CSRFToken": csrftoken
+                        },
+                        url: '/bureau/update_bureau_data/',
+                        data: formData,
+                        type: 'POST',
+                        contentType: false, 
+                        processData: false, 
+                        success: function(res){
+                            console.log(JSON.parse(res));
+                            response = JSON.parse(res);
+                            if (response.status["type"]=="success")
+                            {
+                                // console.log("file upload sucess");
+                                //location.reload();
+                                document.getElementById('popupMessage1').innerHTML = '<br>' + response.status["message"] + '<br>';
+                                document.getElementById('messageAcknowledge').innerHTML = 'OK';
+                                $("#popupconfirm").attr("style", "display: none;");
+                                $("#selectdealid").attr("style", "display: none;");
+                                $("#messageAcknowledge").removeAttr('style');
+                                $('#triggerPopup').modal('show');
+                            } 
+                            else {
+                                // console.log("file upload else");
+                                document.getElementById('popupMessage1').innerHTML = response.status["message"];
+                                document.getElementById('messageAcknowledge').innerHTML = 'cancel';
+                                $("#popupconfirm").removeAttr('style');
+                                $("#selectdealid").attr("style", "display: none;");
+                                $("#messageAcknowledge").removeAttr('style');
+                                $('#triggerPopup').modal('show');
+                            }
+                        },
+                    });
+                }
+                filterdData();
+                
+            }); 
+
+            
+            $(document).on("click", "#next_btn", function()
+            {
+                //console.log("updated_fields_values: "+JSON.stringify(updated_fields_values));
+                if (JSON.stringify(updated_fields_values) == "{}"){
+                    // Go to the next screen
+                    location.href="{% url 'audit_report' %}";
+                }
+                else{
+                    document.getElementById('popupMessage1').innerHTML = '<br>Do you want to save your changes ?<br>';
+                    $("#messageAcknowledge").attr("style", "display: none;");
+                    $("#save_changes").attr("style", "display: block;");
+                    $("#discard_changes").attr("style", "display: block;");
+                    $('#triggerPopup').modal('show');
+                }
+            }); 
+
+
+            $(document).on("click", "#save_changes", function(){
+                var formData = new FormData();
+                var token = $('[name=csrfmiddlewaretoken]').val();
+                formData.append("csrfmiddlewaretoken", token);
+                formData.append("data", JSON.stringify(updated_fields_values));
+                document.getElementById('popupMessage1').innerHTML = '<br>Saving your changes...<br>';
+                $("#messageAcknowledge").attr("style", "display: none;");
+                $("#save_changes").attr("style", "display: none;");
+                $("#discard_changes").attr("style", "display: none;");
+                $('#triggerPopup').modal('show');
+                var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                $.ajax({
+                    headers:{
+                        "X-CSRFToken": csrftoken
+                     },
+                    url: '/bureau/update_bureau_data/',
+                    data: formData,
+                    type: 'POST',
+                    contentType: false, 
+                    processData: false, 
+                    success: function(res){
+                        console.log(JSON.parse(res));
+                        response = JSON.parse(res);
+                        if (response.status["type"]=="success")
+                        {
+                            location.reload();
+                            location.href="{% url 'audit_report' %}"; 
+                        } 
+                        else {
+                            // console.log("file upload else");
+                            document.getElementById('popupMessage1').innerHTML = "Sorry! server error, please try again.";
+                            document.getElementById('messageAcknowledge').innerHTML = 'cancel';
+                            $("#messageAcknowledge").removeAttr('style');
+                            $('#triggerPopup').modal('show');
+                        }
+                    },
+                });
+            });
+            
+            $(document).on("click", "#reset_view", function(){
+				filter_table_data = table_data;
+				$.fn.populateTable();
+				$('.filterheader').each(function( index ) {
+					$(this).html($(this).html().replace('<i class="fa fa-filter"></i>', ''));
+					$(this).removeClass('filterheader');
+					$(this).addClass('columnheader');
+				});
+            });
+
+            $(document).on("click", "#discard_changes", function(){
+                location.reload();
+                location.href="{% url 'audit_report' %}";
+            });
+            
+
+        
+			$.fn.populateTable = function() {
+				tableBody = $("#bureau_data_table tbody");
+				tableBody.empty();
+                //console.log(filter_table_data)
+             
+				if(filter_table_data && filter_table_data.length > 0) {
+					var row0 = filter_table_data[0];
+					var prev_load_type = row0['Loan_type'];
+					var prev_disburse_date = row0['Disbursal_date'];
+
+                    var prev_disburse_amount = row0['Disbursed_amount'];
+					var prev_id = row0['index'];
+
+					var default_color = '';
+
+					for (var i=0; i<filter_table_data.length; i++) {
+						var row = filter_table_data[i];
+
+						var load_type = row['Loan_type'];
+						var disburse_date = row['Disbursal_date'];
+
+                        var disburse_amount = row['Disbursed_amount'];
+
+						id = row['index'];
+						
+						var row_color = default_color;
+						if(load_type == prev_load_type && disburse_date == prev_disburse_date && disburse_amount== prev_disburse_amount && i != 0) {
+							row_color = "";
+							$("#bureau_data_table tbody #" + prev_id).css('background-color', row_color);
+						}
+
+						row_start = "<tr style='background-color: " + row_color + "' id="+id+">";
+						row_end = "</tr>";
+						
+						if(row['Loan_Selection_user_edited'] == 0){
+							if (row['Loan_Selection'] == 'Yes'){
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" checked="" name="bureau'+id+'"/></td>';
+							}
+							else{
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" name="bureau'+id+'"/></td>';
+							}
+						}
+						else{
+							if (row['Loan_Selection_edited'] == 'Yes'){
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" checked="" name="bureau'+id+'"/></td>';
+							}
+							else{
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" name="bureau'+id+'"/></td>';
+							}
+						}
+
+						
+
+						date_reported_markup = '<td>'+row['Date_reported']+'</td>';
+						loan_type_markup = '<td>'+row['Loan_type']+'</td>';
+						loan_status_markup = '<td>'+row['Loan_status']+'</td>';
+						disbursal_date_markup = '<td>'+row['Disbursal_date']+'</td>';
+						if (row['Disbursed_amount_user_edited'] == 0){
+							disbursal_amount_markup = '<td id=disbursed_'+id+' class="Disbursed_amount">'+ intlFormatCurrency.format(row['Disbursed_amount']) +'</td>';
+						}
+						else{
+							disbursal_amount_markup = '<td id=disbursed_'+id+' class="Disbursed_amount ">'+ intlFormatCurrency.format(row['Disbursed_amount_edited']) +'</td>';
+						}
+
+                        // Back to Default dropdown with conditions
+                        var reset_markup = ''
+                        var tenure_markup = ''
+                        var emi_markup = ''
+                        var roi_markup = ''
+
+                        //Bureau
+                        if(row['valuetype']=='recommended'){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended '+'selected'+'> Recommended </option><option value=bureau> Bureau </option><option value=edited> Edited </option></td>'
+                                tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_new']+"'>"+'</td>';
+                                emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_new'])+'</td>';
+                                roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_new'])+"'>"+'</td>';
+                          
+    
+
+                        }
+                        else if(row['valuetype']=='edited'){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau> Bureau </option><option value=edited '+'selected'+'> Edited </option></td>'
+                                emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_edited'])+'</td>';
+                                                                    roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_edited'])+"'>"+'</td>';
+                                                                tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_edited']+"'>"+'</td>';
+                                                               
+
+                        }
+                        else if(row['valuetype']=='bureau'){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                                tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                                 emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                                 roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                                 
+
+                        }
+
+                        //bureau
+                        else if(row['Tenure'] !=null || row['ROI'] !=  null || row['EMI'] !=0){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                           tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                        }
+                        else if((row['Tenure'] !=null && row['Tenure'] !='') || (row['ROI'] !=null && row['ROI'] !='') || row['EMI'] !=0){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                           tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                        }
+                        //Edited
+
+                       else if(((row['Tenure_edited'] !=(null||0)) && (row['ROI_edited'] !=(null||0))) && (row['EMI_edited'] != (null||0))){
+                        reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau> Bureau </option><option value=edited '+'selected'+'> Edited </option></td>'
+                        emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_edited'])+'</td>';
+                                                            roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_edited'])+"'>"+'</td>';
+                                                        tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_edited']+"'>"+'</td>';
+                    }
+                     {% comment %} else if((row['Tenure_edited'] !=null &&(row['Tenure_edited'] != ''))  || (row['ROI_edited'] !=null &&(row['ROI_edited'] != '')) || (row['EMI_edited'] != null &&(row['EMI_edited'] != ''))){
+                        reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau> Bureau </option><option value=edited '+'selected'+'> Edited </option></td>'
+                        emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_edited'])+'</td>';
+                                                            roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_edited'])+"'>"+'</td>';
+                                                        tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_edited']+"'>"+'</td>';
+                    }
+ {% endcomment %}
+
+                        // recommended
+                        else if((row['Tenure_new'] != null) || (row['ROI_new'] != null) || (row['EMI_new'] != null)){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended '+'selected'+'> Recommended </option><option value=bureau> Bureau </option><option value=edited> Edited </option></td>'
+                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_new']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_new'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_new'])+"'>"+'</td>';
+
+                        }
+                        else if((row['Tenure_new'] != null && row['Tenure_new'] != '') || (row['ROI_new'] != null && row['ROI_new'] != '') || (row['EMI_new'] != null && row['EMI_new'] != '')){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended '+'selected'+'> Recommended </option><option value=bureau> Bureau </option><option value=edited> Edited </option></td>'
+                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_new']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_new'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_new'])+"'>"+'</td>';
+
+                        }
+                       
+                       else {
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                           tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                        }
+
+						//emi = '<td class="EMI">'+row['EMI']+'</td>';
+						current_balance_markup = '<td>' + intlFormatCurrency.format(row['Current_Balance']) + '</td>';
+						dpd_markup = '<td>'+row['DPD']+'</td>';
+						overdue_amount_markup = '<td>'+intlFormatCurrency.format(row['Overdue_amount'])+'</td>';
+						source_markup = '<td>'+row['Source']+'</td>';
+
+
+
+
+						if (row['extra_column'] == null){
+
+                                markup = row_start + loan_selection_markup + date_reported_markup + loan_type_markup + loan_status_markup + disbursal_date_markup + disbursal_amount_markup + tenure_markup + roi_markup + emi_markup + current_balance_markup + dpd_markup + overdue_amount_markup + source_markup + reset_markup + row_end;
+						}
+						else{
+							//console.log("extra column: "+row['extra_column']);
+							info = '<td class="info" style="border:none;"><a value="'+ row['extra_column'] +'" href="#">i</a></td>';
+
+                                markup = row_start + loan_selection_markup + date_reported_markup + loan_type_markup + loan_status_markup + disbursal_date_markup + disbursal_amount_markup + tenure_markup + roi_markup + emi_markup + current_balance_markup + dpd_markup + overdue_amount_markup + source_markup + reset_markup + info + row_end;
+						}
+						tableBody.append(markup);
+
+						prev_load_type = load_type;
+						prev_disburse_date = disburse_date;
+						prev_disburse_amount = disburse_amount;
+						prev_id = id;
+					}
+				}
+			}
+
+
+			 $.fn.populateTableWithHeaderFilterData = function(header_filter_data) {
+				tableBody = $("#bureau_data_table tbody");
+				tableBody.empty();
+				if(header_filter_data && header_filter_data.length > 0) {
+					var row0 = header_filter_data[0];
+					var prev_load_type = row0['Loan_type'];
+					var prev_disburse_date = row0['Disbursal_date'];
+
+                    var prev_disburse_amount = row0['Disbursed_amount'];
+					var prev_id = row0['index'];
+
+					var default_color = '';
+
+					for (var i=0; i<header_filter_data.length; i++) {
+						var row = header_filter_data[i];
+
+						var load_type = row['Loan_type'];
+						var disburse_date = row['Disbursal_date'];
+
+                        var disburse_amount = row['Disbursed_amount'];
+
+						id = row['index'];
+
+						var row_color = default_color;
+						if(load_type == prev_load_type && disburse_date == prev_disburse_date && disburse_amount== prev_disburse_amount && i != 0) {
+							row_color = "";
+							$("#bureau_data_table tbody #" + prev_id).css('background-color', row_color);
+						}
+
+						row_start = "<tr style='background-color: " + row_color + "' id="+id+">";
+						row_end = "</tr>";
+
+						if(row['Loan_Selection_user_edited'] == 0){
+							if (row['Loan_Selection'] == 'Yes'){
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" checked="" name="bureau'+id+'"/></td>';
+							}
+							else{
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" name="bureau'+id+'"/></td>';
+							}
+						}
+						else{
+							if (row['Loan_Selection_edited'] == 'Yes'){
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" checked="" name="bureau'+id+'"/></td>';
+							}
+							else{
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" name="bureau'+id+'"/></td>';
+							}
+						}
+
+
+
+						date_reported_markup = '<td>'+row['Date_reported']+'</td>';
+						loan_type_markup = '<td>'+row['Loan_type']+'</td>';
+						loan_status_markup = '<td>'+row['Loan_status']+'</td>';
+						disbursal_date_markup = '<td>'+row['Disbursal_date']+'</td>';
+						if (row['Disbursed_amount_user_edited'] == 0){
+							disbursal_amount_markup = '<td id=disbursed_'+id+' class="Disbursed_amount">'+ intlFormatCurrency.format(row['Disbursed_amount']) +'</td>';
+						}
+						else{
+							disbursal_amount_markup = '<td id=disbursed_'+id+' class="Disbursed_amount ">'+ intlFormatCurrency.format(row['Disbursed_amount_edited']) +'</td>';
+						}
+
+                        // Back to Default dropdown with conditions
+                        var reset_markup = ''
+                        var tenure_markup = ''
+                        var emi_markup = ''
+                        var roi_markup = ''
+
+                        //Bureau
+                        if(row['Tenure'] !=null || row['ROI'] !=  null || row['EMI'] !=0){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                           tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                        }
+                        else if((row['Tenure'] !=null && row['Tenure'] !='') || (row['ROI'] !=null && row['ROI'] !='') || row['EMI'] !=0){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                           tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                        }
+
+                        // recommended
+                        else if((row['Tenure_new'] != null) || (row['ROI_new'] != null) || (row['EMI_new'] != null)){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended '+'selected'+'> Recommended </option><option value=bureau> Bureau </option><option value=edited> Edited </option></td>'
+                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_new']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_new'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_new'])+"'>"+'</td>';
+
+                        }
+                        else if((row['Tenure_new'] != null && row['Tenure_new'] != '') || (row['ROI_new'] != null && row['ROI_new'] != '') || (row['EMI_new'] != null && row['EMI_new'] != '')){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended '+'selected'+'> Recommended </option><option value=bureau> Bureau </option><option value=edited> Edited </option></td>'
+                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_new']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_new'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_new'])+"'>"+'</td>';
+
+                        }
+                       //Edited
+
+                       else if((row['Tenure_edited'] !=null) || (row['ROI_edited'] !=null) || (row['EMI_edited'] != null)){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau> Bureau </option><option value=edited '+'selected'+'> Edited </option></td>'
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_edited'])+'</td>';
+                                                                roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_edited'])+"'>"+'</td>';
+                                                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_edited']+"'>"+'</td>';
+                        }
+                         else if((row['Tenure_edited'] !=null &&(row['Tenure_edited'] != ''))  || (row['ROI_edited'] !=null &&(row['ROI_edited'] != '')) || (row['EMI_edited'] != null &&(row['EMI_edited'] != ''))){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau> Bureau </option><option value=edited '+'selected'+'> Edited </option></td>'
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_edited'])+'</td>';
+                                                                roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_edited'])+"'>"+'</td>';
+                                                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_edited']+"'>"+'</td>';
+                        }
+
+                       else {
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                           tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                        }
+
+						//emi = '<td class="EMI">'+row['EMI']+'</td>';
+						current_balance_markup = '<td>' + intlFormatCurrency.format(row['Current_Balance']) + '</td>';
+						dpd_markup = '<td>'+row['DPD']+'</td>';
+						overdue_amount_markup = '<td>'+intlFormatCurrency.format(row['Overdue_amount'])+'</td>';
+						source_markup = '<td>'+row['Source']+'</td>';
+
+
+
+
+						if (row['extra_column'] == null){
+
+                                markup = row_start + loan_selection_markup + date_reported_markup + loan_type_markup + loan_status_markup + disbursal_date_markup + disbursal_amount_markup + tenure_markup + roi_markup + emi_markup + current_balance_markup + dpd_markup + overdue_amount_markup + source_markup + reset_markup + row_end;
+						}
+						else{
+							//console.log("extra column: "+row['extra_column']);
+							info = '<td class="info" style="border:none;"><a value="'+ row['extra_column'] +'" href="#">i</a></td>';
+
+                                markup = row_start + loan_selection_markup + date_reported_markup + loan_type_markup + loan_status_markup + disbursal_date_markup + disbursal_amount_markup + tenure_markup + roi_markup + emi_markup + current_balance_markup + dpd_markup + overdue_amount_markup + source_markup + reset_markup + info + row_end;
+						}
+						tableBody.append(markup);
+
+						prev_load_type = load_type;
+						prev_disburse_date = disburse_date;
+						prev_disburse_amount = disburse_amount;
+						prev_id = id;
+					}
+				}
+
+			} 
+
+            {% comment %} $.fn.populateTableWithHeaderFilterData = function() {
+				tableBody = $("#bureau_data_table tbody");
+				tableBody.empty();
+             
+				if(header_filter_data && header_filter_data.length > 0) {
+					var row0 = header_filter_data[0];
+					var prev_load_type = row0['Loan_type'];
+					var prev_disburse_date = row0['Disbursal_date'];
+
+                    var prev_disburse_amount = row0['Disbursed_amount'];
+					var prev_id = row0['index'];
+
+					var default_color = '';
+
+					for (var i=0; i<header_filter_data.length; i++) {
+						var row = header_filter_data[i];
+
+						var load_type = row['Loan_type'];
+						var disburse_date = row['Disbursal_date'];
+
+                        var disburse_amount = row['Disbursed_amount'];
+
+						id = row['index'];
+						
+						var row_color = default_color;
+						if(load_type == prev_load_type && disburse_date == prev_disburse_date && disburse_amount== prev_disburse_amount && i != 0) {
+							row_color = "";
+							$("#bureau_data_table tbody #" + prev_id).css('background-color', row_color);
+						}
+
+						row_start = "<tr style='background-color: " + row_color + "' id="+id+">";
+						row_end = "</tr>";
+						
+						if(row['Loan_Selection_user_edited'] == 0){
+							if (row['Loan_Selection'] == 'Yes'){
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" checked="" name="bureau'+id+'"/></td>';
+							}
+							else{
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" name="bureau'+id+'"/></td>';
+							}
+						}
+						else{
+							if (row['Loan_Selection_edited'] == 'Yes'){
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" checked="" name="bureau'+id+'"/></td>';
+							}
+							else{
+								loan_selection_markup = '<td class="loan_selection"><input type="hidden" name="last_modified_user" value="bureau"><input class="loan_selection_input" type="checkbox" name="bureau'+id+'"/></td>';
+							}
+						}
+
+						
+
+						date_reported_markup = '<td>'+row['Date_reported']+'</td>';
+						loan_type_markup = '<td>'+row['Loan_type']+'</td>';
+						loan_status_markup = '<td>'+row['Loan_status']+'</td>';
+						disbursal_date_markup = '<td>'+row['Disbursal_date']+'</td>';
+						if (row['Disbursed_amount_user_edited'] == 0){
+							disbursal_amount_markup = '<td id=disbursed_'+id+' class="Disbursed_amount">'+ intlFormatCurrency.format(row['Disbursed_amount']) +'</td>';
+						}
+						else{
+							disbursal_amount_markup = '<td id=disbursed_'+id+' class="Disbursed_amount ">'+ intlFormatCurrency.format(row['Disbursed_amount_edited']) +'</td>';
+						}
+
+                        // Back to Default dropdown with conditions
+                        var reset_markup = ''
+                        var tenure_markup = ''
+                        var emi_markup = ''
+                        var roi_markup = ''
+
+                        //Bureau
+                        if(row['Tenure'] !=null || row['ROI'] !=  null || row['EMI'] !=0){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                           tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                        }
+                        else if((row['Tenure'] !=null && row['Tenure'] !='') || (row['ROI'] !=null && row['ROI'] !='') || row['EMI'] !=0){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                           tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                        }
+
+                        // recommended
+                        else if((row['Tenure_new'] != null) || (row['ROI_new'] != null) || (row['EMI_new'] != null)){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended '+'selected'+'> Recommended </option><option value=bureau> Bureau </option><option value=edited> Edited </option></td>'
+                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_new']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_new'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_new'])+"'>"+'</td>';
+
+                        }
+                        else if((row['Tenure_new'] != null && row['Tenure_new'] != '') || (row['ROI_new'] != null && row['ROI_new'] != '') || (row['EMI_new'] != null && row['EMI_new'] != '')){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended '+'selected'+'> Recommended </option><option value=bureau> Bureau </option><option value=edited> Edited </option></td>'
+                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_new']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_new'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_new'])+"'>"+'</td>';
+
+                        }
+                       //Edited
+
+                       else if((row['Tenure_edited'] !=null) || (row['ROI_edited'] !=null) || (row['EMI_edited'] != null)){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau> Bureau </option><option value=edited '+'selected'+'> Edited </option></td>'
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_edited'])+'</td>';
+                                                                roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_edited'])+"'>"+'</td>';
+                                                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_edited']+"'>"+'</td>';
+                        }
+                         else if((row['Tenure_edited'] !=null &&(row['Tenure_edited'] != ''))  || (row['ROI_edited'] !=null &&(row['ROI_edited'] != '')) || (row['EMI_edited'] != null &&(row['EMI_edited'] != ''))){
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau> Bureau </option><option value=edited '+'selected'+'> Edited </option></td>'
+                            emi_markup = '<td id=emi_'+id+' class="EMI" ">'+intlFormatCurrency.format(row['EMI_edited'])+'</td>';
+                                                                roi_markup = '<td id=roi_'+id+' class="ROI" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editRoi_"+id+" value='"+intlFormatROI.format(row['ROI_edited'])+"'>"+'</td>';
+                                                            tenure_markup = '<td id=tenure_'+id+' class="Tenure" style="color: red;">'+"<input type='number' style='width:70px; color: red;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure_edited']+"'>"+'</td>';
+                        }
+
+                       else {
+                            reset_markup = '<td class="row_status" id=row_id_'+id+'><select class=\"select_cust\"onchange=\"bureau_data_by_condition('+id+')\" id=row_id_'+id+'><option value=recommended> Recommended </option><option value=bureau '+'selected'+'> Bureau </option><option value=edited> Edited </option></td>'
+                           tenure_markup = '<td id=tenure_'+id+' class="Tenure">'+"<input type='number' style='width:70px;' class='input-data' min='0' id=editTenure_"+id+" value='"+row['Tenure']+"'>"+'</td>';
+                            emi_markup = '<td id=emi_'+id+' class="EMI">'+intlFormatCurrency.format(row['EMI'])+'</td>';
+                            roi_markup = '<td id=roi_'+id+' class="ROI">'+"<input type='number' style='width:70px;' class='input-data' id=editRoi_"+id+" min='0' value='"+intlFormatROI.format(row['ROI'])+"'>"+'</td>';
+                        }
+
+						//emi = '<td class="EMI">'+row['EMI']+'</td>';
+						current_balance_markup = '<td>' + intlFormatCurrency.format(row['Current_Balance']) + '</td>';
+						dpd_markup = '<td>'+row['DPD']+'</td>';
+						overdue_amount_markup = '<td>'+intlFormatCurrency.format(row['Overdue_amount'])+'</td>';
+						source_markup = '<td>'+row['Source']+'</td>';
+
+
+
+
+						if (row['extra_column'] == null){
+
+                                markup = row_start + loan_selection_markup + date_reported_markup + loan_type_markup + loan_status_markup + disbursal_date_markup + disbursal_amount_markup + tenure_markup + roi_markup + emi_markup + current_balance_markup + dpd_markup + overdue_amount_markup + source_markup + reset_markup + row_end;
+						}
+						else{
+							//console.log("extra column: "+row['extra_column']);
+							info = '<td class="info" style="border:none;"><a value="'+ row['extra_column'] +'" href="#">i</a></td>';
+
+                                markup = row_start + loan_selection_markup + date_reported_markup + loan_type_markup + loan_status_markup + disbursal_date_markup + disbursal_amount_markup + tenure_markup + roi_markup + emi_markup + current_balance_markup + dpd_markup + overdue_amount_markup + source_markup + reset_markup + info + row_end;
+						}
+						tableBody.append(markup);
+
+						prev_load_type = load_type;
+						prev_disburse_date = disburse_date;
+						prev_disburse_amount = disburse_amount;
+						prev_id = id;
+					}
+				}
+			} {% endcomment %}
+
+        };
+
+
+
+
+
+    function bureau_data_by_condition(id){
+        var intlFormatCurrency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+		var intlFormatROI = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
+        var option = $("#row_id_"+id+" :selected").val();
+        
+
+        var formData = new FormData();
+        formData.append("index", id);
+        formData.append("select", option);
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+            headers:{
+                    "X-CSRFToken": csrftoken
+                },
+            url: '/bureau/bureau_data_by_condition/',
+            data: formData,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            success: function(response){
+                if (response.status["type"]=="success" && response.selected=="bureau")
+                {
+                    var disbursed_amount = response.data[0]["Disbursed_amount"]
+                    var tenure = response.data[0]["Tenure"]
+                    var roi = response.data[0]["ROI"]
+                    var emi = response.data[0]["EMI"]
+                    document.getElementById('disbursed_'+id).innerText = intlFormatCurrency.format(disbursed_amount);
+                    document.getElementById('editTenure_'+id).value = tenure;
+                    document.getElementById('editRoi_'+id).value = roi;
+                    document.getElementById('emi_'+id).innerText = intlFormatCurrency.format(emi);
+
+
+                    document.getElementById('tenure_'+id).style.color = 'grey';
+                    document.getElementById('roi_'+id).style.color = 'grey';
+                }
+                if (response.status["type"]=="success" && response.selected=="edited")
+                {
+                    var disbursed_amount = response.data[0]["Disbursed_amount"]
+                    var tenure_edited = response.data[0]["Tenure_edited"]
+                    var roi_edited = response.data[0]["ROI_edited"]
+                    var emi_edited = response.data[0]["EMI_edited"]
+
+                    document.getElementById('disbursed_'+id).innerText = intlFormatCurrency.format(disbursed_amount);
+                    document.getElementById('editTenure_'+id).value = tenure_edited;
+                    document.getElementById('editRoi_'+id).value = roi_edited;
+                    document.getElementById('emi_'+id).innerText = intlFormatCurrency.format(emi_edited);
+
+                    document.getElementById('tenure_'+id).style.color = 'red';
+                    document.getElementById('roi_'+id).style.color = 'red';
+                }
+                if (response.status["type"]=="success" && response.selected=="recommended")
+                {
+                    var disbursed_amount = response.data[0]["Disbursed_amount"]
+                    var tenure_new = response.data[0]["Tenure_new"]
+                    var roi_new = response.data[0]["ROI_new"]
+                    var emi_new = response.data[0]["EMI_new"]
+                    document.getElementById('disbursed_'+id).innerText = intlFormatCurrency.format(disbursed_amount);
+                    document.getElementById('editTenure_'+id).value = tenure_new;
+                    document.getElementById('editRoi_'+id).value = roi_new;
+                    document.getElementById('emi_'+id).innerText = intlFormatCurrency.format(emi_new);
+
+                    document.getElementById('tenure_'+id).style.color = 'red';
+                    document.getElementById('roi_'+id).style.color = 'red';
+                }
+            },
+        });
+    }
+    function filterdData(){
+        //debugger;
+        var selected_data = [];
+        var unselected_data = [];
+        var table = document.getElementById("table_tbody_id");
+        for (var i = 0, row; row = table.rows[i]; i++) {
+           for (var j = 0, col; col = row.cells[j]; j++) {
+                var s = col;
+                if(j == 0 && s.lastElementChild.checked == true){
+
+                    var loan_type = s.parentElement.cells[2].innerText;
+                    var loan_status = s.parentElement.cells[3].innerText;
+                    var disbursal_date = s.parentElement.cells[4].innerText;
+                    var disbursal_amount = s.parentElement.cells[5].innerText;
+                    var source = s.parentElement.cells[12].innerText;
+                    var dict = {
+
+                        loan_type: loan_type,
+                        loan_status: loan_status,
+                        disbursal_date:disbursal_date,
+                        disbursal_amount: disbursal_amount,
+                        source:source
+                    }
+                    selected_data.push(dict);
+                    break;
+                }
+                else{
+
+                    var loan_type = s.parentElement.cells[2].innerText;
+                    var loan_status = s.parentElement.cells[3].innerText;
+                    var disbursal_date = s.parentElement.cells[4].innerText;
+                    var disbursal_amount = s.parentElement.cells[5].innerText;
+                    var source = s.parentElement.cells[12].innerText;
+                    var dict = {
+
+                        loan_type: loan_type,
+                        loan_status: loan_status,
+                        disbursal_date:disbursal_date,
+                        disbursal_amount: disbursal_amount,
+                        source:source
+                    }
+                    unselected_data.push(dict);
+                    break;
+                }
+           }
+        }
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+        $.ajax({
+                headers:{
+                        "X-CSRFToken": csrftoken
+                    },
+                url: '/bureau/selected_bureau_data/',
+                method: 'POST',
+                data: JSON.stringify({ 'selected': selected_data,'unselected':unselected_data }),
+                contentType: false,
+                success: function (data) {
+
+                },
+
+            });
+    }
+
+
+    </script>
+
+{% endblock content %}

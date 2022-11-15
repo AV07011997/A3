@@ -1,0 +1,381 @@
+{% extends "header_footer.html" %} {% block content %} {% load static %}
+
+<style>
+  .circles {
+    /* width: 100px;
+  height: 100px;*/
+
+    border: 10px solid white;
+
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+
+    display: inline-block;
+    text-align: center;
+
+    width: 10em;
+    height: 10em;
+    line-height: 9em;
+
+    margin-top: 2em;
+
+    background-color: rgb(46, 46, 46);
+    color: white;
+  }
+
+  tr,
+  th,
+  td {
+    border: solid black 0.0625em;
+    color: black;
+    padding: 0.3125em;
+    width: 280px;
+    text-align: center;
+  }
+
+  table {
+    border-collapse: collapse;
+    margin-right: 1%;
+    margin-bottom: 10px;
+  }
+
+  .header-table {
+    background-color: rgb(46, 46, 46);
+    color: white;
+  }
+
+  .num {
+    text-align: center;
+  }
+
+  a {
+    color: royalblue;
+  }
+  #right {
+    margin-left: 1000px;
+  }
+  .abcd2 {
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding-right: 0px;
+    width: 20em;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+    color: black;
+    text-align: left;
+  }
+  .left {
+    margin-left: 3%;
+  }
+  .button {
+    cursor: pointer;
+    color: royalblue;
+  }
+  .circlesubtext {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+</style>
+
+<div
+  class="content"
+  style="margin-left: 10px; padding: 0px; margin-top: 20px; padding-top: 0px"
+>
+  <div
+    class="container"
+    style="margin-left: 10px; padding: 0px; margin-top: 0px; padding-top: 0px"
+  >
+    <div class="row">
+      <div class="col-md-12">
+        <h4>
+          Bureau summary {% if request.session.deal_id %}(Deal ID:
+          {{request.session.deal_id}}, Customer ID:
+          {{request.session.customer_id.capitalize}}, Customer Name:
+          {{request.session.name}}){% endif %}
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%for item in specifics%}
+<div style="display: flex; width: 100%; justify-content: space-between">
+  <div class="circlesubtext">
+    <div class="circles">{{item.score}}</div>
+    <div style="text-align: center; color: black"><b>Bureau score</b></div>
+  </div>
+
+  <div class="circlesubtext">
+    <div class="circles">{{item.number_of_active_tradelines}}</div>
+    <div style="color: black">
+      <b>Active tradelines</b>
+      <div>Unsecured: {{item.number_of_unsecured_active_tradelines}}</div>
+      <div>Secured: {{item.number_of_secured_active_tradelines}}</div>
+    </div>
+  </div>
+
+  <div class="circlesubtext">
+    <div class="circles">{{item.current_balance_active}}</div>
+    <div style="color: black">
+      <b>Current balance</b>
+      <div>
+        Unsecured: {{item.sum_of_current_balance_of_unsecured_active_loans}}
+      </div>
+      <div>
+        Secured: {{item.sum_of_current_balance_of_secured_active_loans}}
+      </div>
+    </div>
+  </div>
+
+  <div class="circlesubtext">
+    <div class="circles">{{item.sum_of_emi_of_active_loans}}</div>
+    <div style="color: black">
+      <b>EMI</b>
+      <div>Largest EMI: {{item.max_emi_of_active_loans}}</div>
+      <div>Smallest EMI: {{item.min_emi_of_active_loans}}</div>
+    </div>
+  </div>
+
+  <div class="circlesubtext">
+    <div class="circles">{{latest.0}}({{latest.1}})</div>
+    <div style="color: black">
+      <b>Latest Overdue (DPD)</b>
+      <div>Unsecured: {{item.unsecured_last_dpd_status}}</div>
+      <div>Secured: {{item.secured_last_dpd_status}}</div>
+    </div>
+  </div>
+  <div class="circlesubtext">
+    <div class="circles">{{max1.0}}({{max1.1}})</div>
+    <div style="color: black">
+      <b>Max Overdue (DPD)</b>
+      <div>Unsecured: {{item.unsecured_max_dpd_status}}</div>
+      <div>Secured: {{item.secured_max_dpd_status}}</div>
+    </div>
+  </div>
+</div>
+
+{%endfor%}
+
+<!-- <p>{{data}}</p> -->
+<!-- <p>{{specifics1}}</p> -->
+<!-- <p>{{data1}}</p> -->
+<!-- <p>{{data2}}</p> -->
+<!-- <p>{{data3}}</p> -->
+<!-- <p>{{data4}}</p> -->
+<!-- <p>{{specifics}}</p> -->
+<br /><br /><br />
+<div style="display: flex; column-gap: 50px; justify-content: center">
+  <div>
+    {%for item in specifics%}
+    <table style="display: inline-table">
+      <tr>
+        <th class="header-table">Age(in years)</th>
+
+        <!-- <td class="num"><a  onclick="window.open('age/{{customer_id}}', 'MsgWindow','width=600','height=600')" class="button"><u>{{item.age}} </u>
+		</a></td> -->
+
+        <td class="num">{{item.age}}</td>
+      </tr>
+
+      <tr>
+        <th class="header-table" rowspan="3">
+          Last Reported Address <br />
+          <a
+            onclick="window.open('{{customer_id}}', 'MsgWindow','width=600','height=600')"
+            class="button"
+            ><u>{{No_Of_Address}} Other Reported</u></a
+          >
+        </th>
+      </tr>
+
+      <tr>
+        <td>{{item.last_reported_address_date}}</td>
+      </tr>
+      <tr>
+        <td
+          title="{{item.last_reported_address}}"
+          class="abcd2"
+          style="text-align: center"
+        >
+          {{item.last_reported_address}}
+        </td>
+      </tr>
+
+      <tr>
+        <th style="width: 13em" class="header-table">Last Reported Phone no</th>
+        <td class="num">{{item.last_reported_phone_no}}</td>
+      </tr>
+    </table>
+    {%endfor%} {%for item in specifics%}
+    <table>
+      <tr>
+        <th class="header-table">#Enquiries in last 6 months</th>
+        <td class="num">{{item.number_of_inquiries_in_last_6_month}}</td>
+      </tr>
+      <tr>
+        <th rowspan="4" class="header-table">Last Enquiry Reported</th>
+      </tr>
+      <tr>
+        <td>{{item.last_inquiry_type}}</td>
+      </tr>
+      <tr>
+        <td class="num">{{item.last_inquiry_amount}}</td>
+      </tr>
+      <tr>
+        <td>{{item.last_inquiry_year}}</td>
+      </tr>
+      <!-- <tr>
+		<td colspan="2"><a href="#">all inquiries</a></td>
+		<td colspan="2">all inquiries<</td>
+		
+	</tr> -->
+    </table>
+    {%endfor%} {%for item in specifics%}
+    <table>
+      <tr>
+        <th rowspan="4" class="header-table">Oldest Loan Reported</th>
+      </tr>
+      <tr>
+        <td>{{item.oldest_loan_disbursed_type}}</td>
+      </tr>
+      <tr>
+        <td class="num">{{item.oldest_loan_disbursed_amount}}</td>
+      </tr>
+      <tr>
+        <td>{{item.oldest_loan_disbursed_year}}</td>
+      </tr>
+      <tr>
+        <th class="header-table">#Closed Loans till date</th>
+        <td class="num">{{item.number_of_closed_accounts}}</td>
+      </tr>
+      <tr>
+        <th rowspan="4" class="header-table">Last Closed Loan</th>
+      </tr>
+      <tr>
+        <td>{{item.last_closed_loan_type}}</td>
+      </tr>
+      <tr>
+        <td class="num">{{item.last_closed_loan_amount}}</td>
+      </tr>
+      <tr>
+        <td>{{item.last_closed_loan_year}}</td>
+      </tr>
+      <tr>
+        <th rowspan="4" class="header-table">Last Disbursed Loan</th>
+      </tr>
+      <tr>
+        <td>{{item.last_disbursed_loan_type}}</td>
+      </tr>
+      <tr>
+        <td class="num">{{item.last_disbursed_loan_amount}}</td>
+      </tr>
+      <tr>
+        <td>{{item.last_disbursed_loan_year}}</td>
+      </tr>
+      <!-- <tr>
+		<th rowspan="4" class="header-table">Last Disbursed CC/OD Loan</th>
+	</tr>
+	<tr>
+		<td>{{item.last_disbursed_cc_od_loan_type}}</td>
+	</tr>
+	<tr>
+		<td class="num">{{item.last_disbursed_cc_od_loan_amount}}</td>
+	</tr>
+	<tr>
+		<td>{{item.last_disbursed_cc_od_loan_year}}</td>
+	</tr> -->
+    </table>
+
+    {%endfor%}
+  </div>
+
+  <div>
+    {%for item in specifics%}
+    <table>
+      <tr>
+        <th rowspan="3" class="header-table">Largest Active Loan</th>
+      </tr>
+      <tr>
+        <td>{{item.largest_loan_type}}</td>
+      </tr>
+      <tr>
+        <td class="num">{{item.largest_loan_amount}}</td>
+      </tr>
+
+      <tr>
+        <th rowspan="3" class="header-table">Smallest Active Loan</th>
+      </tr>
+      <tr>
+        <td>{{item.smallest_loan_type}}</td>
+      </tr>
+      <tr>
+        <td class="num">{{item.smallest_loan_amount}}</td>
+      </tr>
+
+      <tr>
+        <th rowspan="3" class="header-table">Largest Closed Loan</th>
+      </tr>
+      <tr>
+        <td>{{item.largest_closed_loan_type}}</td>
+      </tr>
+      <tr>
+        <td class="num">{{item.largest_closed_loan_amount}}</td>
+      </tr>
+
+      <tr>
+        <th class="header-table">Max Credit limit of active CC/OD</th>
+        <td class="num">{{item.max_credit_limit_of_active_cc_od}}</td>
+      </tr>
+
+      <tr>
+        <th class="header-table">Total Credit limit of active CC/OD</th>
+        <td class="num">{{item.total_credit_limit_of_active_cc_od}}</td>
+      </tr>
+
+      <tr>
+        <th class="header-table">Current balance of active CC/OD</th>
+        <td class="num">{{item.total_current_balance_of_active_cc_od}}</td>
+      </tr>
+
+      <tr>
+        <th class="header-table">Credit card & Overdraft utilization</th>
+        <td class="num">{{item.cc_od_utilization_ratio}}%</td>
+      </tr>
+
+      <tr>
+        <th class="header-table">Credit utilization (loans)</th>
+        <td class="num">{{item.credit_utilization_ratio}}%</td>
+      </tr>
+    </table>
+    {%endfor%} {%for item in specifics%}
+    <table style="margin-top: 7em">
+      <tr>
+        <th class="header-table">Total overdue</th>
+        <td class="num">{{item.total_overdue_amount}}</td>
+      </tr>
+      <tr>
+        <th class="header-table">#write offs</th>
+        <td class="num">{{item.number_of_written_off_accounts}}</td>
+      </tr>
+      <tr>
+        <th class="header-table">suit filed</th>
+        <td class="num">{{item.number_of_suit_filed_accounts}}</td>
+      </tr>
+      <tr>
+        <th class="header-table">Total written off amount</th>
+        <td class="num">{{item.total_written_off_amount}}</td>
+      </tr>
+    </table>
+    {%endfor%}
+  </div>
+</div>
+
+{% if specifics|length != 0%}
+<div>{% include "test1.html" %}</div>
+{% include "test2.html" %} {% endif %} {%endblock content%}

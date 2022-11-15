@@ -1,0 +1,391 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+<head>
+	<title>KPI | BANK | SUMMARY</title>
+</head>
+
+<style>
+
+	#bank-common-table {
+
+		margin-left: 1.25em;
+	}
+
+	tr, th, td {
+
+		border : solid black 0.0625em;
+		color: black;
+		padding: 0.3125em;
+	}
+
+
+
+	.rm-head {
+
+		background-color: white;
+		border-left-color: white;
+		border-top-color: white;
+	}
+
+	   .header-table {
+
+    background-color: rgb(40,40,40); 
+    color: white;
+    text-align: center;
+
+	}
+
+	.image {
+  		
+  		display: block;
+  		margin-right: 1.875em;
+  		width: 63em;
+	}
+
+	.container-bck-table {
+
+		display: inline-flex;
+	}
+
+	#monthly-balance {
+
+		margin-top: 3.5em;
+		width: 26em;
+		margin-left: 0em; 
+		
+	}
+
+	.num {
+
+		text-align: right;
+		
+	}
+	
+
+	#inflow-outflow {
+
+		margin-top: 2.5em;
+		width: 26em;
+		margin-left: 0em;
+	}
+
+	#abstract {
+
+		width: 89.6em;
+		margin-left: 1.5em;
+		
+	}
+
+
+	.abstract-row-2-1 {
+
+		text-align: right;
+		padding-right: 1.875em;
+	}
+
+	.abstract-row-1 {
+
+		background-color: rgb(240,240,240);
+		border-color: rgb(240,240,240);
+		
+	}
+
+	.abstract-row-2 {
+
+		background-color: rgb(224,224,224);
+		border-color: rgb(224,224,224);
+
+	}
+
+	#chq-bounce {
+
+
+		margin-top: 4em; 
+		margin-bottom: 1.25em; 
+		margin-left: 0em; 
+		width:26em;
+	}
+
+	#num-transactions {
+
+		margin-left: 0em; 
+		width:26em;
+	}
+
+	.radio{
+
+        background-color: white ;
+        border-bottom-color:white;
+        border-left-color:white; 
+        border-top-color:white;
+        padding: 10px;
+    }
+    .radio1{
+
+        background-color: white;
+        border-color: white;
+    }
+
+    button {
+		color: royalblue;
+		border: none;
+		background: none; 
+		padding-right: 0px;
+
+	}
+
+	button:hover {
+		
+		color: indigo;
+		
+	}
+
+	a{
+
+		color:royalblue;
+	}
+
+
+</style>
+
+
+
+<div class="content" style="margin-top: 0px;">
+    <div class="container" style="margin-top: px;">
+        <div class="text-right" style="padding-right:183px">
+            <h6><a class="digitization-unfocus" href="{% url 'bureauAnalyze' %}">&emsp;Bureau&emsp;</a><a class="digitization-focus" href="{% url 'bankAnalyze' %}">&emsp;Bank&emsp;</a></h6>
+        </div>
+        <br/>
+    </div>
+</div>
+<div class="content" style="margin-top: 0px; margin-bottom: 0px;">
+    <div class="container" style="margin-top: -80px;">
+        <div class="text-right" style="padding-right:50px">
+            <h6><a class="digitization-focus" href="{% url 'bank_customer_kpi' %}">&emsp;Summary&emsp;</a><a class="digitization-unfocus" href="{% url 'bank_customer_month_kpi' %}">&emsp;Month-wise&emsp;</a><a class="digitization-unfocus" href="{% url 'bank_entity_kpi' %}">&emsp;Counterparties&emsp;</a><a class="digitization-unfocus" href="{% url 'statement' %}">&emsp;Statement&emsp;</a></h6>
+        </div>
+        <br/>
+      
+    </div>
+</div>
+
+
+<div class="content" style="margin-left: 10px;padding: 0px; margin-top: 20px;padding-top: 0px;">
+        <div class="container" style="margin-left: 10px;padding: 0px; margin-top: 0px;padding-top: 0px;">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h4>Bank summary {% if request.session.deal_id %}(Deal ID: {{request.session.deal_id}}, Customer ID: {{request.session.customer_id.capitalize}}, Customer Name: {{request.session.name}}){% endif %}</h4>
+                </div>
+            </div> 
+        </div>
+               
+    </div>
+
+
+{% if data %}
+<form method="POST">
+	{% csrf_token %}
+	<table id="bank-common-table">
+		
+		<thead>
+			<th class="radio1" colspan="0" ></th>
+			<th class="rm-head" colspan="2"></th>
+			<th colspan="2" class="header-table">Transactions</th>
+			
+		</thead>
+			<thead>
+			<th class="radio"></th>
+			<th class="header-table">Account number</th>
+			<th class="header-table">Bank name</th>
+			<th class="header-table">From</th>
+			<th class="header-table">To</th>
+		</thead>
+		
+		{%for item in data%}
+		
+		<tr>
+			
+			<td class="radio">
+				
+				<div>
+					{%if item.account_number == n2 %}
+					<label><input type="radio" id='{{account_number}}' name="optbank"  value="{{item.account_number}}" checked="checked" onClick="this.form.submit()"></input></label>
+		           {%else%}
+					
+					
+                 	<label><input type="radio" id='{{account_number}}' name="optbank"  value="{{item.account_number}}"  onClick="this.form.submit()"></input></label>
+					{% endif%}
+            	</div>
+				
+            </td>
+	
+			<td>{{item.account_number}}</td>
+			<td>{{item.bank_name}}</td>
+			<td>{{item.from_date}}</td>
+			<td>{{item.to_date}}</td>
+
+			
+		</tr>
+		{%endfor%}
+
+	<!--  <tr>
+		<td>{{item.account_number}}</td>
+		<td>{{item.bank_name}}</td>
+	</tr> -->
+	</table>
+
+
+</form>
+{% endif %}
+<br/><br/>
+{%if p1 == "q" %}
+
+<table id="abstract">
+	<tr class="abstract-row-1">
+		<td class="abstract-row-1">Statement duration</td>
+		<td class="abstract-row-1">{{data5.Start_Date}}</td>
+		<td class="abstract-row-1">to</td>
+		<td class="abstract-row-1">{{data5.End_Date}}</td>
+	</tr>
+	<tr class="abstract-row-2">
+		<td class="abstract-row-2 abstract-row-2-1">Opening balance</td>
+		<td class="abstract-row-2">{{data5.Opening_Balance}}</td>
+		<td class="abstract-row-2 abstract-row-2-1">Closing balance</td>
+		<td class="abstract-row-2">{{data5.Closing_Balance}}</td>
+	</tr>
+</table>
+
+
+
+
+<div class='container-bck-table'>
+	
+	<img src="/static/assets/images/saved_figure.png" alt="bck" class="image" loading="lazy">
+	
+	<table id="monthly-balance">
+		<tr>
+			<td>Average Monthly Balance</td>
+			<td class="num">{{data1.Average_Monthly_Balance}}</td>
+		</tr>
+		<tr>
+			<td>Average Monthly Credit</td>
+			<td class="num">{{data1.Average_Monthly_Credit}}</td>
+		</tr>
+		<tr>
+			<td>Average Monthly Debit</td>
+			<td class="num">{{data1.Average_Monthly_Debit}}</td>
+		</tr>
+		<tr>
+			<td>Maximum Balance</td>
+			<td class="num">{{data1.Maximum_Balance}}</td>
+		</tr>
+		<tr>
+			<td>Minimum Balance</td>
+			<td class="num">{{data1.Minimum_Balance}}</td>
+		</tr>
+	</table>
+	
+	
+</div>
+
+<div class='container-bck-table'>
+
+	<img src="/static/assets/images/saved_figure_2.png" alt="bck_2" class="image" loading="lazy">
+
+	<table id="inflow-outflow">
+		<tr>
+			<td>Ratio: Debit/Credit</td>
+			<td class="num">{{data3.Ratio_Debit_Credit}}</td>
+		</tr>
+		<tr>
+			<td>Ratio: Cash Credit/Total Credit</td>
+			<td class="num">{{data3.Ratio_Cash_Total_Credit}}</td>
+		</tr>
+		<tr>
+			<td rowspan="3">Highest Credited Amount</td>
+		</tr>
+		<tr>
+			<td class="num"><button onclick='window.open("credit/{{data3.Highest_Credit_Amount_Org}}/{{n2}}", "PopUp","width=700px;","height=100px;")'>{{data3.Highest_Credit_Amount}}</button></td>
+		</tr>
+		<tr>
+			<td class="num">{{data3.Highest_Credit_Amount_Source}}</td>
+		</tr>
+		<tr>
+			<td rowspan="3">Lowest Debited Amount</td>
+		</tr>
+		<tr>
+			<td class="num"><button onclick='window.open("debit/{{data3.Lowest_Debit_Amount_Org}}/{{n2}}", "PopUp","width=700px;","height=100px;")'>{{data3.Lowest_Debit_Amount}}</button></td>
+		</tr>
+		<tr>
+			<td class="num">{{data3.Lowest_Debit_Amount_Source}}</td>
+		</tr>
+	</table>
+</div>
+
+
+
+<div class='container-bck-table'>
+	<img src="/static/assets/images/saved_figure_1.png" alt="bck_1" class="image" loading="lazy">
+	<div>
+	<table id="chq-bounce">
+		<tr>
+			<td>Number of Bounces</td>
+			<td class="num"><button onclick='window.open("bounce/0/{{n2}}", "PopUp","width=700px;","height=100px;")'>{{data4.Num_Chq_Bounce}}</button></td>
+			
+		</tr>
+		<tr>
+			<td>Min Amount of Cheque Bounce</td>
+			<td class="num">{{data4.Min_Amt_Chq_Bounce}}</td>
+		</tr>
+		<tr>
+			<td>Latest Cheque Bounce</td>
+			<td class="num">{{data4.Latest_Chq_Bounce}}</td>
+		</tr>
+		<tr>
+			<td>Entries with 0 or Negative Balance</td>
+			{% if EZNB == 0 %}
+				<td class="num">{{data4.Entries_Zero_Neg_Bal}}</button></td>
+			{% else %}
+				<td class="num"><button onclick='window.open("negative_balance/0/{{n2}}", "PopUp","width=700px;","height=100px;")'>{{data4.Entries_Zero_Neg_Bal}}</button></td>
+			{% endif %}
+		</tr>
+                <tr>
+			<td>Days when Balance <= 0 at least once</td>
+			<td class="num">{{data4.Days_with_bal_0_neg}}</button></td>
+		</tr>
+
+		<tr>
+			<td>Number of Times Charges Levied</td>
+			<td class="num"><button onclick='window.open("charges/0/{{n2}}", "PopUp","width=700px;","height=100px;")'>{{data4.Num_Charges_Levied}}</button></td>
+		</tr>
+	</table>
+
+	<table id="num-transactions">
+		<tr><td>Number of Credit Transactions</td>
+			<td class="num">{{data2.Num_Credit_Tnx}}</td>
+		</tr>
+		<tr><td>Number of Debit Transactions</td>
+			<td class="num">{{data2.Num_Debit_Tnx}}</td>
+		</tr>
+	</table>
+</div>
+
+</div>
+
+
+
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>Powered by <a href="#">Dhurin</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{%endif%}
+{% endblock content %}

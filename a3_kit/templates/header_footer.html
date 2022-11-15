@@ -1,0 +1,263 @@
+{% extends "base.html" %} {% block maincontent %} {% load static %}
+
+<body class="search">
+  <div class="header" style="height: 80px">
+    <div class="container">
+      <div class="row verticle-align">
+        <div class="col-lg-7 col-md-5">
+          <a href="{% url 'search' %}"
+            ><img
+              src="{% static 'assets/images/logo.png' %}"
+              style="height: 40px"
+          /></a>
+        </div>
+        <div class="col-lg-5 col-md-7 text-right top-right">
+          <div class="row verticle-align">
+            <div class="col-md-6 col-8"></div>
+            <div class="col-md-1 col-2 text-center"></div>
+            <div class="col-md-1 col-2 text-center"></div>
+            <div class="col-md-4">
+              <div class="nav-item dropdown no-arrow">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="userDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <img
+                    class="img-profile rounded-circle"
+                    src="{% static 'assets/images/avatar.jpg' %}"
+                    style="height: 47px; width: 47px"
+                  />
+                  <div><span> Welcome,</span><br />Dhurin</div>
+                </a>
+                <!-- Dropdown - User Information -->
+                <div
+                  class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                  aria-labelledby="userDropdown"
+                >
+                  <a
+                    class="dropdown-item"
+                    href=""
+                    onclick="document.location='/logout'"
+                    data-toggle="modal"
+                    data-target="#logoutModal"
+                  >
+                    <i class="fa fa-sign-out"></i> Logout
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="text-right">
+                        <h3 style="color:white; ">A3 KIT</h3>
+                    </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="container">
+      <ul>
+        {% if search_page %}
+        <li class="active">{% else %}</li>
+        <li>
+          {% endif %}
+          <a href="{% url 'search' %}" id="bureau_link">
+            <img src="{% static 'assets/images/home.png' %}" />
+            Home
+          </a>
+        </li>
+
+        {% if upload_file_page %}
+        <li class="active">{% else %}</li>
+        <li>
+          {% endif %}
+          <a href="{% url 'upload_statments' %}">
+            <img src="{% static 'assets/images/upload.png' %}" />
+            UPLOAD
+          </a>
+        </li>
+
+        {% if download_file_page %}
+        <li class="active">{% else %}</li>
+        <li>
+          {% endif %}
+          <a href="{% url 'download_statments' %}">
+            <img src="{% static 'assets/images/download.png' %}" />
+            DOWNLOAD
+          </a>
+        </li>
+
+        {% if bureau_page %}
+        <li class="active">{% else %}</li>
+        <li>
+          {% endif %}
+          <a href="{% url 'bureau' %}">
+            <img src="{% static 'assets/images/digitazation.png' %}" />
+            BUREAU
+          </a>
+        </li>
+
+        <!--                {% if upload_page or upload_form_page or upload_bank_statement_page or salary_page or bureau_page %}<li class="active">{% else %}<li>{% endif %}-->
+        <!--                    <a href="{% url 'upload' 'pan' %}">-->
+        <!--                        <img src="{% static 'assets/images/digitazation.png' %}" />-->
+        <!--                        KYC-->
+        <!--                    </a>-->
+        <!--                </li>-->
+
+        {% if analyze_page %}
+        <li class="active">{% else %}</li>
+        <li>
+          {% endif %}
+          <a href="{% url 'analyze' %}">
+            <img src="{% static 'assets/images/analyze.png' %}" />
+            Analyze
+          </a>
+        </li>
+        {% if executive_summary %}
+        <li class="active">{% else %}</li>
+        <li>
+          {% endif %}
+          <a href="{% url 'executive_summary' %}">
+            <img src="{% static 'assets/images/customer.png' %}" />
+            Summary
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!--    {% if search_page or doclist_page %}-->
+  <!--        <div class="num_count">-->
+  <!--        <div class="container">-->
+  <!--            <div class="row">-->
+  <!--                <div class="col-lg-7">-->
+  <!--                    <div class="num_wrap">-->
+  <!--                        <a style="cursor: default" class="num_single">-->
+  <!--                            <div class="row">-->
+  <!--                                <div class="col-4">-->
+  <!--                                    <img src="{% static 'assets/images/calc.png' %}">-->
+  <!--                                </div>-->
+  <!--                                <div class="col-8">-->
+  <!--                                    &lt;!&ndash; <h4>{{loan_last_7_days}}</h4> &ndash;&gt;-->
+  <!--                                    <h4>159</h4>-->
+  <!--                                    loan count in last 7 days-->
+  <!--                                </div>-->
+  <!--                            </div>-->
+  <!--                        </a>-->
+  <!--                        <a style="cursor: default" class="num_single active">-->
+  <!--                            <div class="row">-->
+  <!--                                <div class="col-4">-->
+  <!--                                    <img src="{% static 'assets/images/hg.png' %}">-->
+  <!--                                </div>-->
+  <!--                                <div class="col-8">-->
+  <!--                                    <h4>{{pending_loan}}</h4>-->
+  <!--                                    Pending loan count-->
+  <!--                                </div>-->
+  <!--                            </div>-->
+  <!--                        </a>-->
+  <!--                        <a style="cursor: default" class="num_single">-->
+  <!--                            <div class="row">-->
+  <!--                                <div class="col-4">-->
+  <!--                                    <img src="{% static 'assets/images/calc.png' %}">-->
+  <!--                                </div>-->
+  <!--                                <div class="col-8">-->
+  <!--                                    &lt;!&ndash; <h4>{{loan_yeaterday}}</h4> &ndash;&gt;-->
+  <!--                                    <h4>15</h4>-->
+  <!--                                    Yesterday's loan count-->
+  <!--                                </div>-->
+  <!--                            </div>-->
+  <!--                        </a>-->
+  <!--                    </div>-->
+  <!--                </div>-->
+  <!--                <div class="col-lg-5">-->
+  <!--                    <div class="row">-->
+  <!--                        <div class="col-lg-6">-->
+  <!--                            <div class="num_wrap dark">-->
+  <!--                                <a class="num_single" href="{% url 'doclist' 'unpro' %}">-->
+  <!--                                    <div class="row">-->
+  <!--                                        <div class="col-4">-->
+  <!--                                            <img src="{% static 'assets/images/undoc.png' %}">-->
+  <!--                                        </div>-->
+  <!--                                        <div class="col-8">-->
+  <!--                                            <h4>{{ unpddc }}</h4>-->
+  <!--                                            Unprocessed documents-->
+  <!--                                        </div>-->
+  <!--                                    </div>-->
+  <!--                                </a>-->
+  <!--                            </div>-->
+  <!--                        </div>-->
+  <!--                        <div class="col-lg-6">-->
+  <!--                            <div class="num_wrap dark">-->
+  <!--                                <a class="num_single" href="{% url 'doclist' 'pro' %}">-->
+  <!--                                    <div class="row">-->
+  <!--                                        <div class="col-4">-->
+  <!--                                            <img src="{% static 'assets/images/doc.png' %}">-->
+  <!--                                        </div>-->
+  <!--                                        <div class="col-8">-->
+  <!--                                            &lt;!&ndash; <h4>{{ pddc }}</h4> &ndash;&gt;-->
+  <!--                                            <h4>7</h4>-->
+  <!--                                            Processed documents-->
+  <!--                                        </div>-->
+  <!--                                    </div>-->
+  <!--                                </a>-->
+  <!--                            </div>-->
+  <!--                        </div>-->
+  <!--                    </div>-->
+  <!--                </div>-->
+  <!--            </div>-->
+  <!--        </div>-->
+  <!--        </div>-->
+  <!--    {% endif %}-->
+
+  {% block content %} {% endblock content %}
+
+  <!-- {% if not search_page %}
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p>Powered by <a href="#">Knowlvers</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %} -->
+
+  {% if upload_form_page and upload_bank_statement_page %}
+  <div
+    class="modal fade"
+    id="process_error"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+    data-backdrop="static"
+    data-keyboard="false"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h5>
+            We are unable to process the uploaded document. Do you want to
+            process it manually through knowlvers?
+          </h5>
+        </div>
+        <div class="modal-footer justify-content-end">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Confirm
+          </button>
+          <a type="button" class="btn btn-secondary" data-dismiss="modal"
+            >Cancel</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</body>
+
+{% endblock maincontent %}

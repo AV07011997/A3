@@ -1,0 +1,518 @@
+{% extends "header_footer.html" %} {% block content %} {% load static %}
+
+<style>
+  th,
+  tr,
+  td {
+    border: 1px solid black;
+    padding: 5px;
+    color: black;
+  }
+
+  .header-table {
+    background-color: rgb(40, 40, 40);
+    color: white;
+    text-align: center;
+  }
+
+  table {
+    margin-left: 1em;
+  }
+
+  .num {
+    text-align: right;
+  }
+  .button1 {
+    color: royalblue;
+    border: none;
+    background: none;
+    padding-right: 0px;
+    width: 12em;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+    text-align: left;
+    /*color: royalblue;*/
+  }
+</style>
+
+<div
+  class="content"
+  style="margin-left: 10px; padding: 0px; margin-top: 20px; padding-top: 0px"
+>
+  <div
+    class="container"
+    style="margin-left: 10px; padding: 0px; margin-top: 0px; padding-top: 0px"
+  >
+    <div class="row">
+      <div class="col-md-12">
+        <h4>
+          Report {% if request.session.deal_id %}(Deal ID:
+          732{{request.session.deal_id}}, Customer ID:
+          {{request.session.customer_id.capitalize}}, Customer Name:
+          {{request.session.name}}){% endif %}
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if data|length != 0 or data1|length != 0 or data2|length != 0 or data3|length
+!= 0%}
+
+<h6 style="margin-left: 20px">Documents' Summary</h6>
+
+<table>
+  <thead>
+    <tr>
+      <th class="header-table">Document type</th>
+      <th class="header-table">Sub-type</th>
+      <th class="header-table">Identifier</th>
+      <th class="header-table">From</th>
+      <th class="header-table">To</th>
+    </tr>
+  </thead>
+  {%endif%} {% if data|length != 0 %}
+  <tbody>
+    {% for item in data %}
+    <tr>
+      <td>{{item.type}}</td>
+      <td>{{item.bank_name}}</td>
+      <td>{{item.account_number}}</td>
+      <td>{{item.from_date}}</td>
+      <td>{{item.to_date}}</td>
+    </tr>
+    {% endfor %} {% endif %} {% if data1|length != 0 %} {% for item in data1%}
+    <tr>
+      <td>{{item.type}}</td>
+      <td>{{item.form_name}}</td>
+      <td>{{item.pan_of_the_employee}}</td>
+      <td>{{item.from_date}}</td>
+      <td>{{item.to_date}}</td>
+    </tr>
+    {% endfor %} {% endif %} {% if data2|length != 0 %} {% for item in data2%}
+    <tr>
+      <td>{{item.type}}</td>
+      <td>{{item.form_name}}</td>
+      <td>{{item.pan}}</td>
+      <td>{{item.from_date}}</td>
+      <td>{{item.to_date}}</td>
+    </tr>
+    {% endfor %} {% endif %} {% if data3|length != 0 %} {% for item in data3%}
+    <tr>
+      <td>{{item.type}}</td>
+      <td>{{item.form_name}}</td>
+      <td>{{item.pan}}</td>
+      <td>{{item.from_date}}</td>
+      <td>{{item.to_date}}</td>
+    </tr>
+    {% endfor %} {% endif %}
+  </tbody>
+</table>
+
+{% if bank_return_1|length != 0 or itr_return|length != 0 or
+form16_return|length != 0 or form26as_return|length != 0%}
+
+<h6 style="margin-left: 20px; margin-top: 30px">
+  Inflows as per different sources
+</h6>
+
+<div style="display: flex">
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th class="header-table">Source</th>
+        </tr>
+      </thead>
+      {% endif %}
+      <tbody>
+        {%if bank_return_1|length != 0%} {% for item in bank_return_1 %}
+
+        <tr>
+          <td>{{item.0}}</td>
+        </tr>
+        {% endfor %} {%endif%}
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <table style="margin: 0px; padding: 0px">
+      <thead>
+        <tr>
+          {% for item in bank_return %}
+          <th class="header-table">{{item.month}}</th>
+          {%endfor%}
+        </tr>
+
+        <!-- <tr>
+        {% for item in inout%}            
+            <td>{{item.1}}</td>
+        {%endfor%}
+        </tr>
+
+       <tr>
+        {% for item in inout%}            
+            <td>{{item.2}}</td>
+        {%endfor%}
+        </tr> -->
+      </thead>
+
+      <tbody>
+        {% if bank_return.0|length == 3 or bank_return.0|length == 4 or
+        bank_return.0|length == 5 %}
+
+        <tr>
+          {% for item1 in bank_return %}
+          <td class="num">{{item1.0}}</td>
+
+          {%endfor%}
+        </tr>
+
+        {%endif%} {% if bank_return.0|length == 4 or bank_return.0|length == 5
+        %}
+        <tr>
+          {% for item in bank_return%}
+          <td class="num">{{item.1}}</td>
+
+          {%endfor%}
+        </tr>
+        {%endif%} {% if bank_return.0|length == 5%}
+        <tr>
+          {% for item in bank_return%}
+          <td class="num">{{item.2}}</td>
+
+          {%endfor%}
+        </tr>
+        {%endif%}
+
+        <tr>
+          {% for item in bank_return%}
+          <td class="num">{{item.0}}</td>
+          {%endfor%}
+        </tr>
+
+        <tr>
+          {% for item in bank_return%}
+          <td class="num">{{item.1}}</td>
+          {%endfor%}
+        </tr>
+
+        <tr>
+          {% for item in bank_return%}
+          <td class="num">{{item.2}}</td>
+          {%endfor%}
+        </tr>
+        <tr>
+          {% for item in bank_return%}
+          <td class="num">{{item.3}}</td>
+          {%endfor%}
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% if emi_debit_table|length != 0%}
+
+<h6 style="margin-top: 30px; margin-left: 20px">EMIs vs. Auto-Debits</h6>
+{%endif%}
+<table style="margin-bottom: 30px">
+  <thead>
+    {% if emi_debit_table|length != 0%}
+    <tr>
+      <th colspan="2" style="text-align: center" class="header-table">
+        EMIs from Credit Bureaus
+      </th>
+      <th colspan="6" style="text-align: center" class="header-table">
+        Comparable Debits from Bank Statements
+      </th>
+    </tr>
+
+    <tr>
+      <th class="header-table">Active Loans</th>
+      <th class="header-table">EMI</th>
+      <th class="header-table">Entity</th>
+      <th class="header-table">Debit</th>
+      <th class="header-table">Transactions</th>
+      <th class="header-table">Next 3 Nearest Debit Entries</th>
+      <th class="header-table">Bank</th>
+      <th class="header-table">Account number</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for item in emi_debit_table %}
+    <tr>
+      <td>{{item.loan_type}}</td>
+      <td>{{item.EMI}}</td>
+      <td width="180em">
+        <button
+          class="button1"
+          onclick="window.open('entitywise/?entity={{item.entity}}', 'MsgWindow','width=600','height=600')"
+          title="{{item.entity}}"
+        >
+          <u><span class="buttontext">{{item.entity}}</span></u>
+        </button>
+      </td>
+      <td>{{item.debit}}</td>
+      <td>{{item.Transactions}}</td>
+      <td>{{item.next_3_debit_entries}}</td>
+      <td>{{item.bank_name}}</td>
+      <td>{{item.account_number}}</td>
+    </tr>
+    {% endfor %} {%endif%}
+  </tbody>
+</table>
+
+<!--             </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12"> -->
+<!--                     <div class="table_wrap loan salary small">
+                        <h5>KYC Cross-checks</h5>
+                        <table id="audit_kyc_crosscheck">
+                            <thead>
+                                <tr>
+                                    <th width="40" style="background-color: #808080; color: #FFFFFF;">KPIs</th>
+                                    <th width="40" style="background-color: #eeeeee;"><u><a style="color: blue" href="{% if request.session.deal_id %}{% url 'loan' request.session.deal_id %}{% else %}#{% endif %}">APPLICATION</a></u></th>
+                                    <th width="40" style="background-color: #eeeeee;"><u><a style="color: blue" href="{% url 'upload' 'aadhaar' %}">AADHAAR</a></u></th>
+                                    <th width="40" style="background-color: #eeeeee;"><u><a style="color: blue" href="{% url 'upload' 'pan' %}">PAN</a></u></th>
+                                    <th width="40" style="background-color: #eeeeee;"><u><a style="color: blue" href="{% url 'upload_bank_statement' %}">BANK</a></u></th>
+                                    <th width="40" style="background-color: #eeeeee;"><u><a style="color: blue" href="{% url 'upload_form' %}">ITR</a></u></th>
+                                    <th width="40" style="background-color: #eeeeee;"><u><a style="color: blue" href="{% url 'bureau' %}">BUREAU</a></u></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">NAME</th>
+                                    <td>{{audit_table_data.los_data.name}}</td>
+                                    <td>{{audit_table_data.aadhaaar_data.name}}</td>
+                                    <td>{{audit_table_data.pan_data.name}}</td>
+                                    <td>{{audit_table_data.bank_statement_data.name}}</td>
+                                    <td>{{audit_table_data.itrv_data.name}}</td>
+                                    <td>{{audit_table_data.bureau_data.name}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">DOB</th>
+                                    <td>{{audit_table_data.los_data.dob}}</td>
+                                    <td>{{audit_table_data.aadhaaar_data.dob}}</td>
+                                    <td>{{audit_table_data.pan_data.dob}}</td>
+                                    <td>{{audit_table_data.bank_statement_data.dob}}</td>
+                                    <td>{{audit_table_data.itrv_data.dob}}</td>
+                                    <td>{{audit_table_data.bureau_data.dob}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">PAN</th>
+                                    <td>{{audit_table_data.los_data.pan}}</td>
+                                    <td>{{audit_table_data.aadhaaar_data.pan}}</td>
+                                    <td>{{audit_table_data.pan_data.pan}}</td>
+                                    <td>{{audit_table_data.bank_statement_data.pan}}</td>
+                                    <td>{{audit_table_data.itrv_data.pan}}</td>
+                                    <td>{{audit_table_data.bureau_data.pan}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">AADHAAR</th>
+                                    <td>{{audit_table_data.los_data.aadhaar}}</td>
+                                    <td>{{audit_table_data.aadhaaar_data.aadhaar}}</td>
+                                    <td>{{audit_table_data.pan_data.aadhaar}}</td>
+                                    <td>{{audit_table_data.bank_statement_data.aadhaar}}</td>
+                                    <td>{{audit_table_data.itrv_data.aadhaar}}</td>
+                                    <td>{{audit_table_data.bureau_data.aadhaar}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">CONTACT NUMBER</th>
+                                    <td>{{audit_table_data.los_data.contact_number}}</td>
+                                    <td>{{audit_table_data.aadhaaar_data.contact_number}}</td>
+                                    <td>{{audit_table_data.pan_data.contact_number}}</td>
+                                    <td>{{audit_table_data.bank_statement_data.contact_number}}</td>
+                                    <td>{{audit_table_data.itrv_data.contact_number}}</td>
+                                    <td>{{audit_table_data.bureau_data.contact_number}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">ADDRESS</th>
+                                    <td>{{audit_table_data.los_data.address}}</td>
+                                    <td>{{audit_table_data.aadhaaar_data.address}}</td>
+                                    <td>{{audit_table_data.pan_data.address}}</td>
+                                    <td>{{audit_table_data.bank_statement_data.address}}</td>
+                                    <td>{{audit_table_data.itrv_data.address}}</td>
+                                    <td>{{audit_table_data.bureau_data.address}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">PIN-CODE</th>
+                                    <td>{{audit_table_data.los_data.pin}}</td>
+                                    <td>{{audit_table_data.aadhaaar_data.pin}}</td>
+                                    <td>{{audit_table_data.pan_data.pin}}</td>
+                                    <td>{{audit_table_data.bank_statement_data.pin}}</td>
+                                    <td>{{audit_table_data.itrv_data.pin}}</td>
+                                    <td>{{audit_table_data.bureau_data.pin}}</td>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">STATE</th>
+                                    <td>{{audit_table_data.los_data.state}}</td>
+                                    <td>{{audit_table_data.aadhaaar_data.state}}</td>
+                                    <td>{{audit_table_data.pan_data.state}}</td>
+                                    <td>{{audit_table_data.bank_statement_data.state}}</td>
+                                    <td>{{audit_table_data.itrv_data.state}}</td>
+                                    <td>{{audit_table_data.bureau_data.state}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+ -->
+<!-- <div class="table_wrap loan salary small">
+                        <h5>Bank Statements' Summary</h5>
+                        <table id="audit_bankstmt_summary">
+                            <thead>
+                                <tr>
+                                    <th style="border-style:hidden" colspan="2"></th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" class="text-center" colspan="2">Transactions</th>
+                                </tr>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">Bank</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">Account Number</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">From</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">To</th>
+                                </tr>
+                            </thead>
+                            <tbody />
+                        </table>
+                    </div>
+ -->
+<!-- <div class="table_wrap loan salary small">
+                        <h5>Income Tax Documents' Summary</h5>
+                        <table id="audit_taxdoc_summary">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">ITR Form</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">AY</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Form 16</td>
+                                    <td>2019-20</td>
+                                </tr>
+                                <tr>
+                                    <td>Form 26 AS</td>
+                                    <td>2019-20</td>
+                                </tr>
+                                <tr>
+                                    <td>ITR-V</td>
+                                    <td>2016-17</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> -->
+
+<!-- <div class="table_wrap loan salary small">
+                        <h5>Inflows as per different sources</h5>
+                        <table id="audit_inflows_diffsources">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="85">Source</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.11}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.10}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.9}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.8}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.7}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.6}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.5}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.4}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.3}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.2}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.1}}</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" width="17">{{previous_months_list.0}}</th>
+                                </tr>
+                            </thead>
+                            <tbody />
+                        </table>
+                    </div>
+ -->
+<!-- <div class="table_wrap loan salary small">
+                        <h5>EMIs vs. Auto-Debits</h5>
+                        <table id="audit_emi_vs_autodebits">
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;" class="text-center" colspan="2">EMIs from Credit Bureaus</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" class="text-center" colspan="8">Comparable Debits from Bank Statements</th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th style="background-color: #808080; color: #FFFFFF;">Active Loans</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">EMI</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">Entity</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">Debit</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">Transactions</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;" class="text-center" colspan="3">Next 3 Nearest Debit Entries</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">Bank</th>
+                                    <th style="background-color: #808080; color: #FFFFFF;">Account number</th>
+                                </tr>
+                            </thead>
+                            <tbody />
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            <div class="text-right">
+				<a class="btn btn-secondary" href="{% url 'bureau' %}"><<</a> -->
+<!-- <a class="btn btn-secondary" href="{% url 'analyze' %}">>></a> -->
+<!-- <button class="btn btn-secondary" type="submit">>></button>
+            </div>
+            <div class="modal fade" id="triggerPopup" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h5 id="popupMessage"></h5>
+                        </div>
+                        <div class="modal-footer justify-content-end"> -->
+<!-- <button type="button" id="popupconfirm" class="btn btn-secondary" data-dismiss="modal" style="display:none">Confirm</button> -->
+<!--  <a type="button" id="messageAcknowledge" class="btn btn-secondary" data-dismiss="modal" onclick="document.location='/'">ok</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<p>{{audit_table_data.bank_statement_data}}</p> -->
+
+<div class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>Powered by <a href="#">Dhurin</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  window.onload = function () {
+    var intlFormatCurrency = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "INR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+
+    // BANK STATEMENT (AUTO CREDIT)
+    /*
+			tableRow = $("#audit_bank_stmt");
+			tableRow.empty();
+
+			tableRow.append('<th>BANK STATEMENT (AUTO CREDIT)</th>');
+			for(var i = 0; i < noOfMonths; i++) {
+				tableRow.append('<td></td>');
+			}
+			*/
+  };
+</script>
+
+{% endblock content %}

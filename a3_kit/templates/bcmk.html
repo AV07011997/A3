@@ -1,0 +1,545 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" /> -->
+
+<head>
+	<title>KPI | BANK | MONTH-WISE</title>
+</head>
+
+
+<style>
+
+	tr, th, td {
+
+		border : solid black 1px;
+		color: black;
+		margin: 0px;
+	}
+
+
+
+	.rm-head {
+
+		background-color: white;
+		border-left-color: white;
+		border-top-color: white;
+	}
+
+
+	#bank-common-table {
+
+		margin-left: 20px;
+	}
+
+
+	 .header-table {
+
+    background-color: rgb(40,40,40); 
+    color: white;
+    text-align: center;
+
+	}
+
+
+	#monthly-kpi {
+
+		margin-left: 20px;
+		table-layout: auto;
+		
+	}
+
+	.button1{
+		color: royalblue;
+		border: none;
+		background: none; 
+		padding-right: 0px;
+
+	}
+
+	.button1:hover{
+
+		color: indigo;
+	}
+
+	
+
+	#graphs {
+
+		display: inline-flex;
+	}
+
+
+	.image {
+  		
+  		
+  		width: 50%;
+	}
+
+
+td { overflow:hidden;white-space:nowrap;  } 
+
+
+	.num {
+
+		text-align: right;
+		padding: 5px;
+		margin: 0px;
+		
+	}
+
+
+	
+
+
+	.submit-btn {
+
+		background-color: white;
+	}
+
+	
+
+	.header-table-1 {
+
+
+
+    background-color: rgb(40,40,40); 
+    color: white;
+    text-align: left;
+
+	}
+
+
+	
+
+
+	.table-sortable th {
+  	cursor: pointer;
+	
+	}
+
+	.table-sortable .th-sort-asc::after {
+	  content: "\25b4";
+	}
+
+	.table-sortable .th-sort-desc::after {
+	  content: "\25be";
+	}
+
+	.table-sortable .th-sort-asc::after,
+	.table-sortable .th-sort-desc::after {
+	  margin-left: 5px;
+	}
+
+	.table-sortable .th-sort-asc,
+	.table-sortable .th-sort-desc {
+	  background: rgba(0, 0, 0, 0.1);
+	}
+
+
+	.radio{
+
+        background-color: white ;
+        border-bottom-color:white;
+        border-left-color:white; 
+        border-top-color:white;
+        padding: 10px;
+    }
+    .radio1{
+
+        background-color: white;
+        border-color: white;
+    }
+
+    .count-value {
+
+    	padding: 0px 5px;
+    }
+
+/*blinking*/
+	
+/*.blink {
+  animation: blink 2s steps(1, end) infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}*/
+
+
+
+</style>
+<div class="content" style="margin-top: 0px;">
+    <div class="container" style="margin-top: px;">
+        <div class="text-right" style="padding-right:183px">
+            <h6><a class="digitization-unfocus" href="{% url 'bureauAnalyze' %}">&emsp;Bureau&emsp;</a><a class="digitization-focus" href="{% url 'bankAnalyze' %}">&emsp;Bank&emsp;</a></h6>
+        </div>
+        <br/>
+    </div>
+</div>
+<div class="content" style="margin-top: 0px; margin-bottom: 0px;">
+    <div class="container" style="margin-top: -80px;">
+        <div class="text-right" style="padding-right:50px">
+            <h6><a class="digitization-unfocus" href="{% url 'bank_customer_kpi' %}">&emsp;Summary&emsp;</a><a class="digitization-focus" href="{% url 'bank_customer_month_kpi' %}">&emsp;Month-wise&emsp;</a><a class="digitization-unfocus" href="{% url 'bank_entity_kpi' %}">&emsp;Counterparties&emsp;</a><a class="digitization-unfocus" href="{% url 'statement' %}">&emsp;Statement&emsp;</a></h6>
+        </div>
+        <br/>
+      
+    </div>
+</div>
+
+
+<div class="content" style="margin-left: 10px;padding: 0px; margin-top: 20px;padding-top: 0px;">
+        <div class="container" style="margin-left: 10px;padding: 0px; margin-top: 0px;padding-top: 0px;">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h4>Bank month-wise {% if request.session.deal_id %}(Deal ID: {{request.session.deal_id}}, Customer ID: {{request.session.customer_id.capitalize}}, Customer Name: {{request.session.name}}){% endif %}</h4>
+                </div>
+            </div> 
+        </div>
+               
+    </div>
+
+
+{% if data %}
+<form method="POST">
+	{% csrf_token %}
+	<table id="bank-common-table">
+		
+		<thead>
+			<th class="radio1" colspan="0" ></th>
+			<th class="rm-head" colspan="2"></th>
+			<th colspan="2" class="header-table">Transactions</th>
+			
+		</thead>
+			<thead>
+			<th class="radio"></th>
+			<th class="header-table">Account number</th>
+			<th class="header-table">Bank name</th>
+			<th class="header-table">From</th>
+			<th class="header-table">To</th>
+		</thead>
+		
+		{%for item in data%}
+		
+		<tr>
+			
+			<td class="radio">
+				
+				<div>
+					{%if item.account_number == n2 %}
+					<label><input type="radio" id='{{account_number}}' name="optbank"  value="{{item.account_number}}" checked="checked" onClick="this.form.submit()"></input></label>
+		           {%else%}
+					
+					
+                 	<label><input type="radio" id='{{account_number}}' name="optbank"  value="{{item.account_number}}"  onClick="this.form.submit()"></input></label>
+					{% endif%}
+            	</div>
+				
+            </td>
+	
+			<td>{{item.account_number}}</td>
+			<td>{{item.bank_name}}</td>
+			<td>{{item.from_date}}</td>
+			<td>{{item.to_date}}</td>
+
+			
+		</tr>
+		{%endfor%}
+
+	<!--  <tr>
+		<td>{{item.account_number}}</td>
+		<td>{{item.bank_name}}</td>
+	</tr> -->
+	</table>
+
+
+</form>
+{% endif %}
+
+<br/><br/>
+{%if p1 == "q" %}
+
+<table id="monthly-kpi">
+	<thead>
+		<th class="rm-head" colspan="3"></th>
+		{% for item1 in data1%}
+		<th class="header-table" width="100">{{item1.month_year}} </th>
+		{%endfor%}
+	</thead>
+
+<!-- Inflows -->
+
+	<tr>
+		<td rowspan="10" class="header-table">Inflows</td>
+	</tr> 
+	<tr>
+		<td rowspan="3">Non Cash Credits</td>
+	</tr>
+	<tr><td class="count-value">Count</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Non_cash_credits_Count}} </td>
+		{%endfor%}
+	</tr>
+	<tr><td class="count-value">Value</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Non_cash_credits_Value}} </td>
+		{%endfor%}
+	</tr>
+	<tr>
+		<td rowspan="3">Cash Credits</td>
+	</tr>
+	<tr><td class="count-value">Count</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Cash_credits_Count}} </td>
+		{%endfor%}
+	</tr>
+	<tr><td>Value</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Cash_credits_Value}} </td>
+		{%endfor%}
+	</tr>
+	<tr>
+		<td rowspan="3">Total Credits</td>
+	</tr>
+	<tr><td class="count-value">Count</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Total_credits_Count }} </td>
+		{%endfor%}
+	</tr>
+	<tr><td class="count-value">Value</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Total_credits_Value}} </td>
+		{%endfor%}
+	</tr>
+<!-- outflows -->
+	<tr>
+		<td rowspan="13" class="header-table">Outflows</td>
+	</tr> 
+	<tr>
+		<td rowspan="3">Non Cash Debits</td>
+	</tr>
+	<tr><td class="count-value">Count</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Non_cash_debits_Count }} </td>
+		{%endfor%}
+	</tr>
+	<tr><td class="count-value">Value</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Non_cash_debits_Value}} </td>
+		{%endfor%}
+	</tr>
+	<tr>
+		<td rowspan="3">Cash Debits</td>
+	</tr>
+	<tr><td class="count-value">Count</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Cash_debits_Count }} </td>
+		{%endfor%}
+	</tr>
+	<tr><td class="count-value">Value</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Cash_debits_Value}} </td>
+		{%endfor%}
+	</tr>
+	<tr>
+		<td rowspan="3">Total Debits</td>
+	</tr>
+	<tr><td class="count-value">Count</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Total_debits_Count}} </td>
+		{%endfor%}
+	</tr>
+	<tr><td class="count-value">Value</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Total_debits_Value}} </td>
+		{%endfor%}
+	</tr>
+
+	<tr>
+		<td rowspan="3">Auto Debits</td>
+	</tr>
+	<tr><td class="count-value">Count</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Auto_debits_Count }} </td>
+		{%endfor%}
+	</tr>
+	<tr><td class="count-value">Value</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Auto_debits_Value}} </td>
+		{%endfor%}
+	</tr>
+
+	<!-- <tr><td colspan="3" class="header-table-1">Max Credit Amount</td>
+        {% for item1 in data1%}
+        <td class="num"><button  class="button1"  onclick="window.open('c{{item1.month_year}}' +'/' + '{{item1.Max_Credit_Amount_Org}}' +'/' + '{{n}}', 'PopUp','width=700px;','height=100px;')"><u>{{item1.Max_credit_Amount}}</u></button></td>
+        
+        {%endfor%}
+    </tr>
+    <tr><td colspan="3" class="header-table-1">Max Debit Amount</td>
+        {% for item1 in data1%}
+        <td class="num"><button  class="button1"  onclick="window.open('d{{item1.month_year}}' +'/' + 
+        '{{item1.Max_Debit_Amount_Org}}' +'/' + '{{n}}', 'PopUp','width=700px;','height=100px;')"><u>{{item1.Max_debit_Amount}}</u></button></td>
+        
+        {%endfor%}
+    </tr> -->
+
+    <tr><td colspan="3" class="header-table-1">Max Credit Amount</td>
+        <!-- {% for item1 in data1%}
+        <td class="num"><button  class="button1"  onclick="window.open('c{{item1.month_year}}' +'/' + '{{item1.Max_Credit_Amount_Org}}' +'/' + '{{n}}', 'MsgWindow','width=700px;','height=100px;')"><u>{{item1.Max_credit_Amount}}</u></button></td>
+        
+        {%endfor%} -->
+        {% for item1 in data1%}
+
+        {%if item1.Max_credit_Amount == "₹0" %}
+
+        <td  class="num">{{item1.Max_credit_Amount }} </td>
+        {%else%}
+        <td class="num"><button  class="button1"  onclick="window.open('c{{item1.month_year}}' +'/' + '{{item1.Max_Credit_Amount_Org}}' +'/' + '{{n}}', 'MsgWindow','width=700px;','height=100px;')"><u>{{item1.Max_credit_Amount}}</u></button></td>
+       
+        {% endif%}
+      
+        {%endfor%}
+<!--        
+        {%if data1 == ""%}
+        {%else%}
+        <td class="num" ><button  class="button1" id= "abc" type="submit" name="maxcredit" value="c{{data1.0.month_year}}/{{data1.0.Max_Credit_Amount}}/{{n}}" onclick="myfun()"><u>{{data1.0.Max_Credit_Amount}}</u></button></td>
+        {%endif%} -->
+    </tr>
+    <tr><td colspan="3" class="header-table-1">Max Debit Amount</td>
+        <!-- {% for item1 in data1%}
+        <td class="num"><button  class="button1"  onclick="window.open('d{{item1.month_year}}' +'/' + 
+        '{{item1.Max_Debit_Amount_Org}}' +'/' + '{{n}}', 'MsgWindow','width=700px;','height=300px;')"><u>{{item1.Max_debit_Amount}}</u></button></td>
+        
+        {%endfor%} -->
+        {% for item1 in data1%}
+
+        {%if item1.Max_debit_Amount == "₹0" %}
+     
+            <td  class="num">{{item1.Max_debit_Amount}} </td>
+        {%else%}
+        <td class="num"><button  class="button1"  onclick="window.open('d{{item1.month_year}}' +'/' + 
+            '{{item1.Max_Debit_Amount_Org}}' +'/' + '{{n}}', 'MsgWindow','width=700px;','height=300px;')"><u>{{item1.Max_debit_Amount}}</u></button></td>
+       
+        {% endif%}
+      
+        {%endfor%}
+
+    </tr>
+    
+	<tr><td colspan="3" class="header-table-1">Average Balance</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Average_balance}} </td>
+		{%endfor%}
+	</tr>
+	<tr><td colspan="3" class="header-table-1">Month End Balance</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.Month_End_balance}} </td>
+		{%endfor%}
+	</tr>
+
+	 <tr><td colspan="3" class="header-table-1">Net Inflow Amount</td>
+        {% for item1 in data1%}
+        {%if item1.Net_Inflow_Amount.0 == "₹" %}
+        <td  class="num">{{item1.Net_Inflow_Amount }} </td>
+        {%else%}
+        <td   style= "color: red" class="num">{{item1.Net_Inflow_Amount }} </td>
+        {% endif%}
+        {%endfor%}
+    </tr>
+
+	<tr><td colspan="3" class="header-table-1">EMI</td>
+		{% for item1 in data1%}
+		<td class="num">{{item1.EMI}} </td>
+		{%endfor%}
+	</tr>
+
+
+</table>
+
+
+
+
+
+
+<br/>
+<br/>
+
+
+
+
+<div id="graphs">
+<img src="/static/assets/images/bcmk_fig.png" alt="bcmk_fig" class="image" loading="lazy">
+<img src="/static/assets/images/bcmk_fig_1.png" alt="bcmk_fig_1" class="image" loading="lazy">
+</div>
+
+
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>Powered by <a href="#">Dhurin</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endif%}
+<script type="text/javascript">
+	
+	/**
+ * Sorts a HTML table.
+ * 
+ * @param {HTMLTableElement} table The table to sort
+ * @param {number} column The index of the column to sort
+ * @param {boolean} asc Determines if the sorting will be in ascending
+ */
+function sortTableByColumn(table, column, asc = true) {
+    const dirModifier = asc ? 1 : -1;
+    const tBody = table.tBodies[0];
+    const rows = Array.from(tBody.querySelectorAll("tr"));
+
+    // Sort each row
+    const sortedRows = rows.sort((a, b) => {
+        const aColText = a.querySelector(`td:nth-child(${ column + 1 })`).textContent.trim();
+        const bColText = b.querySelector(`td:nth-child(${ column + 1 })`).textContent.trim();
+
+        return aColText > bColText ? (1 * dirModifier) : (-1 * dirModifier);
+    });
+
+    // Remove all existing TRs from the table
+    while (tBody.firstChild) {
+        tBody.removeChild(tBody.firstChild);
+    }
+
+    // Re-add the newly sorted rows
+    tBody.append(...sortedRows);
+
+    // Remember how the column is currently sorted
+    table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
+    table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-asc", asc);
+    table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-desc", !asc);
+}
+
+document.querySelectorAll(".table-sortable th").forEach(headerCell => {
+    headerCell.addEventListener("click", () => {
+        const tableElement = headerCell.parentElement.parentElement.parentElement;
+        const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
+        const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+
+        sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+    });
+});
+
+</script>
+
+{% endblock content %}

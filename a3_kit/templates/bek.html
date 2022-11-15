@@ -1,0 +1,1146 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+
+
+<head>
+  <title>KPI | BANK | COUNTERPARTIES</title>
+</head>
+
+<style>
+
+	
+	tr, th, td {
+
+		border : solid black 1px;
+		padding: 2px;
+		color: black;
+
+	}
+
+
+	.rm-head {
+
+		background-color: white;
+		border-left-color: white;
+		border-top-color: white;
+	}
+
+	.header-table {
+
+    background-color: rgb(40,40,40); 
+    color: white;
+    text-align: center;
+
+	}
+
+	.num {
+
+		text-align: right;
+	}
+	
+
+	#bank-common-table {
+
+		margin-left: 10px;
+    margin-bottom: 20px;
+	}
+
+	td {
+    
+    	white-space: nowrap;
+  		
+	}
+	
+	.tab-entity {
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    min-width:20px;
+}
+
+
+.table-sortable th::after {
+  cursor: pointer;
+  content: "\21F5";
+  margin-left: 5px;
+
+}
+
+.table-sortable .th-sort-asc::after {
+  content: "\25b4";
+}
+
+.table-sortable .th-sort-desc::after {
+  content: "\25be";
+}
+
+.table-sortable .th-sort-asc::after,
+.table-sortable .th-sort-desc::after {
+  margin-left: 5px;
+}
+
+	
+.sticky {
+
+  position: sticky;
+  top: 0px;
+}
+
+.table thead tr th {
+  box-shadow: 0px 0px 0px 1px black inset;
+  margin:0px;
+  border-collapse: collapse;
+}
+
+.table {
+
+	padding:0px;
+	margin:0px;
+	border:0px;
+	vertical-align: top; 
+	table-layout: fixed;
+}
+
+/*.buttontext {
+  width: 20em;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+  text-overflow: ellipsis;
+  color: royalblue;
+
+}​*/
+
+
+.button1{
+    color: royalblue;
+    border: none;
+    background: none; 
+    padding-right: 0px;
+    width: 12em;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+    text-align: left;
+    /*color: royalblue;*/
+
+  }
+
+
+
+.radio{
+
+        background-color: white ;
+        border-bottom-color:white;
+        border-left-color:white; 
+        border-top-color:white;
+        padding: 10px;
+    }
+    .radio1{
+
+        background-color: white;
+        border-color: white;
+    }
+
+ 
+
+
+
+
+
+</style>
+
+
+<div class="content" style="margin-top: 0px;">
+    <div class="container" style="margin-top: 0px;">
+        <div class="text-right" style="padding-right:100px">
+            <h6><a class="digitization-unfocus" href="{% url 'bureauAnalyze' %}">&emsp;Bureau&emsp;</a><a class="digitization-focus" href="{% url 'bankAnalyze' %}">&emsp;Bank&emsp;</a></h6>
+        </div>
+        <br/>
+    </div>
+</div>
+<div class="content" style="margin-top: 0px; margin-bottom: 0px;">
+    <div class="container" style="margin-top: -80px;">
+        <div class="text-right" style="padding-right:50px">
+            <h6><a class="digitization-unfocus" href="{% url 'bank_customer_kpi' %}">&emsp;Summary&emsp;</a><a class="digitization-unfocus" href="{% url 'bank_customer_month_kpi' %}">&emsp;Month-wise&emsp;</a><a class="digitization-focus" href="{% url 'bank_entity_kpi' %}">&emsp;Counterparties&emsp;</a><a class="digitization-unfocus" href="{% url 'statement' %}">&emsp;Statement&emsp;</a></h6>
+        </div>
+        <br/>
+      
+    </div>
+</div>
+
+
+<div class="content"  style="margin-left: 20px;padding: 0px; margin-top: 0px;padding-top: 0px;">
+        <div class="container"  style="margin-left: 20px;padding: 0px; margin-top: 0px;padding-top: 0px;">
+            <div class="row">
+                <div class="col-md-12">
+          <h4>Counterparties {% if request.session.deal_id %}(Deal ID: {{request.session.deal_id}}, Customer ID: {{request.session.customer_id.capitalize}}, Customer Name: {{request.session.name}}){% endif %}</h4>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+
+
+{% if data %}
+<form method="POST">
+	{% csrf_token %}
+	<table id="bank-common-table">
+		
+		<thead>
+			<th class="radio1" colspan="0" ></th>
+      <th class="rm-head" colspan="2"></th>
+			<th colspan="2" class="header-table">Transactions</th>
+      <th class="header-table"></th>
+			<!-- <th class="header-table" rowspan="0" width="2em;" style="border-bottom-color: rgb(96,96,96);">Counterparties<br/> transacted<br/> with<br/></th> -->
+		</thead>
+		<thead>
+			<th class="radio"></th>
+			<th class="header-table">Account number</th>
+			<th class="header-table">Bank name</th>
+			<th class="header-table">From</th>
+			<th class="header-table">To</th>
+      <th class="header-table" width="2em;" style="border-bottom-color: rgb(96,96,96);">Counterparties<br/> transacted<br/> with<br/></th>
+			<!-- <th class="header-table"></th> -->
+		</thead>
+		
+		{%for item in data%}
+		
+		<tr>
+			<td class="radio">
+        
+        <div>
+          {%if item.account_number == z %}
+          <label><input type="radio" id='{{account_number}}' name="optbank"  value="{{item.account_number}}" checked="checked" onClick="this.form.submit()"></input></label>
+               {%else%}
+          
+          
+                  <label><input type="radio" id='{{account_number}}' name="optbank"  value="{{item.account_number}}"  onClick="this.form.submit()"></input></label>
+          {% endif%}
+              </div>
+        
+            </td>
+	
+	
+			<td>{{item.account_number}}</td>
+			<td>{{item.bank_name}}</td>
+			<td>{{item.from_date}}</td>
+			<td>{{item.to_date}}</td>
+			<td class="num">{{item.num_entities}}</td>
+
+			
+		</tr>
+		{%endfor%}
+
+	</table>
+
+
+</form>
+{% endif %}
+
+{%if n4 == "q" %}
+
+<h6 style="margin-left: 10px; margin-bottom: 10px;text-align: center;">Summary of transactions by Payer-Payee</h6>
+
+</div>
+
+
+
+<div style="padding-right: 10px;padding-left: 10px;">
+	<table class="table" id="myTable" width="80%" border="0" cellspacing="0" cellpadding="0" align="left">
+	  <thead class="sticky">
+  		<tr>
+  			<td style="background-color:white;" width="180em"></td>
+  			<th class="header-table" colspan="2" width="200em">Transactions</th>
+  			<th class="header-table" colspan="2" width="100em">Number of transactions</th>
+  			<th class="header-table" colspan="4" width="412.5em">Debited amount</th>
+  			<th class="header-table" colspan="4" width="412.5em">Credited amount</th>
+  		</tr>
+    </thead>
+  </table>
+
+  <table class="table-sortable table" id="myTable" width="80%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <thead class="sticky">
+    	
+      <tr>
+        <th class="header-table" width="180em">Entity</th>
+    		<th class="header-table" width="100em">From</th>
+    		<th class="header-table" width="100em">To</th>
+    		<th class="header-table" width="50em">Dr</th>
+    		<th class="header-table" width="50em">Cr</th>
+    		<th class="header-table" width="103.125em">Total</th>
+    		<th class="header-table" width="103.125em">Average</th>
+    		<th class="header-table" width="103.125em">Min</th>
+    		<th class="header-table" width="103.125em">Max</th>
+    		<th class="header-table" width="103.125em">Total</th>
+    		<th class="header-table" width="103.125em">Average</th>
+    		<th class="header-table" width="103.125em">Min</th>
+    		<th class="header-table" width="103.125em">Max</th>
+      </tr>
+    </thead>
+    <tbody>
+    	{% for item in data1 %}
+	     <tr>
+	        <td width="180em"><button class ="button1"  onclick="window.open('entitywise/?entity={{item.entity}}' +'&accno=' + '{{n}}' +'&cid=' + '{{request.session.customer_id}}', 'MsgWindow','width=600','height=600')" title="{{item.entity}}"><u><span class="buttontext">{{item.entity}}</span></u></button></td>
+<!--             <td width="180em"><button class ="button1"  onclick="window.open('{{item.entity}}' +'/' + '{{n}}', 'MsgWindow','width=600','height=600')" title="{{item.entity}}"><u><span class="buttontext">{{item.entity}}</span></u></button></td>-->
+	        <td width="40em">{{item.oldest_txn}}</td>
+    			<td width="40em">{{item.latest_txn}}</td>
+    			<td width="50em" class="num">{{item.debits}}</td>
+    			<td width="50em" class="num">{{item.credits}}</td>
+    			<td width="103.125em" class="num">{{item.debited_amt_total}}</td>
+    			<td width="103.125em" class="num">{{item.debited_amt_mthly}}</td>
+    			<td width="103.125em" class="num">{{item.min_debit}}</td>
+    			<td width="103.125em" class="num">{{item.max_debit}}</td>
+    			<td width="103.125em" class="num">{{item.credited_amt_total}}</td>
+    			<td width="103.125em" class="num">{{item.credited_amt_mthly}}</td>
+    			<td width="103.125em" class="num">{{item.min_credit}}</td>
+    			<td width="103.125em" class="num">{{item.max_credit}}</td>
+		    </tr>
+
+     	{% endfor %}
+    </tbody>
+  </table>
+
+  <table class="table" id="myTable" width="80%" border="0" cellspacing="0" cellpadding="0" align="left">
+    <tr>
+        <th style="border-color: white;border-bottom-color: black;" width="180em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="100em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="100em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="50em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="50em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="103.125em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="103.125em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="103.125em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="103.125em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="103.125em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="103.125em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="103.125em"></th>
+        <th style="border-color: white;border-bottom-color: black;" width="103.125em"></th>
+    </tr>
+      {% for item in data2 %}
+       <tr>
+<!--          <td width="180em"><button class ="button1"  onclick="window.open('{{item.entity}}' +'/' + '{{n}}', 'MsgWindow','width=600','height=600')" title="{{item.entity}}"><u><span class="buttontext">{{item.entity}}</span></u></button></td>-->
+           <td width="180em"><button class ="button1"  onclick="window.open('entitywise/?entity={{item.entity}}' +'&accno=' + '{{n}}' +'&cid=' + '{{request.session.customer_id}}', 'MsgWindow','width=600','height=600')" title="{{item.entity}}"><u><span class="buttontext">{{item.entity}}</span></u></button></td>
+          <td width="40em">{{item.oldest_txn}}</td>
+          <td width="40em">{{item.latest_txn}}</td>
+          <td width="50em" class="num">{{item.debits}}</td>
+          <td width="50em" class="num">{{item.credits}}</td>
+          <td width="103.125em" class="num">{{item.debited_amt_total}}</td>
+          <td width="103.125em" class="num">{{item.debited_amt_mthly}}</td>
+          <td width="103.125em" class="num">{{item.min_debit}}</td>
+          <td width="103.125em" class="num">{{item.max_debit}}</td>
+          <td width="103.125em" class="num">{{item.credited_amt_total}}</td>
+          <td width="103.125em" class="num">{{item.credited_amt_mthly}}</td>
+          <td width="103.125em" class="num">{{item.min_credit}}</td>
+          <td width="103.125em" class="num">{{item.max_credit}}</td>
+        </tr>
+
+      {% endfor %}
+  </table>
+
+</div>
+{%endif%}
+             
+
+
+
+
+<script>
+
+
+
+/**
+ * Sorts a HTML table.
+ * 
+ * @param {HTMLTableElement} table The table to sort
+ * @param {number} column The index of the column to sort
+ * @param {boolean} asc Determines if the sorting will be in ascending
+ */
+function sortTableByColumn(table, column, asc = true) {
+    const dirModifier = asc ? 1 : -1;
+    const tBody = table.tBodies[0];
+    const rows = Array.from(tBody.querySelectorAll("tr"));
+
+    // Sort each row
+    const sortedRows = rows.sort((a, b) => {
+        var aColText = (a.querySelector(`td:nth-child(${ column + 1 })`).textContent.trim());
+        var bColText = (b.querySelector(`td:nth-child(${ column + 1 })`).textContent.trim());
+
+        if (!aColText) { 
+           
+           	aColText =  0; 
+
+        }
+
+
+        if (!bColText) { 
+               
+            bColText =  0; 
+
+         }
+
+     	
+     	try {
+             if(aColText[0]=='₹'){
+                aColText = parseFloat(aColText.split('₹')[1].replace(/,/g, ''));
+                bColText = parseFloat(bColText.split('₹')[1].replace(/,/g, ''));
+                console.log(aColText)
+
+             }
+            if(aColText[2]=="/"){
+
+            
+            var day=aColText.substring(0,2);
+            var month=aColText.substring(3,5);
+            var year=aColText.substring(6,)
+            var newstr=year+month+day
+            aColText= parseFloat(aColText.substring(6,)+ aColText.substring(3,5) + aColText.substring(0,2));
+            bColText=parseFloat(bColText.substring(6,)+ bColText.substring(3,5) + bColText.substring(0,2));
+            console.log(aColText)
+            
+            
+            }
+            if(aColText.length > 4) {
+        	
+            	aColText=aColText.toUpperCase();
+            	bColText=bColText.toUpperCase();
+                
+                var i = 0;
+                var str="";
+                var str1="";
+                while (i < aColText.length && i < bColText.length) {
+                    
+                    str=str+aColText.charCodeAt(i);
+                    str1=str1+bColText.charCodeAt(i);
+                    i++;
+                }
+                    aColText=str;
+                    bColText=str1;
+            }
+
+            else {
+
+            		return parseInt(aColText) > parseInt(bColText) ? (1 * dirModifier) : (-1 * dirModifier);
+
+            }
+                                    
+        }
+
+        catch (err) {
+        
+            console.log(err)
+
+        
+        }
+
+    	// }
+        // aColText = aColText.replace(String.fromCharCode(0x20b9),'');
+        // aColText = aColText.replace(',','');
+        	// aColText = aColText.replace('.','');
+
+        // bColText = bColText.replace(String.fromCharCode(0x20b9),'');
+       // bColText = bColText.replace(',','');
+        	// bColText = bColText.replace('.','');
+        
+
+        return parseInt(aColText) > parseInt(bColText) ? (1 * dirModifier) : (-1 * dirModifier);
+    });
+
+    // Remove all existing TRs from the table
+    while (tBody.firstChild) {
+        tBody.removeChild(tBody.firstChild);
+    }
+
+    // Re-add the newly sorted rows
+    tBody.append(...sortedRows);
+
+    // Remember how the column is currently sorted
+    table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
+    table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-asc", asc);
+    table.querySelector(`th:nth-child(${ column + 1})`).classList.toggle("th-sort-desc", !asc);
+}
+
+document.querySelectorAll(".table-sortable th").forEach(headerCell => {
+    headerCell.addEventListener("click", () => {
+        const tableElement = headerCell.parentElement.parentElement.parentElement;
+        const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
+        const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+
+        sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+    });
+});
+
+
+
+
+
+function myFunc(id) {
+	var id = id;
+		
+	var x = document.getElementById(id);
+		// var entry = document.createElement('li');
+		// entry.appendChild(document.createTextNode(list));
+		// filter_list.appendChild(entry);
+	
+	if (x.style.display === "none") {
+	x.style.display = "block";
+	} else {
+	x.style.display = "none";
+	}
+	
+}
+
+///////////////////////////////////////////
+
+function AddRemove() {
+
+	
+
+	var CheckedEntity = document.getElementsByClassName("Entity");
+
+	for(let i = 0; i < CheckedEntity.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedEntity[i].className;
+		var value = CheckedEntity[i].value;
+		if(clsName === 'Entity') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-entity');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedEntity[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility = "visible";
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+	}
+}
+
+
+function AddRemove1() {
+
+	var CheckedDebits = document.getElementsByClassName("Debits");
+
+	for(let i = 0; i < CheckedDebits.length; i++) {
+			// if(Checked[i].checked === true) {
+		var clsName = CheckedDebits[i].className;
+		var value = CheckedDebits[i].value;
+
+			
+
+		if(clsName === 'Debits') {
+
+			var clsName1 = document.getElementsByClassName('display');
+				
+				
+			for(let j = 0; j < clsName1.length; j++) {
+					// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-debits');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedDebits[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+								
+					}
+						
+						
+				
+				}
+			}
+
+		}
+	}
+}
+
+
+function AddRemove2() {
+
+
+	var CheckedCredit = document.getElementsByClassName("Credits");
+
+	for(let i = 0; i < CheckedCredit.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedCredit[i].className;
+		var value = CheckedCredit[i].value;
+
+		if(clsName === 'Credits') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-credits');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedCredit[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove3() {
+
+
+	var CheckedDebitAmtTot = document.getElementsByClassName("Debited_amt_tot");
+
+	for(let i = 0; i < CheckedDebitAmtTot.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedDebitAmtTot[i].className;
+		var value = CheckedDebitAmtTot[i].value;
+
+		if(clsName === 'Debited_amt_tot') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-deb_tot');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedDebitAmtTot[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove4() {
+
+
+	var CheckedCreditAmtTot = document.getElementsByClassName("Credited_amt_tot");
+
+	for(let i = 0; i < CheckedCreditAmtTot.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedCreditAmtTot[i].className;
+		var value = CheckedCreditAmtTot[i].value;
+
+		if(clsName === 'Credited_amt_tot') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-cre_tot');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedCreditAmtTot[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove5() {
+
+
+	var CheckedMaxDebit = document.getElementsByClassName("max_debit");
+
+	for(let i = 0; i < CheckedMaxDebit.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedMaxDebit[i].className;
+		var value = CheckedMaxDebit[i].value;
+
+		if(clsName === 'max_debit') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-max_deb');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedMaxDebit[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove6() {
+
+
+	var CheckedMaxCredit = document.getElementsByClassName("max_credit");
+
+	for(let i = 0; i < CheckedMaxCredit.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedMaxCredit[i].className;
+		var value = CheckedMaxCredit[i].value;
+
+		if(clsName === 'max_credit') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-max_cre');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedMaxCredit[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove7() {
+
+
+	var CheckedMinDebit = document.getElementsByClassName("min_debit");
+
+	for(let i = 0; i < CheckedMinDebit.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedMinDebit[i].className;
+		var value = CheckedMinDebit[i].value;
+
+		if(clsName === 'min_debit') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-min_deb');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedMinDebit[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove8() {
+
+
+	var CheckedMinCredit = document.getElementsByClassName("min_credit");
+
+	for(let i = 0; i < CheckedMinCredit.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedMinCredit[i].className;
+		var value = CheckedMinCredit[i].value;
+
+		if(clsName === 'min_credit') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-min_cre');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedMinCredit[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove9() {
+
+
+	var CheckedOldestTxn = document.getElementsByClassName("oldest_txn");
+
+	for(let i = 0; i < CheckedOldestTxn.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedOldestTxn[i].className;
+		var value = CheckedOldestTxn[i].value;
+
+		if(clsName === 'oldest_txn') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-old_txn');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedOldestTxn[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove10() {
+
+
+	var CheckedLatestTxn = document.getElementsByClassName("latest_txn");
+
+	for(let i = 0; i < CheckedLatestTxn.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedLatestTxn[i].className;
+		var value = CheckedLatestTxn[i].value;
+
+		if(clsName === 'latest_txn') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-lat_txn');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedLatestTxn[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove11() {
+
+
+	var CheckedMthDebits = document.getElementsByClassName("mth_debits");
+
+	for(let i = 0; i < CheckedMthDebits.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedMthDebits[i].className;
+		var value = CheckedMthDebits[i].value;
+
+		if(clsName === 'mth_debits') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-months_with_deb');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedMthDebits[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove12() {
+
+
+	var CheckedMthCredits = document.getElementsByClassName("mth_credits");
+
+	for(let i = 0; i < CheckedMthCredits.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedMthCredits[i].className;
+		var value = CheckedMthCredits[i].value;
+
+		if(clsName === 'mth_credits') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-months_with_cre');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedMthCredits[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove13() {
+
+
+	var CheckedDebAmtMthly = document.getElementsByClassName("debited_amt_mthly");
+
+	for(let i = 0; i < CheckedDebAmtMthly.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedDebAmtMthly[i].className;
+		var value = CheckedDebAmtMthly[i].value;
+
+		if(clsName === 'debited_amt_mthly') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-deb_amt_mthly');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedDebAmtMthly[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+
+function AddRemove14() {
+
+
+	var CheckedCreAmtMthly = document.getElementsByClassName("credited_amt_mthly");
+
+	for(let i = 0; i < CheckedCreAmtMthly.length; i++) {
+		// if(Checked[i].checked === true) {
+		var clsName = CheckedCreAmtMthly[i].className;
+		var value = CheckedCreAmtMthly[i].value;
+
+		if(clsName === 'credited_amt_mthly') {
+
+			var clsName1 = document.getElementsByClassName('display');
+			
+			
+			for(let j = 0; j < clsName1.length; j++) {
+				// console.log(clsName2[0].className);
+				var clsName2 = clsName1[j].getElementsByClassName('tab-cre_amt_mthly');
+
+				if(clsName2[0].textContent === value) {
+
+					if(CheckedCreAmtMthly[i].checked === true) {
+
+						clsName2[0].parentElement.style.visibility ="visible"
+					}
+					else {
+
+						clsName2[0].parentElement.style.visibility = "collapse";
+							
+					}
+					
+					
+				}
+			}
+		}
+
+	}
+
+}
+
+function AddRemove15() {
+
+	console.log("123");
+	var All = document.getElementsByClassName('All');
+	var entity = document.getElementsByClassName('tab-entity');
+
+	for(let i = 0; i < All.length; i++) {
+
+		if(All[i].checked === true) {
+
+			for(let j = 0; j < entity.length; j++) {
+
+				entity[j].parentElement.style.visibility ="visible";
+			}
+
+			
+		}
+		else {
+
+			for(let j = 0; j < entity.length; j++) {
+
+				entity[j].parentElement.style.visibility ="collapse";
+			}
+				
+		}
+					
+					
+	}
+}
+	
+
+
+</script>
+
+
+{% endblock content %}

@@ -1,0 +1,91 @@
+<style>
+	
+	tr, th, td {
+
+		border : solid black 2px;
+        
+	}
+    table{
+        border-collapse: collapse;
+    }
+
+
+	.header-table {
+
+		background-color: rgb(46,46,46);  
+		color: white;
+		text-align: center;
+
+	}
+	
+	
+
+
+</style>
+
+<table>
+        <thead class="header-table">
+        <th>Transaction date</th>
+        <th>Description</th>
+        <th>Debit</th>
+        <th>Credit</th>
+        <th>Balance</th>
+        <th>Cheque no</th>
+        <th>Entity</th>
+    </thead>
+    
+    {%for item in entity%}
+    
+    <tr>
+        {% if data  == "" %}
+        <td>{{item.txn_date}}</td>
+        <td>{{item.description}}</td>
+        <td>{{item.debit}}</td>
+        <td>{{item.credit}}</td>
+        <td>{{item.balance}}</td>
+        <td>{{item.cheque_number}}</td>
+        <td>{{item.entity}}</td>
+        {% endif %}
+         {% if data == item.entity %}
+         <td>{{item.txn_date}}</td>
+         <td>{{item.description}}</td>
+         <td>{{item.debit}}</td>
+         <td>{{item.credit}}</td>
+         <td>{{item.balance}}</td>
+         <td>{{item.cheque_number}}</td>
+         <td>{{item.entity}}</td>
+        {%else%}
+        <td>{{item.txn_date}}</td>
+         <td>{{item.description}}</td>
+         <td>{{item.debit}}</td>
+         <td>{{item.credit}}</td>
+         <td>{{item.balance}}</td>
+         <td>{{item.cheque_number}}</td>
+         <td>{{item.entity}}</td>
+         {%endif%}
+        
+       
+    </tr>
+    {%endfor%}
+
+<!--  <tr>
+    <td>{{item.account_number}}</td>
+    <td>{{item.bank_name}}</td>
+</tr> -->
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

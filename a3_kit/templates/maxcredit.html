@@ -1,0 +1,48 @@
+<style>
+	tr, th, td {
+
+		border : solid black 0.0625em;
+		color: black;
+		padding: 0.3125em;
+	}
+
+	table {
+
+		border-collapse: collapse;
+	}
+
+	.header-table {
+
+		background-color: rgb(40,40,40); 
+		color: white;
+		text-align: center;
+
+	}
+
+</style>
+
+
+<table>
+	<thead>
+		<th class="header-table">Transaction date</th>
+		<th class="header-table">Description</th>
+		<th class="header-table">Debit</th>
+		<th class="header-table">Credit</th>
+		<th class="header-table">Balance</th>
+	</thead>
+	<tbody>
+		{% for item in data %}
+		<tr>
+			
+			<td>{{item.txn_date}}</td>
+			<!-- <td>{{item.bank_name}}</td> -->
+			<td>{{item.description}}</td>
+			<td>{{item.debit}}</td>
+			<td>{{item.credit}}</td>
+			<td>{{item.balance}}</td>
+			
+		</tr>
+
+		{%endfor%}
+	</tbody>
+</table>

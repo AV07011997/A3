@@ -1,0 +1,79 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+{% csrf_token %}
+
+
+    <div class="content" style="margin: unset;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>{{page_heading}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table_wrap doclist">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="search-on" width="120">Deal ID</th>
+                                    <th class="search-on" width="120">Customer ID</th>
+                                    <th class="search-on" width="120">Name</th>
+                                    <th width="120">Document Type</th>
+                                    <th width="120">Document</th>
+                                    <th width="120">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if data %}
+                                    {% for i in data %}
+                                        <tr id="doclist_data_{{i.id}}">
+                                            <td>{{i.deal_id}}</td>
+                                            <td>{{i.customer_id}}</td>
+                                            <td>{{i.customer_name}}</td>
+                                            <td>{{i.document_name}}</td>
+                                            <td>{% if i.document_path %}{{i.document_path}}{% else %}NA{% endif %}</td>
+                                            <td>
+                                                <div class="doc-actions">
+                                                    {% if processed_page %}
+                                                        <a href="#"><img src="{% static 'assets/images/edit.png' %}" style="transform: rotate(270deg);"></a>
+                                                    {% else %}
+                                                        <a href="#"><img src="{% static 'assets/images/edit.png' %}"></a>
+                                                        <a onclick="return deleteDocListData('{{i.id}}');" href="#"><img src="{% static 'assets/images/delete.png' %}"></a>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-right">
+                        <a class="btn btn-secondary" href="{% url 'search' %}">Previous</a>
+                        <a class="btn btn-secondary" href="#">Next</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="triggerPopup" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h5 id="popupMessage"></h5>
+                        </div>
+                        <div class="modal-footer justify-content-end">
+                            <a type="button" id="messageAcknowledge" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload();">Ok</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

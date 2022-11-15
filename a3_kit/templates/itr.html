@@ -1,0 +1,437 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+	
+	th, tr, td{
+
+		border: 1px solid black;
+		padding: 10px;
+		color: black;
+	}
+
+	#table-5, #table-4, #append-tables {
+
+		display: block;
+		margin-left: 10px;
+		
+	}
+
+	#append-tables {
+
+		display: inline-flex;
+	}
+	#table {
+
+		border-right-color: white;
+	}
+
+	.num {
+
+		text-align: right;
+	}
+
+	.header-table {
+
+		background-color: rgb(40,40,40); 
+		color: white;
+		text-align: center;
+
+	}
+
+	.header-table-1 {
+
+		background-color: rgb(40,40,40); 
+		color: white;
+		text-align: left;
+
+	}
+
+	#itr-address {
+
+		margin-left: 10px;
+	}
+
+	#Income-Deductions {
+
+		margin-left: 10px;
+	}
+
+	.deductor{
+    border:none;
+    width: 30em;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+    text-align: left;
+    
+
+  }
+</style>
+<div class="content" style="margin-top: 0px;">
+    <div class="container" style="margin-top: 0px;">
+		<div class="text-right" style="padding-right:50px">
+			<h6><a class="digitization-unfocus" href="{% url 'bureauAnalyze' %}">&emsp;Bureau&emsp;</a><a class="digitization-unfocus" href="{% url 'bankAnalyze' %}">&emsp;Bank&emsp;</a><a class="digitization-focus" href="{% url 'itr' %}">&emsp;ITR&emsp;</a><a class="digitization-unfocus" href="{% url 'upload_bank_statement' %}">&emsp;Composite&emsp;</a></h6>
+		</div>
+		<br/>
+        
+    </div>
+</div>
+
+
+<div class="content" style="margin-left: 10px;padding: 0px; margin-top: 20px;padding-top: 0px;">
+        <div class="container" style="margin-left: 10px;padding: 0px; margin-top: 0px;padding-top: 0px;">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h4>ITR-V {% if request.session.deal_id %}(Deal ID: {{request.session.deal_id}}, Customer ID: {{request.session.customer_id.capitalize}}, Customer Name: {{request.session.name}}){% endif %}</h4>
+                </div>
+            </div> 
+        </div>
+               
+    </div>
+
+
+
+{%if data7 %}
+<header style="margin-left: 10px;">
+ 	<h6>The income, rent and deuctions of the customer (for ANY / ALL)</h6>
+ </header>
+<div id="Income-Deductions">
+	
+	<table>
+		<thead>
+			<tr>
+				<th  class="header-table">Financial year</th>
+				<th  class="header-table">Gross income</th>
+				<th  class="header-table">Average monthly gross income</th>
+				<th  class="header-table">Taxable income</th>
+				<th  class="header-table">HRA claimed</th>
+				<th  class="header-table">Rent income</th>
+				<th  class="header-table">Tax default found?</th>
+				<th  class="header-table">80C</th>
+				<th  class="header-table">80CCC</th>
+				<th  class="header-table">80D</th>
+				<th  class="header-table">80EE</th>
+				<th  class="header-table">Other deductions</th>
+				<th  class="header-table">Total deductions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{%for item in data7%}
+			<tr>
+				<td>{{item.Assessment_Year}}</td>
+				<td>{{item.Gross_Income}}</td>
+				<td>{{item.Average_Monthly_Gross_Income}}</td>
+				<td>{{item.Taxable_Income}}</td>
+				<td>{{item.HRA}}</td>
+				<td>{{item.Rent_Income}}</td>
+				<td>{{item.Tax_Default_Found}}</td>
+				<td>{{item.80C}}</td>
+				<td>{{item.80CCC}}</td>
+				<td>{{item.80D}}</td>
+				<td>{{item.80EE}}</td>
+				<td>{{item.Other_Deductions}}</td>
+				<td>{{item.Total_Deductions}}</td>
+			</tr>
+			{%endfor%}
+		</tbody>
+	</table>
+	
+</div>  
+<footer style="margin-left: 10px;"><cite>Source:Form 16, 26AS, and ITRV</cite></footer>
+{% endif %}
+<br/>
+<br/>
+{% if data6 %}
+<header style="margin-left: 10px;">
+ 	<h6>Address of the employer (SALARIED)</h6>
+ </header>
+<div id="itr-address">
+	<table>
+		<thead>
+			<tr>
+				<th class="header-table">Address of the latest employer for reference</th>
+				{%for item in data6%}
+				<td>{{item.address}}</td>
+				{%endfor%}
+			</tr>
+		</thead>
+	</table>
+</div>
+<footer style="margin-left: 10px;"><cite>Source: Form16</cite></footer>
+{% endif %}
+ <br/>
+ <br/>
+ {% if data3 and data %}
+ <header style="margin-left: 10px;">
+ 	<h6>Monthwise salary, other income and number of credit for the customer (SELF-EMPLOYED)</h6>
+ </header>
+<div id="append-tables">
+<div>
+	<table id="table">
+		<thead>
+			<tr>
+				<th class="header-table">Finanacial Year</th>
+				<th class="header-table">Measures</th>
+			</tr>
+		</thead>
+		<tbody>
+			{%for item in data3%}
+			<tr>
+				<td rowspan="5" class="header-table">{{item}}</td>
+			</tr>
+			{%for item in data4%}
+			<tr>
+				<td class="header-table-1">{{item}}</td>
+			</tr>
+			{%endfor%}
+			{%endfor%}
+		</tbody>
+	</table>
+</div>
+<div>
+	<table>
+		<thead>
+			<tr>
+				<!-- <th>Financial year</th> -->
+				<!-- <th>Measures</th> -->
+				<th class="header-table">Apr</th>
+				<th class="header-table">May</th>
+				<th class="header-table">Jun</th>
+				<th class="header-table">Jul</th>
+				<th class="header-table">Aug</th>
+				<th class="header-table">Sep</th>
+				<th class="header-table">Oct</th>
+				<th class="header-table">Nov</th>
+				<th class="header-table">Dec</th>
+				<th class="header-table">Jan</th>
+				<th class="header-table">Feb</th>
+				<th class="header-table">Mar</th>
+			</tr>
+		</thead>
+		<tbody>
+			{%for item in data%}
+			<tr>
+				<!-- <td>{{item.Financial_Year}}</td> -->
+				<!-- <td>{{item.Measures}}</td> -->
+				<td class="num">{{item.April}}</td>
+				<td class="num">{{item.May}}</td>
+				<td class="num">{{item.June}}</td>
+				<td class="num">{{item.July}}</td>
+				<td class="num">{{item.August}}</td>
+				<td class="num">{{item.September}}</td>
+				<td class="num">{{item.October}}</td>
+				<td class="num">{{item.November}}</td>
+				<td class="num">{{item.December}}</td>
+				<td class="num">{{item.January}}</td>
+				<td class="num">{{item.February}}</td>
+				<td class="num">{{item.March}}</td>
+			</tr>
+			{%endfor%}
+		</tbody>
+	</table>
+</div>
+</div>
+<footer style="margin-left: 10px;"><cite>Source: Form26 AS</cite></footer>
+{% endif %}
+<br/>
+<br/>
+
+{% if data3 and data1 %}
+<header style="margin-left: 10px;">
+ 	<h6>Section wise inflow of money (SELF-EMPLOYED)</h6>
+ </header>
+<div id="table-4">
+	<table>
+		<thead>
+			<tr>
+				<th class="header-table">Section</th>
+				{% for item in data3%}
+					<th class="header-table">{{item}}</th>
+				{%endfor%}
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Salary</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Salary}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Rent</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Rent}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Betting</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Betting}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Income from investment</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Income_from_investment}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Income from contracting</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Income_from_contracting}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Income from abroad</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Income_from_abroad}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Original investment principal withdrawl</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Orignal_investment_principal_withdrawal}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Sale of property</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Sale_of_property}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Income from tech professional services</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Income_from_tech_professional_services}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Income from commission</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Income_from_commission}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>Collection at source</td>
+				{%for item in data1%}
+					<td  class="num">{{item.Collection_at_source}}</td>
+				{%endfor%}
+			</tr>
+			<tr>
+				<td>194K</td>
+				{%for item in data1%}
+					<td  class="num">{{item.194K}}</td>
+				{%endfor%}
+			</tr>
+		</tbody>
+	</table>
+</div>
+<footer style="margin-left: 10px;"><cite>Source: Form26 AS</cite></footer>
+<br/>
+{% endif %}
+{% if data8 and data2 %}
+<header style="margin-left: 10px;">
+ 	<h6>Number of transactions per deductor and the total amount (SELF-EMPLOYED)</h6>
+</header>
+
+<div id="table-5"> 
+	<!-- <div>
+		<select id="fy" onchange="MyFunc()">
+			{% for item in data3%}
+			<option value="{{item}}">{{item}}</option>
+			{%endfor%}
+		<select>
+	</div>
+	<br/> -->
+	<div>
+
+		<table>
+			<thead>
+				<tr>
+					<th class="header-table"></th>
+					{%for item in data8%}
+					<th class="header-table" colspan="2">{{item}}</th>
+					{%endfor%}
+				</tr>
+			</thead>
+			<thead>
+				<tr>
+					<th class="header-table" width="400em;">Name of deductor</th>
+					<th class="header-table" width="30em">No. of transactions</th>
+					<th class="header-table" width="120em">Total amount</th>
+					<th class="header-table" width="30em">No. of transactions</th>
+					<th class="header-table" width="120em">Total amount</th>
+					<th class="header-table" width="30em">No. of transactions</th>
+					<th class="header-table" width="120em">Total amount</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{% for item in data2 %}
+				<tr class="{{item.financial_year}}">
+					<td class="deductor">{{item.name_of_deductor}}</td>
+					<td class="num">{{item.no_of_transactions_x}}</td>
+					<td class="num">{{item.total_amount_x}}</td>
+					<td class="num">{{item.no_of_transactions_y}}</td>
+					<td class="num">{{item.total_amount_y}}</td>
+					<td class="num">{{item.no_of_transactions}}</td>
+					<td class="num">{{item.total_amount}}</td>
+				</tr>
+				{%endfor%}
+				
+			</tbody>
+		</table>
+
+	</div>
+</div>
+<footer style="margin-left: 10px;"><cite>Source: Form26 AS</cite></footer>
+{% endif %}
+<br/>
+<br/>
+<br/>
+
+
+<script>
+
+	
+	function MyFunc() {
+
+		var x = document.getElementById('fy');
+
+		for(let i = 0; i < x.length; i++){
+
+			if(x[i].selected === true) {
+
+				var y = document.getElementsByClassName(x[i].value);
+
+				for(let j = 0; j < y.length; j++) {
+
+					y[j].style.visibility = "visible";
+
+				}
+			}
+
+			else {
+
+				var y = document.getElementsByClassName(x[i].value);
+
+				for(let j = 0; j < y.length; j++) {
+
+					y[j].style.visibility = "collapse";
+
+				}
+
+			}
+		}
+	}
+
+
+
+
+</script>
+
+{%endblock content%}

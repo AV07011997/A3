@@ -1,0 +1,598 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>KPI | BANK | TRANSACTIONS</title>
+	
+	<!-- <link rel="stylesheet" href="{% static 'assets/css/style1.css' %}"> -->
+</head>
+<body>
+
+ <style>
+   
+	b{
+		cursor: pointer;
+		font-size: 25PX;
+		color: royalblue;
+	}
+	table{
+		margin-left: 5px;
+		margin-right: 10px;
+	}
+	
+	tr, th, td {
+
+		border : solid black 2px;
+	}
+
+
+	.rm-head {
+
+		background-color: white;
+		border-left-color: white;
+		border-top-color: white;
+	}
+
+	.header-table5{
+
+		background-color: #212529;
+		color: white;
+		text-align: center;
+		
+	}
+	
+	
+	
+	
+	.mode{
+		background-color: #313941;
+		color: white;
+		text-align: center;
+	}
+	
+	.trans{
+		background-color: #ADB5BD;
+		color: white;
+
+	}
+	.trans1{
+		background-color: #CED4DA;
+		color: black
+
+	}
+	.mode1{
+		background-color: #E9ECEF;
+		color: black
+	}
+	.entity{
+		background-color: #F8F9FA;
+		color: black
+	}
+	.ab{
+		background-color: white;
+		border-color: white;
+	}
+	.ab1{
+		background-color: white;
+		border-top-color: white;
+		
+		border-left-color: white;
+	}
+	#cd{
+		border-right-color: #212529;
+	
+	
+	}
+	.cd1{
+	
+		border-bottom-color: black;
+		border-right-color: white
+		
+	}
+	.cd2{
+		border-right-color:#313941;
+	}
+	.ab2{
+		background-color: white;
+		border-top-color: white;
+		border-bottom-color: white;
+	}
+	.cd3{
+		border-right-color:#E9ECEF;
+	
+	}
+	.num{
+		text-align: right;
+	}
+	.cd4{
+		border-right-color: #313941;
+		 border-bottom-color:#313941; 
+	}
+	.textcentre{
+		text-align: center;
+	}
+	.abcd2{
+			
+		border: none;
+		background: none; 
+		padding-right: 0px;
+		width: 30em;
+		overflow: hidden;
+		white-space: nowrap;
+		display: block;
+		text-overflow: ellipsis;
+		color:  black;
+		text-align:left;
+		
+
+	}
+.cd5{
+	border-bottom-color: white;
+	border-right-color: white;
+}
+	
+	
+
+
+</style> 
+
+<div class="content" style="margin-top: 0px;">
+    <div class="container" style="margin-top: px;">
+		<div class="text-right" style="padding-right:50px">
+			<h6><a class="digitization-unfocus" href="{% url 'bureauAnalyze' %}">&emsp;Bureau&emsp;</a><a class="digitization-focus" href="{% url 'bankAnalyze' %}">&emsp;Bank&emsp;</a></h6>
+		</div>
+	
+    </div>
+</div>
+<div class="content" style="margin-top: 0px;">
+    <div class="container" style="margin-top: -50px;">
+		<div class="text-right" style="padding-right:50px">
+			<h6><a class="digitization-unfocus" href="{% url 'bank_customer_kpi' %}">&emsp;Summary&emsp;</a><a class="digitization-unfocus" href="{% url 'bank_customer_month_kpi' %}">&emsp;Month-wise&emsp;</a><a class="digitization-focus" href="{% url 'fishy' %}">&emsp;Transactions&emsp;</a><a class="digitization-unfocus" href="{% url 'bank_entity_kpi' %}">&emsp;Counterparties&emsp;</a><a class="digitization-unfocus" href="{% url 'statement' %}">&emsp;Statement&emsp;</a></h6>
+		</div>
+	
+      
+    </div>
+</div>
+
+
+<div class="content" style="margin-left: 10px;padding: 0px; margin-top: 20px;padding-top: 0px;">
+        <div class="container" style="margin-left: 10px;padding: 0px; margin-top: 0px;padding-top: 0px;">
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h4>Transactions {% if request.session.deal_id %}(Deal ID: {{request.session.deal_id}}, Customer ID: {{request.session.customer_id.capitalize}}, Customer Name: {{request.session.name}}){% endif %}</h4>
+                </div>
+            </div> 
+        </div>
+               
+    </div>
+
+
+	<table>
+		{% if data %}
+		<thead class="header-table5" >
+			<th   class="ab"></th>
+			<th class="ab"></th>
+			<th  class="ab2"></th>
+			<th  id="cd"></th>
+			<th id="cd"></th>
+			<th class="header-table5">Account number</th>
+			<th  class="header-table5" >Bank name</th>
+			<th   class="header-table5">From</th>
+			<th colspan="3" class="header-table5" >To</th>
+		   <th class="ab"></th>
+		   <th class="ab"></th>
+		   <th class="ab"></th>
+		   <th class="ab"></th>
+		   <th class="ab"></th>
+		   <th class="ab"></th>
+		   <th class="ab"></th>
+		   <th class="ab"></th>
+
+		</thead>
+		{% endif %}
+		{%for item in data%}
+		
+		<tr class="account1" class="cd5" style="border-right-color: white;border-bottom-color: white;">
+			<td  class="ab" class="data"><b name="tr11" onclick="funcd1(id)" style="display: none">-</b>
+			<b  name="tr13" onclick="funci1(id)">+</b></td>
+			<td  class="ab"></td>
+			<td class="ab2" ></td>
+			<td class="cd1" ></td>
+			<td class="cd1"></td>
+			<td class="data">{{item.account_number}}</td>
+			<td class="data">{{item.bank_name}}</td>
+			<td   width="100em" class="data">{{item.from_date}}</td>
+			<td colspan="3"  width="100em" class="data">{{item.to_date}}</td>
+			<!-- <td ></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td> -->
+			<!-- <td></td> -->
+			
+		</tr>
+					<tr  width="20px" class="mode" name="tr41"  style="display: none;">
+						<th  width="20px" class="ab"></th>
+						<th class="ab"></th>
+						<th class="ab"></th>
+						<th class="ab2" ></th>
+						<th  class="cd4" ></th>
+					    <th  colspan="2" rowspan="2" class="testcentre">Transaction type</th>
+					
+
+						<th height="40em"  colspan="2"  class="testcentre">Transactions</th>
+					
+					
+						<th colspan="2" class="testcentre" >Number of transactions</th>
+						
+						<th colspan="4" class="testcentre">Debit</th>
+					
+						<th colspan="4" class="testcentre">Credit</th>
+					
+
+					</tr>
+	
+				
+			
+					<tr class="mode" value="{{item.account_number}}" name="tr15" style="display: none">
+							<th  class="ab"></th>
+							<th  class="ab" ></th>
+							<th  class="ab"></th>
+							
+							<th class="ab2"style="width: 20px;"></th>
+							<th class="cd2"></th>
+
+							<!-- <th class="header-table1"> trans type</th> -->
+							
+							<th width="100em" class="header-table1">From</th>
+							<th  width="100em" class="header-table1">To</th>
+						
+							<th width="50em"class="header-table1">Dr</th>
+						
+							<th width="50em" class="header-table1" >Cr</th>
+							<th class="header-table1"  width="103.125em" >Total</th>
+							<th class="header-table1"  width="103.125em">Min</th>
+							<th class="header-table1" width="103.125em">Max</th>
+							<th class="header-table1" width="103.125em">Average</th>
+							<th class="header-table1"  width="103.125em">Total</th>
+							<th class="header-table1" width="103.125em">Min</th>
+							<th class="header-table1" width="103.125em">Max</th>
+							<th class="header-table1"  width="103.125em">Average</th>
+					
+						
+						{% for item1 in data1 %}
+						{%if item.account_number == item1.account_number %}
+						<tr class="mode1" class="mode" name="tr17" value="{{item.account_number}}" style="display: none;" >
+							<td  class="ab"></td>
+							<td  class="ab"><b name="tr21"  value="{{item.account_number}}" onclick="funcd11(id)" style="display: none" >-</b>
+							<b name="tr23"  value="{{item.account_number}}" onclick="funci11(id)">+</b></td>
+							<td  class="ab"></td>
+							<td  class="ab2"></td>
+							<td class="cd3"></td>
+							
+							<td colspan="2"> {{item1.transaction_type}}</td>
+						
+							<td width="100em"> {{item1.from_date}}</td>
+							<td width="100em"> {{item1.to_date}}</td>
+							
+
+							<td  width="50em"class="num"> {{item1.d_count}}</td>
+						
+							<td  width="50em" class="num"> {{item1.c_count}}</td>
+							<td  width="103.125em"class="num">{{item1.s_debit}}</td>
+							<td width="103.125em" class="num">{{item1.min_debit}}</td>
+							<td width="103.125em"class="num">{{item1.max_debit}}</td>
+							<td width="103.125em"class="num">{{item1.avgdebit}}</td>
+							<td width="103.125em"class="num">{{item1.s_credit}}</td>
+							<td width="103.125em" class="num">{{item1.min_credit}}</td>
+							<td width="103.125em" class="num">{{item1.max_credit}}</td>
+							<td width="103.125em" class="num">{{item1.avgcredit}}</td>
+							</tr>	
+							</tr>
+						
+
+							<tr class="trans" value="{{item.account_number}}@{{item1.transaction_type}}" name="tr35" style="display: none">
+								<th class="ab" ></th>
+								<th  class="ab"></th>
+								<th  class="ab"></th>
+								<th class="ab"></th>
+								<th class="ab2" style="width: 20px;"></th>
+								
+								<th  colspan="2" style="text-align:center"class="header-table3">Description</th>
+							 
+								<th  style="text-align:center"class="header-table3">Transaction date</th>
+								<th colspan="3" style="text-align:center"class="header-table3">Cheque no</th>
+								
+								<th style="text-align:center" class="header-table3">Dr</th>
+								<th style="text-align:center" class="header-table3">Cr </th>
+								<th style="text-align:center" class="header-table3">Balance</th>
+								<th class="ab"></th>
+							    <th class="ab"></th>
+		 						<th class="ab"></th>
+		    					<th class="ab"></th>
+		    					<th class="ab"></th>
+							
+					
+					
+							{%for item3 in data3 %}
+							{%if item.account_number == item3.account_number %}
+							{%if item1.transaction_type == item3.transaction_type %}
+					
+							
+							<tr class="trans1"  value="{{item.account_number}}@{{item1.transaction_type}}"  name="tr37" style="display: none;border-right-color: white;border-bottom-color: white;">
+								<td  class="ab"></td>
+								<td  class="ab"></td>
+								<td  class="ab"></td>
+								
+								<td class="ab"></td>
+								<td class="ab2"></td>
+								<td  colspan="2"> <p  name="button1" class="abcd2" title="{{item3.description}}">{{item3.description}}</p></td>
+								
+							    
+								<td style="padding: 5px;"> {{item3.txn_date}}</td>
+								<td colspan="3" style="padding: 5px;"> {{item3.cheque_number}}</td>
+								
+						
+								
+								<td class="num">{{item3.debit}}</td>
+								<td class="num">{{item3.credit}}</td>
+								<td class="num">{{item3.balance}}</td>
+								</tr>
+						</tr>
+					
+						{%endif%}
+						{%endif%}
+						{%endfor%}
+
+
+						
+						{%endif%}
+						{%endfor%}
+	
+				{%endfor%}
+		
+
+	</table>
+<div class="footer" style="margin-top: 30px;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>Powered by <a href="#">Dhurin</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+	<script> 
+		var tr11 = document.getElementsByName("tr11");
+		var tr13 = document.getElementsByName("tr13");
+		var tr15 = document.getElementsByName("tr15");
+		var tr17 = document.getElementsByName("tr17");
+		var tr21 = document.getElementsByName("tr21");
+		var tr23 = document.getElementsByName("tr23");
+		var tr41= document.getElementsByName("tr41")
+		var tr35 = document.getElementsByName("tr35");
+		var tr37 = document.getElementsByName("tr37");
+		
+		
+
+		for (var i = 0; i < tr11.length; i++) { 
+			tr12=""; 
+			tr14="";
+			tr14="";
+            var tr12 = tr11[i];
+			var tr14=tr13[i]; 
+			var tr16=tr15[i]; 
+			var tr42=tr41[i]
+            tr12.setAttribute("id", "a" + i);
+			tr14.setAttribute("id", "b" + i); 
+			tr16.setAttribute("id", "c" + i);
+			tr42.setAttribute("id", "g" + i);
+
+        }	
+		for (var i = 0; i < tr17.length; i++) {
+			tr18="";
+			var tr22=tr21[i];
+			var tr24=tr23[i];
+			var tr18=tr17[i]; 
+			var tr36=tr35[i];
+			tr18.setAttribute("id", "y" + i);
+			tr36.setAttribute("id", "d" + i);	
+			tr22.setAttribute("id", "e" + i);	
+			tr24.setAttribute("id", "f" + i);	
+			
+        }
+		for (var i = 0; i < tr37.length; i++) {
+			var tr38=""
+			var tr38=tr37[i];
+			tr38.setAttribute("id", "z" + i);
+			console.log(tr38)
+        }
+		
+		
+
+
+
+
+		function funci1(id1){
+			id1=id1.substring(1)
+			var tr19= document.getElementsByName("tr15");
+			var tr20= document.getElementsByName("tr41");
+			var tr8= document.getElementsByName("tr11");
+			var tr9= document.getElementsByName("tr13");
+			var tra= document.getElementsByName("tr17");
+			var x= tra[0].getAttribute("value");
+			for(var i=0;i<tr19.length;i++){
+				if(tr19[i].id.substring(1)==id1){
+					//console.log(tr19[i])
+					id2=tr19[i].id
+					id6=tr20[i].id
+					id3=tr8[i].id
+					id4=tr9[i].id		
+					$("#" + id2).show();
+					$("#" + id6).show();
+					$("#" + id3).show();
+					$("#" + id4).hide();
+					for( var k=0;k<tra.length;k++){
+						if(tra[k].getAttribute("value")==tr19[i].getAttribute("value")){
+						//	console.log(tra[k])
+							id5=tra[k].id
+						//	console.log(id5)
+							$("#" + id5).show();	
+						}
+					}
+				}
+			}
+			
+			
+			
+		}
+		function funcd1(id1){
+			id1=id1.substring(1)
+			var tr10=document.getElementsByName("tr15");
+			var tr11=document.getElementsByName("tr41");
+			var tr8= document.getElementsByName("tr11");
+			var tr9= document.getElementsByName("tr13");
+			var tra= document.getElementsByName("tr17");
+			var trb= document.getElementsByName("tr21");
+			var trc= document.getElementsByName("tr23");
+			var trans=document.getElementsByClassName("trans")
+			var trans1=document.getElementsByClassName("trans1")
+			var x=""
+			var y=""			
+			for(var i=0;i<tr10.length;i++){
+				if(tr10[i].id.substring(1)==id1){
+				//	console.log(tr10[i])
+					id2=tr10[i].id
+					id6=tr11[i].id
+					id3=tr8[i].id
+					id4=tr9[i].id	
+					$("#" + id2).hide();
+					$("#" + id6).hide();
+					$("#" + id3).hide();
+					$("#" + id4).show();
+					for( var k=0;k<tra.length;k++){
+						if(tra[k].getAttribute("value")==tr10[i].getAttribute("value")){
+							id5=tra[k].id
+							x=tr10[i]
+							$("#" + id5).hide();	
+						}
+					}
+				}
+			}
+      
+		
+			for(var j=0;j<trans.length;j++){
+				if(trans[j].getAttribute("value").substr(0, trans[j].getAttribute("value").indexOf('@'))==x.getAttribute("value")){
+					id7=trans[j].id;
+					$("#" + id7).hide();	
+
+				}
+				
+			}
+			for(var j=0;j<trans1.length;j++){
+				if(trans1[j].getAttribute("value").substr(0, trans1[j].getAttribute("value").indexOf('@'))==x.getAttribute("value")){
+					id7=trans1[j].id;
+					$("#" + id7).hide();	
+
+				}
+				
+			}
+			for(var j=0;j<trb.length;j++){
+				if(trb[j].getAttribute("value")==x.getAttribute("value")){
+					id8=trb[j].id;
+					id9=trc[j].id;
+					$("#" + id8).hide();	
+					$("#" + id9).show();
+
+				}
+				
+			}
+		
+
+
+		}
+
+		function funci11(id1){
+		
+			id1=id1.substring(1)
+			//console.log(id1)
+			var tr19= document.getElementsByName("tr35");
+			var tr8= document.getElementsByName("tr21");
+			var tr9= document.getElementsByName("tr23");
+			var trb= document.getElementsByName("tr37");
+		
+			
+			
+			for(var i=0;i<tr19.length;i++){
+				//console.log(tr19[i])
+				if(tr19[i].id.substring(1)==id1){
+					
+					//console.log("khan")
+					id2=tr19[i].id
+					id3=tr8[i].id
+					id4=tr9[i].id		
+					$("#" + id2).show();
+					$("#" + id3).show();
+					$("#" + id4).hide();
+					console.log(tr19[i])
+					for( var k=0;k<trb.length;k++){
+						if(trb[k].getAttribute("value")==tr19[i].getAttribute("value")){
+							
+							//console.log("suhaib")
+							console.log(trb[k])
+							id5=trb[k].id
+							//console.log(id5)
+							$("#" + id5).show();	
+						}
+					}
+				}
+			}
+			
+			
+			
+		}
+		function funcd11(id1){
+			id1=id1.substring(1)
+			var tr30=document.getElementsByName("tr35");
+			var tr31= document.getElementsByName("tr21");
+			var tr32= document.getElementsByName("tr23");
+			var trb= document.getElementsByName("tr37");
+			
+			x=""
+			for(var i=0;i<tr30.length;i++){
+				if(tr30[i].id.substring(1)==id1){
+					//console.log(tr30[i])
+					id2=tr30[i].id
+					id3=tr31[i].id
+					id4=tr32[i].id	
+					//console.log(id2)
+					$("#" + id2).hide();
+					$("#" + id3).hide();
+					$("#" + id4).show();
+					for( var k=0;k<trb.length;k++){
+						if(trb[k].getAttribute("value")==tr30[i].getAttribute("value")){
+							id5=trb[k].id
+							//console.log(id5)
+						    x=tr30[i]
+							$("#" + id5).hide();	
+						}
+					}
+				}
+			}
+		}
+	
+    </script> 
+
+
+</body>
+</html>
+{% endblock content %}

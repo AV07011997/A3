@@ -1,0 +1,77 @@
+{% extends "header_footer.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.header-table {
+
+		background-color: rgb(40,40,40);
+		color: white;
+		text-align: center;
+
+	}
+
+
+</style>
+<br>
+<table>
+    <thead>
+    <tr>
+        <th class="header-table">Account</th>
+        <th class="header-table">Data reported</th>
+        <th class="header-table">Loan type</th>
+        <th class="header-table">Loan status</th>
+        <th class="header-table">Ownership</th>
+        <th class="header-table">Dishbursal date</th>
+        <th class="header-table">Dishbursal amount</th>
+        <th class="header-table">Current balance</th>
+        <th class="header-table">Tenure</th>
+        <th class="header-table">ROI</th>
+        <th class="header-table">EMI</th>
+        <th class="header-table">Last payment date</th>
+        <th class="header-table">Overdue amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for data in selected %}
+        <tr>
+            <td>{{data.ACCOUNT_NUMBER}}</td>
+            <td>{{data.Date_reported}}</td>
+            <td>{{data.Loan_type}}</td>
+            <td>{{data.Loan_status}}</td>
+            <td>{{data.OWNERSHIP_INDICATOR}}</td>
+            <td>{{data.Disbursal_date}}</td>
+            <td>&#x20b9;{{data.Disbursed_amount}}</td>
+            <td>&#x20b9;{{data.Current_Balance}}</td>
+            <td>{{data.Tenure}}</td>
+            <td>{{data.ROI}}</td>
+            <td>{{data.EMI}}</td>
+            <td>{{data.DATE_LAST_PAYMENT}}</td>
+            <td>{{data.Overdue_amount}}</td>
+        </tr>
+   {% endfor %}
+    </tbody>
+</table>
+
+
+<script>
+
+</script>
+
+{% endblock content %}

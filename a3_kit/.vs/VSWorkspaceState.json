@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\analyze",
+    "\\analyze\\bureau_customer_kpi",
+    "\\bank",
+    "\\bank\\data_extraction"
+  ],
+  "SelectedNode": "\\bank\\data_extraction\\hdfc.py",
+  "PreviewInSolutionExplorer": false
+}
